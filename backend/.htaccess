@@ -1,0 +1,9 @@
+# No listar direcotrios sin index
+Options -Indexes
+
+# Rutas prohibidas como 404
+RedirectMatch 404 ^.*\.md$
+RedirectMatch 404 ^.*env\.php$
+
+# 404 personalizado
+ErrorDocument 404 "{\"service_name\":\"Pass Warriors\",\"success\":false,\"data\":null,\"errors\":[\"Recurso no encontrado\"]}"

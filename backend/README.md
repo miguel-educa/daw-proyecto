@@ -7,6 +7,8 @@
 **Contenidos**
 
 - [1. Backend](#1-backend)
+- [2. Estructura del proyecto](#2-estructura-del-proyecto)
+- [3. Directorios y Archivos](#3-directorios-y-archivos)
 
 
 # 1. Backend
@@ -19,6 +21,16 @@ Para el desarrollo en local se ha decidido utilizar [XAMPP] como entorno de desa
 > [!NOTE]
 > Para el servidor de **base de datos** se ha utilizado otra herramienta. [*más información](../db/README.md)
 
+
+# 2. Estructura del proyecto
+
+```text
+📄 .htaccess
+📄 example-env.php (env.php)
+```
+
+
+# 3. [Directorios y Archivos](directories-files.md)
 
 ---
 
