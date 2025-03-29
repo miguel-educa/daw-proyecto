@@ -20,3 +20,7 @@ const TOOLS_PATH = "tools/";
 
 const DB_TOOLS_PATH = TOOLS_PATH . "DB.php";
 const ENCRYPT_TOOLS_PATH = TOOLS_PATH . "Encrypt.php";
+const HTTP_CODE_PATH = TOOLS_PATH . "HttpCode.php";
+const REQUEST_METHOD_PATH = TOOLS_PATH . "RequestMethod.php";
+const REQUEST_PATH = TOOLS_PATH . "Request.php";
+const RESPONSE_PATH = TOOLS_PATH . "Response.php";

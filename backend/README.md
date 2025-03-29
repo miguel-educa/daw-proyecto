@@ -30,12 +30,16 @@ Para el desarrollo en local se ha decidido utilizar [XAMPP] como entorno de desa
 📄 example-env.php (env.php)
 📁 tools
     📄 DB.php
-    📄 DevTools.php
     📄 Encrypt.php
+    📄 HttpCode.php
+    📄 Request.php
+    📄 RequestMethod.php
+    📄 Response.php
 ```
 
 
 # 3. [Directorios y Archivos](directories-files.md)
+
 
 # 4. [Métodos de encriptación](encryption-methods.md)
 

@@ -3,6 +3,10 @@
 
 [DB]: ./tools/DB.php
 [Encrypt]: ./tools/Encrypt.php
+[HttpCode]: ./tools/HttpCode.php
+[Request]: ./tools/Request.php
+[RequestMethod]: ./tools/RequestMethod.php
+[Response]: ./tools/Response.php
 
 [Regresar](./README.md)
 
@@ -13,6 +17,10 @@
 - [3. Tools](#3-tools)
     - [3.1. DB](#31-db)
     - [3.2. Encrypt](#32-encrypt)
+    - [3.3. HttpCode](#33-httpcode)
+    - [3.4. Request](#34-request)
+    - [3.5. RequestMethod](#35-requestmethod)
+    - [3.6. Response](#36-response)
 
 
 # 1. [.htaccess]
@@ -44,6 +52,22 @@ Clase que contiene la lógica para realizar una **conexión** e **interactuar** 
 
 ## 3.2. [Encrypt]
 Clase estática que contiene distintas **herramientas** para el cifrar, descifrar, generar tokens, UUIDs...
+
+
+## 3.3. [HttpCode]
+Enum que contiene **códigos** de **respuesta HTTP** como `200`, `404`, `500`...
+
+
+## 3.4. [Request]
+Clase que permite **obtener** información de una **petición HTTP**, como el **método HTTP**, *body* con los **datos** enviados, Cookies...
+
+
+## 3.5. [RequestMethod]
+Enum que contiene los **métodos HTTP** como `GET`, `POST`, `DELETE`...
+
+
+## 3.6. [Response]
+Clase que permite **crear** y **mostrar** una **respuesta HTTP** manteniendo un formato consistente, **crear** o **eliminar** Cookies...
 
 
 ---
