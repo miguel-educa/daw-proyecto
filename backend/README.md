@@ -9,6 +9,7 @@
 - [1. Backend](#1-backend)
 - [2. Estructura del proyecto](#2-estructura-del-proyecto)
 - [3. Directorios y Archivos](#3-directorios-y-archivos)
+- [4. Métodos de encriptación](#4-métodos-de-encriptación)
 
 
 # 1. Backend
@@ -27,10 +28,16 @@ Para el desarrollo en local se ha decidido utilizar [XAMPP] como entorno de desa
 ```text
 📄 .htaccess
 📄 example-env.php (env.php)
+📁 tools
+    📄 DB.php
+    📄 DevTools.php
+    📄 Encrypt.php
 ```
 
 
 # 3. [Directorios y Archivos](directories-files.md)
+
+# 4. [Métodos de encriptación](encryption-methods.md)
 
 ---
 
