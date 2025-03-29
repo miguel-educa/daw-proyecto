@@ -1,6 +1,10 @@
 [.htaccess]: ./.htaccess
 [env-example]: ./example-env.php
 
+[UsersController]: ./controllers/Users.php
+
+[UsersModel]: ./models/Users.php
+
 [DB]: ./tools/DB.php
 [Encrypt]: ./tools/Encrypt.php
 [HttpCode]: ./tools/HttpCode.php
@@ -14,13 +18,17 @@
 
 - [1. .htaccess](#1-htaccess)
 - [2. env-example](#2-env-example)
-- [3. Tools](#3-tools)
-    - [3.1. DB](#31-db)
-    - [3.2. Encrypt](#32-encrypt)
-    - [3.3. HttpCode](#33-httpcode)
-    - [3.4. Request](#34-request)
-    - [3.5. RequestMethod](#35-requestmethod)
-    - [3.6. Response](#36-response)
+- [3. Controllers](#3-controllers)
+    - [3.1. UsersController](#31-userscontroller)
+- [4. Models](#4-models)
+    - [4.1. UsersModel](#41-usersmodel)
+- [5. Tools](#5-tools)
+    - [5.1. DB](#51-db)
+    - [5.2. Encrypt](#52-encrypt)
+    - [5.3. HttpCode](#53-httpcode)
+    - [5.4. Request](#54-request)
+    - [5.5. RequestMethod](#55-requestmethod)
+    - [5.6. Response](#56-response)
 
 
 # 1. [.htaccess]
@@ -42,31 +50,47 @@ Se **deben configurar** las siguientes variables:
 > `env.php` debe ser importado mediante `require_once` en los archivos que necesiten utilizar las variables de entorno
 
 
-# 3. Tools
-Contiene clases con distintas **herramientas útiles** para realizar conexiones con base de datos, encriptación de datos...
+# 3. Controllers
+Los controladores permiten organizar las distintas rutas y los distintos métodos HTTP. Sirven de puente entre el `Model` y la `View`. Este directorio **NO** debe ser **accesible** mediante una petición HTTP ([.htaccess])
 
 
-## 3.1. [DB]
+## 3.1. [UsersController]
+Contiene la lógica de la ruta `/users.php`
+
+
+# 4. Models
+Contiene los **modelos** de la aplicación. Permiten interactuar directamente con la base de datos. Este directorio **NO** debe ser **accesible** mediante una petición HTTP ([.htaccess])
+
+
+## 4.1. [UsersModel]
+Clase que permite interactuar con `User` en la base de datos
+
+
+# 5. Tools
+Contiene clases con distintas **herramientas útiles** para realizar conexiones con base de datos, encriptación de datos... Este directorio **NO** debe ser **accesible** mediante una petición HTTP ([.htaccess])
+
+
+## 5.1. [DB]
 Clase que contiene la lógica para realizar una **conexión** e **interactuar** con una **base de datos** mediante `PDO`
 
 
-## 3.2. [Encrypt]
+## 5.2. [Encrypt]
 Clase estática que contiene distintas **herramientas** para el cifrar, descifrar, generar tokens, UUIDs...
 
 
-## 3.3. [HttpCode]
+## 5.3. [HttpCode]
 Enum que contiene **códigos** de **respuesta HTTP** como `200`, `404`, `500`...
 
 
-## 3.4. [Request]
+## 5.4. [Request]
 Clase que permite **obtener** información de una **petición HTTP**, como el **método HTTP**, *body* con los **datos** enviados, Cookies...
 
 
-## 3.5. [RequestMethod]
+## 5.5. [RequestMethod]
 Enum que contiene los **métodos HTTP** como `GET`, `POST`, `DELETE`...
 
 
-## 3.6. [Response]
+## 5.6. [Response]
 Clase que permite **crear** y **mostrar** una **respuesta HTTP** manteniendo un formato consistente, **crear** o **eliminar** Cookies...
 
 

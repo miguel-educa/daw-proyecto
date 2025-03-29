@@ -10,6 +10,7 @@
 - [2. Estructura del proyecto](#2-estructura-del-proyecto)
 - [3. Directorios y Archivos](#3-directorios-y-archivos)
 - [4. Métodos de encriptación](#4-métodos-de-encriptación)
+- [5. Rutas API](#5-rutas-api)
 
 
 # 1. Backend
@@ -28,6 +29,10 @@ Para el desarrollo en local se ha decidido utilizar [XAMPP] como entorno de desa
 ```text
 📄 .htaccess
 📄 example-env.php (env.php)
+📁 controllers
+    📄 Users.php
+📁 models
+    📄 Users.php
 📁 tools
     📄 DB.php
     📄 Encrypt.php
@@ -35,13 +40,21 @@ Para el desarrollo en local se ha decidido utilizar [XAMPP] como entorno de desa
     📄 Request.php
     📄 RequestMethod.php
     📄 Response.php
+📄 users.php
 ```
 
 
 # 3. [Directorios y Archivos](directories-files.md)
+Explicación de los directorios y archivos
 
 
 # 4. [Métodos de encriptación](encryption-methods.md)
+Explicación de los métodos de encriptación
+
+
+# 5. [Rutas API](api-routes.md)
+Rutas disponibles de la API
+
 
 ---
 

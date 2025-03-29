@@ -82,6 +82,36 @@ class Request {
 
 
     /**
+     * Permite filtrar y obtener *Query Params* permitidos de una petición
+     *
+     * @param array<string> $allowedQP Array con los *Query Params* permitidos
+     *
+     * @return array<string> Array con los *Query Params* permitidos encontrados
+     */
+    public static function getQueryParams(array $allowedQP): array|null {
+      $queryParams = [];
+
+      foreach ($allowedQP as $qp) {
+        if (!key_exists($qp, $_GET)) continue;
+
+        $queryParams[] = $qp;
+      }
+
+      return $queryParams;
+    }
+
+
+    /**
+     * Recupera el valor de un *Query Param*
+     *
+     * @param string $qp Nombre del parámetro
+     *
+     * @return ?string Valor del parámetro. `null` si no existe
+     */
+    public static function getQueryParamValue(string $qp): ?string { return $_GET[$qp] ?? null; }
+
+
+    /**
      * Comprueba si el método actual de la solicitud está permitido.
      * Si el método **no está permitido**, se muestra una Response con un error `405`, **deteniendo** la ejecución
      */
