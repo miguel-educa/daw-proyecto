@@ -84,7 +84,8 @@ class Response {
         "expires" => $expires,
         "path" => "/",
         "secure" => $secure,
-        "httponly" => $httponly
+        "httponly" => $httponly,
+        "samesite" => "None"
       ];
 
       return setcookie($name, $value, $options);
@@ -125,7 +126,10 @@ class Response {
 
       header("X-Powered-By:");
       header("Content-Type: application/json; charset=UTF-8");
-      header("Access-Control-Allow-Origin: *");
+      header('Access-Control-Allow-Credentials: true');
+      header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
+      header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PATCH, DELETE");
+      header("Access-Control-Allow-Origin: {$_SERVER["HTTP_ORIGIN"]}");
       header("Cache-Control: no-store, no-cache, must-revalidate");
 
       $flags = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;

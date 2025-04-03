@@ -116,6 +116,13 @@ class Request {
      * Si el método **no está permitido**, se muestra una Response con un error `405`, **deteniendo** la ejecución
      */
     public function checkRequestMethodAllowed(): void {
+      // Método OPTIONS de consulta CORS
+      if ($this->method === RequestMethod::OPTIONS) {
+        $res = new Response();
+        $res->setData(["status" => "ok"]);
+        $res->showResponseAndExit(HttpCode::OK);
+      }
+
       if (!in_array($this->method, $this->allowedMethods)) {
         $res = new Response();
         $res->addError(Response::ERROR_METHOD_NOT_ALLOWED);
