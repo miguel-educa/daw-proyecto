@@ -32,8 +32,8 @@ const USERS_MODEL_PATH = MODELS_PATH . "Users.php";
 // Schemas
 const SCHEMAS_PATH = "schemes/";
 
-const SESSION_SCHEMA_PATH = SCHEMAS_PATH . "SessionSchema.php";
-const USER_SCHEMA_PATH = SCHEMAS_PATH . "UserSchema.php";
+const SESSION_SCHEMA_PATH = SCHEMAS_PATH . "Session.php";
+const USER_SCHEMA_PATH = SCHEMAS_PATH . "User.php";
 
 
 // Tools

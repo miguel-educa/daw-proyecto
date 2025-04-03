@@ -36,8 +36,8 @@ Para el desarrollo en local se ha decidido utilizar [XAMPP] como entorno de desa
     📄 Sessions.php
     📄 Users.php
 📁 schemas
-    📄 SessionSchema.php
-    📄 UserSchema.php
+    📄 Session.php
+    📄 User.php
 📁 tools
     📄 DB.php
     📄 Encrypt.php

@@ -7,8 +7,8 @@
 [SessionsModel]: ./models/Sessions.php
 [UsersModel]: ./models/Users.php
 
-[SessionSchema]: ./schemas/SessionSchema.php
-[UserSchema]: ./schemas/UserSchema.php
+[SessionSchema]: ./schemas/Session.php
+[UserSchema]: ./schemas/User.php
 
 [DB]: ./tools/DB.php
 [Encrypt]: ./tools/Encrypt.php
