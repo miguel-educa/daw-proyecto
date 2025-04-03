@@ -32,7 +32,10 @@ Para el desarrollo en local se ha decidido utilizar [XAMPP] como entorno de desa
 📁 controllers
     📄 Users.php
 📁 models
+    📄 Session.php
     📄 Users.php
+📁 schemas
+    📄 UserSchema.php
 📁 tools
     📄 DB.php
     📄 Encrypt.php

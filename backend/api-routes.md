@@ -5,6 +5,7 @@
 - [1. Rutas API](#1-rutas-api)
     - [1.1. /users.php](#11-usersphp)
         - [1.1.1. GET](#111-get)
+        - [1.1.1. POST](#111-post)
 
 
 # 1. Rutas API
@@ -13,9 +14,9 @@ La **estructura** del JSON de todas las **respuestas** de la API es la siguiente
 ```json
 {
   "service_name": "Pass Warriors",
-  "success": true|false,
-  "data": {}|[ {} ]|null,
-  "errors": [ "string" ]|null
+  "success": true, // `true` o `false`
+  "data": {}, // `{}`, `[ {} ]` o `null`
+  "errors": [ "string" ] // `array` o `null`
 }
 ```
 
@@ -63,6 +64,44 @@ Permite **recuperar** uno o varios `User`
         ...
     ]
     ```
+
+
+### 1.1.1. POST
+Permite **crear** un `User`. El `body` de la petición debe contener la siguiente estructura
+
+```json
+{
+  "username": "string",
+  "name": "string",
+  "master_password": "string"
+}
+```
+
+- `username`: Debe ser **único**. ***Regex*** que debe cumplir: `/^[a-zA-Z][a-zA-Z0-9_]{1,29}$/` (\***Requerido**)
+- `name`: Puede contener **cualquier carácter**. Longitud entre `1` y `50` caracteres (\***Requerido**)
+- `master_password`: Longitud entre `8` y `50` caracteres. Debe **contener** al menos **una** letra **minúscula** y **una** letra **mayúscula** (alfabeto inglés), **un número** y **alguno** de los siguientes **símbolos especiales** `_-,;!.@*&#%+$/`. (\***Requerido**)
+
+
+Si los **datos** son **válidos**, se creará un `User` y se retornará la siguiente **data** del `User` creado:
+
+```jsonc
+{
+    "id": "string",
+    "username": "string",
+    "name": "string",
+    "recuperation_code": "string",
+    "master_password_edited_at": 0, // Unix Timestamp en segundos
+    "recuperation_code_edited_at": 0 // Unix Timestamp en segundos
+}
+```
+
+- `id`: GUID
+- `username`: Nombre de usuario
+- `name`: Nombre a mostrar
+- `recuperation_code`: Código de recuperación de la cuenta
+- `master_password_edited_at`: *Timestamp* de la última modificación de la contraseña maestra
+- `recuperation_code_edited_at`: *Timestamp* de la última modificación del código de recuperación
+
 
 ---
 

@@ -25,6 +25,13 @@ const USERS_CONTROLLER_PATH = CONTROLLERS_PATH . "Users.php";
 const MODELS_PATH = "models/";
 
 const USERS_MODEL_PATH = MODELS_PATH . "Users.php";
+const SESSIONS_MODEL_PATH = MODELS_PATH . "Sessions.php";
+
+
+// Schemas
+const SCHEMAS_PATH = "schemes/";
+
+const USER_SCHEMA_PATH = SCHEMAS_PATH . "UserSchema.php";
 
 
 // Tools

@@ -6,6 +6,7 @@ RedirectMatch 404 ^.*\.md$
 RedirectMatch 404 ^.*env\.php$
 RedirectMatch 404 controllers/.*$
 RedirectMatch 404 models/.*$
+RedirectMatch 404 schemas/.*$
 RedirectMatch 404 tools/.*$
 
 # 404 personalizado
