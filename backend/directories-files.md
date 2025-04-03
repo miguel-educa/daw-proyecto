@@ -1,10 +1,14 @@
 [.htaccess]: ./.htaccess
 [example-env]: ./example-env.php
 
+[SessionController]: ./controllers/Session.php
 [UsersController]: ./controllers/Users.php
 
-[UsersModel]: ./models/Users.php
 [SessionsModel]: ./models/Sessions.php
+[UsersModel]: ./models/Users.php
+
+[SessionSchema]: ./schemas/SessionSchema.php
+[UserSchema]: ./schemas/UserSchema.php
 
 [DB]: ./tools/DB.php
 [Encrypt]: ./tools/Encrypt.php
@@ -12,6 +16,7 @@
 [Request]: ./tools/Request.php
 [RequestMethod]: ./tools/RequestMethod.php
 [Response]: ./tools/Response.php
+[SessionDuration]: ./tools/SessionDuration.php
 
 [Regresar](./README.md)
 
@@ -20,12 +25,14 @@
 - [1. .htaccess](#1-htaccess)
 - [2. example-env](#2-example-env)
 - [3. Controllers](#3-controllers)
-    - [3.1. UsersController](#31-userscontroller)
+    - [3.1. SessionController](#31-sessioncontroller)
+    - [3.2. UsersController](#32-userscontroller)
 - [4. Models](#4-models)
-    - [4.1. UsersModel](#41-usersmodel)
-    - [4.2. SessionsModel](#42-sessionsmodel)
+    - [4.1. SessionsModel](#41-sessionsmodel)
+    - [4.2. UsersModel](#42-usersmodel)
 - [5. Schemas](#5-schemas)
-    - [5.1. \[UserSchema\]](#51-userschema)
+    - [5.1. SessionSchema](#51-sessionschema)
+    - [5.2. UserSchema](#52-userschema)
 - [6. Tools](#6-tools)
     - [6.1. DB](#61-db)
     - [6.2. Encrypt](#62-encrypt)
@@ -33,6 +40,7 @@
     - [6.4. Request](#64-request)
     - [6.5. RequestMethod](#65-requestmethod)
     - [6.6. Response](#66-response)
+    - [6.7. SessionDuration](#67-sessionduration)
 
 
 # 1. [.htaccess]
@@ -58,7 +66,11 @@ Se **deben configurar** las siguientes variables:
 Los controladores permiten organizar las distintas rutas y los distintos métodos HTTP. Sirven de puente entre el `Model` y la `View`. Este directorio **NO** debe ser **accesible** mediante una petición HTTP ([.htaccess])
 
 
-## 3.1. [UsersController]
+## 3.1. [SessionController]
+Contiene la lógica de la ruta `/session.php`
+
+
+## 3.2. [UsersController]
 Contiene la lógica de la ruta `/users.php`
 
 
@@ -66,19 +78,23 @@ Contiene la lógica de la ruta `/users.php`
 Contiene los **modelos** de la aplicación. Permiten interactuar directamente con la base de datos. Este directorio **NO** debe ser **accesible** mediante una petición HTTP ([.htaccess])
 
 
-## 4.1. [UsersModel]
-Clase que permite interactuar con `User` en la base de datos
-
-
-## 4.2. [SessionsModel]
+## 4.1. [SessionsModel]
 Clase que permite interactuar con `Session` en la base de datos
+
+
+## 4.2. [UsersModel]
+Clase que permite interactuar con `User` en la base de datos
 
 
 # 5. Schemas
 Contiene las **estructuras** y las **validaciones** de los objetos. Este directorio **NO** debe ser **accesible** mediante una petición HTTP ([.htaccess])
 
 
-## 5.1. [UserSchema]
+## 5.1. [SessionSchema]
+Clase con la estructura y validaciones de una `Session`
+
+
+## 5.2. [UserSchema]
 Clase con la estructura y validaciones de un `User`
 
 
@@ -108,6 +124,10 @@ Enum que contiene los **métodos HTTP** como `GET`, `POST`, `DELETE`...
 
 ## 6.6. [Response]
 Clase que permite **crear** y **mostrar** una **respuesta HTTP** manteniendo un formato consistente, **crear** o **eliminar** Cookies...
+
+
+## 6.7. [SessionDuration]
+Enum que contiene las posibles **duraciones** (en segundos) de una `Session`
 
 
 ---

@@ -129,7 +129,7 @@ class Response {
       header('Access-Control-Allow-Credentials: true');
       header("Access-Control-Allow-Headers: Content-Type, Authorization, X-Requested-With");
       header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PATCH, DELETE");
-      header("Access-Control-Allow-Origin: {$_SERVER["HTTP_ORIGIN"]}");
+      header("Access-Control-Allow-Origin: " . ($_SERVER["HTTP_ORIGIN"] ?? "*"));
       header("Cache-Control: no-store, no-cache, must-revalidate");
 
       $flags = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;

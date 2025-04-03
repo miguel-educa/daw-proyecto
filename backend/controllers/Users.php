@@ -3,6 +3,7 @@ require_once __DIR__ . "/../" . "env.php";
 require_once __DIR__ . "/../" . USERS_MODEL_PATH;
 require_once __DIR__ . "/../" . USER_SCHEMA_PATH;
 require_once __DIR__ . "/../" . SESSIONS_MODEL_PATH;
+require_once __DIR__ . "/../" . SESSION_DURATION_PATH;
 
 
 /**
@@ -79,7 +80,7 @@ class UsersController {
       }
 
       // Crear usuario y sesión
-      $tokenExpiresAt = time() + 60 * 60;
+      $tokenExpiresAt = time() + SessionDuration::ONE_HOUR->value;
       $newUser = UsersModel::create($result["data"]);
       $newSession = SessionsModel::create(
         $newUser["id"],

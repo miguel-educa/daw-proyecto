@@ -18,19 +18,21 @@ const ENCRYPTION_PASSPHRASE = "<secure_encryption_key>"; // Editar
 // Controllers
 const CONTROLLERS_PATH = "controllers/";
 
+const SESSION_CONTROLLER_PATH = CONTROLLERS_PATH . "Session.php";
 const USERS_CONTROLLER_PATH = CONTROLLERS_PATH . "Users.php";
 
 
 // Models
 const MODELS_PATH = "models/";
 
-const USERS_MODEL_PATH = MODELS_PATH . "Users.php";
 const SESSIONS_MODEL_PATH = MODELS_PATH . "Sessions.php";
+const USERS_MODEL_PATH = MODELS_PATH . "Users.php";
 
 
 // Schemas
 const SCHEMAS_PATH = "schemes/";
 
+const SESSION_SCHEMA_PATH = SCHEMAS_PATH . "SessionSchema.php";
 const USER_SCHEMA_PATH = SCHEMAS_PATH . "UserSchema.php";
 
 
@@ -43,3 +45,4 @@ const HTTP_CODE_PATH = TOOLS_PATH . "HttpCode.php";
 const REQUEST_METHOD_PATH = TOOLS_PATH . "RequestMethod.php";
 const REQUEST_PATH = TOOLS_PATH . "Request.php";
 const RESPONSE_PATH = TOOLS_PATH . "Response.php";
+const SESSION_DURATION_PATH = TOOLS_PATH . "SessionDuration.php";

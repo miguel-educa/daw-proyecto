@@ -30,11 +30,13 @@ Para el desarrollo en local se ha decidido utilizar [XAMPP] como entorno de desa
 📄 .htaccess
 📄 example-env.php (env.php)
 📁 controllers
-    📄 Users.php
-📁 models
     📄 Session.php
     📄 Users.php
+📁 models
+    📄 Sessions.php
+    📄 Users.php
 📁 schemas
+    📄 SessionSchema.php
     📄 UserSchema.php
 📁 tools
     📄 DB.php
@@ -43,6 +45,8 @@ Para el desarrollo en local se ha decidido utilizar [XAMPP] como entorno de desa
     📄 Request.php
     📄 RequestMethod.php
     📄 Response.php
+    📄 SessionDuration.php
+📄 session.php
 📄 users.php
 ```
 

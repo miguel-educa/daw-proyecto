@@ -46,7 +46,10 @@ class SessionsModel {
 
       if ($data === false) throw new \Exception(DB::DB_GET_ERROR);
 
-      return $data[0] ?? null;
+      if (count($data) === 0) return null;
+
+      $data[0][self::COL_REVOKED] = $data[0][self::COL_REVOKED] === 1;
+      return $data[0];
     }
 
 

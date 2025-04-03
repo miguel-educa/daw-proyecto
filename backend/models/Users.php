@@ -64,8 +64,8 @@ class UsersModel {
      *
      * @throws \Exception Si se produce algún error
      */
-    public static function getUserByUsername(string $username): ?array {
-      $query = "SELECT " . self::COL_USERNAME . ", " . self::COL_NAME .
+    public static function getUserByUsername(string $username, bool $includeIdAndPassword = false): ?array {
+      $query = "SELECT " . self::COL_USERNAME . ", " . self::COL_NAME . ($includeIdAndPassword ? ", " . self::COL_M_PASSWORD . ", " . self::COL_ID : "") .
         " FROM " . self::TABLE .
         " WHERE " . self::COL_USERNAME . " = ?";
 
