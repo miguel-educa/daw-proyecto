@@ -22,7 +22,6 @@ class UserController {
   public static function GET(Request $req, Response $res) {
     try {
       // Obtener usuario mediante sesión
-      $_COOKIE;
       $session = SessionsModel::getActiveSessionByTokenAndUserAgent($req->getCookie("session_token"), $req->getUserAgent());
 
       if ($session === null) {

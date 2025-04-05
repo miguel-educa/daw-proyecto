@@ -92,9 +92,7 @@ class UsersController {
       $res->setCookie(
         name: "session_token",
         value: $newSession["token"],
-        expires: $tokenExpiresAt,
-        httponly: true,
-        secure: true
+        expires: $tokenExpiresAt
       );
       $res->setData($newUser);
       $res->showResponseAndExit(HttpCode::OK);

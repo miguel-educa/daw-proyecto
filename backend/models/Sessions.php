@@ -129,4 +129,33 @@ class SessionsModel {
 
       return $newResource;
     }
+
+
+    /**
+     * Actualiza una `Session` como revocada
+     *
+     * @param string $id `id` de la `Session` a actualizar
+     *
+     * @return bool `true` si se ha revocado con éxito, `false` si no
+     *
+     * @throws \Exception Si se produce algún error
+     */
+    public static function revokeSession(string $id): bool {
+      $query = "UPDATE " . self::TABLE . " SET " . self::COL_REVOKED . " = true WHERE " . self::COL_ID . " = ?";
+
+      // Conectar DB
+      $db = new DB();
+
+      if (!$db->isConnected()) throw new \Exception(DB::DB_CONNECTION_ERROR);
+
+      $db->addQuery($query, [ $id ]);
+
+      if ($db->executeTransaction() === false) throw new \Exception(DB::DB_UPDATE_ERROR);
+
+      $resource = self::getSessionById($id);
+
+      if ($resource === null) throw new \Exception(DB::DB_GET_ERROR);
+
+      return $resource["revoked"];
+    }
 }

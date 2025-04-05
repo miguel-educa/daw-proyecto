@@ -101,7 +101,7 @@ class Response {
      * @return bool `true` si se ha eliminado con éxito, `false` si no
      */
     public function deleteCookie(string $name): bool {
-      return setcookie($name, "", time() - 1);
+      return self::setCookie($name, "", time() - 1);
     }
 
 
@@ -132,6 +132,9 @@ class Response {
       header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PATCH, DELETE");
       header("Access-Control-Allow-Origin: " . ($_SERVER["HTTP_ORIGIN"] ?? "*"));
       header("Cache-Control: no-store, no-cache, must-revalidate");
+      header("X-Content-Type-Options: nosniff");
+      header("Content-Security-Policy: default-src 'none';");
+      header("X-Frame-Options: DENY");
 
       $flags = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
 

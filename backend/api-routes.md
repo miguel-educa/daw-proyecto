@@ -9,7 +9,8 @@
         - [1.2.1. GET](#121-get)
         - [1.2.2. POST](#122-post)
     - [1.3. /sessions.php](#13-sessionsphp)
-        - [1.3.1. POST](#131-post)
+        - [1.3.1. DELETE](#131-delete)
+        - [1.3.2. POST](#132-post)
 
 
 # 1. Rutas API
@@ -164,7 +165,24 @@ Si los **datos** son **válidos**, se creará un `User` y se retornará la sigui
 Permite **gestionar** las sesiones de los `Users`
 
 
-### 1.3.1. POST
+### 1.3.1. DELETE
+Elimina una `Session` (se actualiza como revocada) para que no pueda ser utilizada
+
+
+> [!CAUTION]
+>
+> - Si no se encuentra una Cookie con un `session_token` válido, se mostrará un error `401`
+
+Si se revoca correctamente la `Session`, se retorna la siguiente **data**:
+
+```jsonc
+{
+    "session_revoked": true
+}
+```
+
+
+### 1.3.2. POST
 Permite **crear** una `Session` para un `User` existente
 
 - **Body** de la petición debe contener la siguiente estructura
@@ -218,6 +236,7 @@ Si los datos son **válidos**, se crea una `Session` y se retorna la siguiente *
 
 > [!IMPORTANT]
 > Se crea la Cookie `session_token` con la **sesión** del `User` recién creado
+
 
 ---
 

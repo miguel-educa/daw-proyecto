@@ -10,6 +10,35 @@ require_once __DIR__ . "/../" . USERS_MODEL_PATH;
  */
 class SessionController {
   /**
+   * Establece una `Session` como revocada. También se elimina la Cookie de sesión
+   *
+   * @param Request $req
+   * @param Response $res
+   */
+  public static function DELETE(Request $req, Response $res) {
+    try {
+      // Recuperar sesión
+      $session = SessionsModel::getActiveSessionByTokenAndUserAgent($req->getCookie("session_token"), $req->getUserAgent());
+
+      if ($session === null) {
+        $res->addError(Response::ERROR_UNAUTHORIZED);
+        $res->showResponseAndExit(HttpCode::UNAUTHORIZED);
+      }
+
+      // Eliminar sesión y cookie
+      $result = SessionsModel::revokeSession($session["id"]);
+
+      $res->deleteCookie("session_token");
+      $res->setData(["session_revoked" => $result]);
+      $res->showResponseAndExit(HttpCode::OK);
+    } catch (\Exception $e) {
+      $res->addError($e->getMessage());
+      $res->showResponseAndExit(HttpCode::INTERNAL_SERVER_ERROR);
+    }
+  }
+
+
+  /**
    * Crea un `Session`. Si el cuerpo de la petición no contiene los parámetros
    * requeridos con el formato correcto, se mostrará un error
    *
@@ -49,9 +78,7 @@ class SessionController {
       $res->setCookie(
         name: "session_token",
         value: $newSession["token"],
-        expires: $tokenExpiresAt,
-        httponly: true,
-        secure: true
+        expires: $tokenExpiresAt
       );
 
       unset($newSession[SessionsModel::COL_TOKEN]);
