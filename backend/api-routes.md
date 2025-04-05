@@ -3,9 +3,13 @@
 **Contenidos**
 
 - [1. Rutas API](#1-rutas-api)
-    - [1.1. /users.php](#11-usersphp)
+    - [1.1. /user.php](#11-userphp)
         - [1.1.1. GET](#111-get)
-        - [1.1.1. POST](#111-post)
+    - [1.2. /users.php](#12-usersphp)
+        - [1.2.1. GET](#121-get)
+        - [1.2.2. POST](#122-post)
+    - [1.3. /sessions.php](#13-sessionsphp)
+        - [1.3.1. POST](#131-post)
 
 
 # 1. Rutas API
@@ -26,11 +30,57 @@ La **estructura** del JSON de todas las **respuestas** de la API es la siguiente
 - `errors`: `Array` con los mensajes de errores producidos. `null` si no se produjeron errores
 
 
-## 1.1. /users.php
-Proporciona información sobre los `Users`
+## 1.1. /user.php
+Proporciona información sobre el `User` autenticado
 
 
 ### 1.1.1. GET
+Permite **recuperar** información sobre el `User` autenticado
+
+- **Filtros** disponibles (*Query params*):
+    - `?confidential_data=<boolean>`: Si se establece en `true`, se devolverá información **sensible**. Si no se encuentra el filtro o su valor es `false`, no se mostrará esta información
+
+> [!CAUTION]
+>
+> - Si no exisete la Cookie con el `session_token` o éste no es válido, ha expirado o el *user agent* del dispositivo no coincide, se mostrará un error `401`
+> - Si el token existe, pero no está asociado a un `User` (cuenta eliminada), se mostrará un error `404`
+
+- Data sin filtro:
+
+```jsonc
+{
+    "id": "string",
+    "username": "string",
+    "name": "string",
+}
+```
+
+- Data con filtro `confidential_data=true`:
+
+```jsonc
+{
+    "id": "string",
+    "username": "string",
+    "name": "string",
+    "master_password_edited_at": 0, // Unix Timestamp en segundos
+    "recuperation_code": "string",
+    "recuperation_code_edited_at": 0 // Unix Timestamp en segundos
+}
+```
+
+- `id`: GUID
+- `username`: Nombre de usuario
+- `name`: Nombre a mostrar
+- `master_password_edited_at`: *Timestamp* de la última modificación de la contraseña maestra
+- `recuperation_code`: Código de recuperación de la cuenta
+- `recuperation_code_edited_at`: *Timestamp* de la última modificación del código de recuperación
+
+
+## 1.2. /users.php
+Proporciona información sobre los `Users`
+
+
+### 1.2.1. GET
 Permite **recuperar** uno o varios `User`
 
 - **Filtros** disponibles (*Query params*):
@@ -66,7 +116,7 @@ Permite **recuperar** uno o varios `User`
     ```
 
 
-### 1.1.1. POST
+### 1.2.2. POST
 Permite **crear** un `User`. El `body` de la petición debe contener la siguiente estructura
 
 ```json
@@ -80,6 +130,10 @@ Permite **crear** un `User`. El `body` de la petición debe contener la siguient
 - `username`: Debe ser **único**. ***Regex*** que debe cumplir: `/^[a-zA-Z][a-zA-Z0-9_]{1,29}$/` (\***Requerido**)
 - `name`: Puede contener **cualquier carácter**. Longitud entre `1` y `50` caracteres (\***Requerido**)
 - `master_password`: Longitud entre `8` y `50` caracteres. Debe **contener** al menos **una** letra **minúscula** y **una** letra **mayúscula** (alfabeto inglés), **un número** y **alguno** de los siguientes **símbolos especiales** `_-,;!.@*&#%+$/`. (\***Requerido**)
+
+> [!CAUTION]
+>
+> - Si el contenido del cuerpo no cumple los requisitos, se mostrará un error `400`
 
 
 Si los **datos** son **válidos**, se creará un `User` y se retornará la siguiente **data** del `User` creado:
@@ -102,6 +156,68 @@ Si los **datos** son **válidos**, se creará un `User` y se retornará la sigui
 - `master_password_edited_at`: *Timestamp* de la última modificación de la contraseña maestra
 - `recuperation_code_edited_at`: *Timestamp* de la última modificación del código de recuperación
 
+> [!IMPORTANT]
+> Se crea la Cookie `session_token` con la **sesión** del `User` recién creado
+
+
+## 1.3. /sessions.php
+Permite **gestionar** las sesiones de los `Users`
+
+
+### 1.3.1. POST
+Permite **crear** una `Session` para un `User` existente
+
+- **Body** de la petición debe contener la siguiente estructura
+
+```json
+{
+  "username": "string",
+  "master_password": "string",
+  "session_duration": 0 // Tiempo en segundos
+}
+```
+
+- `username`: Nombre de usuario (\***Requerido**)
+- `master_password`: Contraseña maestra (\***Requerido**)
+- `session_duration`: Tiempo de duración de la `Session` en segundos. Se aceptan los siguientes valores:
+    - `3600`: Duración de `1 hora`
+    - `86400`: Duración de `1 día`
+    - `604800`: Duración de `7 días`
+    - `2592000`: Duración de `30 días`
+    - `7776000`: Duración de `90 días`
+
+> [!INFO]
+> Si no se especifica o contiene un valor inválido, se establece la duración de la `Session` en `1 hora`
+
+> [!CAUTION]
+>
+> - Si el contenido del cuerpo no cumple los requisitos, se mostrará un error `400`
+> - Si el `username` no existe o la `master_password` no es correcta, se mostrará un error `401`
+
+Si los datos son **válidos**, se crea una `Session` y se retorna la siguiente **data**:
+
+```jsonc
+{
+    "id": "string",
+    "user_id": "string",
+    "name": "string",
+    "token_created_at": 0, // Unix Timestamp en segundos
+    "token_expires_at": 0, // Unix Timestamp en segundos
+    "revoked": false,
+    "user_agent": "string"
+}
+```
+
+- `id`: GUID
+- `user_id`: Id del `User` que ha creado la `Session`
+- `name`: Nombre del `User` que ha creado la `Session`
+- `token_created_at`: *Timestamp* de la creación de la `Session`
+- `token_expires_at`: *Timestamp* de la expiración de la `Session`
+- `revoked`: `true` si la `Session` ha sido revocada, `false` si no
+- `user_agent`: *User Agent* del dispositivo que ha creado la `Session`
+
+> [!IMPORTANT]
+> Se crea la Cookie `session_token` con la **sesión** del `User` recién creado
 
 ---
 

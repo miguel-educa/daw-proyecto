@@ -19,6 +19,7 @@ const ENCRYPTION_PASSPHRASE = "<secure_encryption_key>"; // Editar
 const CONTROLLERS_PATH = "controllers/";
 
 const SESSION_CONTROLLER_PATH = CONTROLLERS_PATH . "Session.php";
+const USER_CONTROLLER_PATH = CONTROLLERS_PATH . "User.php";
 const USERS_CONTROLLER_PATH = CONTROLLERS_PATH . "Users.php";
 
 

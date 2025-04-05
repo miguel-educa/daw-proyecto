@@ -8,11 +8,12 @@ require_once __DIR__ . "/../" . HTTP_CODE_PATH;
  */
 class Response {
   /* Constantes */
+    public const ERROR_FORBIDDEN = "No tiene permisos suficientes para acceder a este recurso";
     public const ERROR_INVALID_FILTER = "No se ha encontrado un parámetro de filtro válido";
     public const ERROR_INVALID_JSON_BODY = "El body de la petición no tiene un JSON válido";
     public const ERROR_METHOD_NOT_ALLOWED = "El método HTTP utilizado en esta ruta no está permitido";
     public const ERROR_NOT_FOUND = "No se encontraron resultados";
-    public const ERROR_UNAUTHORIZED = "No tiene permisos para acceder a este recurso";
+    public const ERROR_UNAUTHORIZED = "Necesita autenticarse para acceder a este recurso";
 
 
   /* Atributos */

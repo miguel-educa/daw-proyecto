@@ -2,6 +2,7 @@
 [example-env]: ./example-env.php
 
 [SessionController]: ./controllers/Session.php
+[UserController]: ./controllers/User.php
 [UsersController]: ./controllers/Users.php
 
 [SessionsModel]: ./models/Sessions.php
@@ -26,7 +27,8 @@
 - [2. example-env](#2-example-env)
 - [3. Controllers](#3-controllers)
     - [3.1. SessionController](#31-sessioncontroller)
-    - [3.2. UsersController](#32-userscontroller)
+    - [3.2. UserController](#32-usercontroller)
+    - [3.3. UsersController](#33-userscontroller)
 - [4. Models](#4-models)
     - [4.1. SessionsModel](#41-sessionsmodel)
     - [4.2. UsersModel](#42-usersmodel)
@@ -70,7 +72,11 @@ Los controladores permiten organizar las distintas rutas y los distintos método
 Contiene la lógica de la ruta `/session.php`
 
 
-## 3.2. [UsersController]
+## 3.2. [UserController]
+Contiene la lógica de la ruta `/user.php`
+
+
+## 3.3. [UsersController]
 Contiene la lógica de la ruta `/users.php`
 
 

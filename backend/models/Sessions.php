@@ -56,7 +56,7 @@ class SessionsModel {
     /**
      * Retorna una `Session` mediante el `token` y el `user_agent`
      *
-     * @param string $token `token` de la `Session` a buscar
+     * @param ?string $token `token` de la `Session` a buscar
      * @param string $userAgent `id` de la `Session` a buscar
      *
      * @return ?array Si se encuntra una `Session` válida (no revocada y no expirada), retorna un `array` con la estructura con la estructura
@@ -64,7 +64,9 @@ class SessionsModel {
      *
      * @throws \Exception Si se produce algún error
      */
-    public static function getActiveSessionByTokenAndUserAgent(string $token, string $userAgent): ?array {
+    public static function getActiveSessionByTokenAndUserAgent(?string $token, string $userAgent): ?array {
+      if ($token === null) return null;
+
       $query = "SELECT " . self::COL_ID . ", " . self::COL_USER_ID .
         " FROM " . self::TABLE .
         " WHERE " .
@@ -94,7 +96,7 @@ class SessionsModel {
      * @param string $userAgent *User Agent* del dispositivo que está creando la `Session`
      * @param int $tokenExpiresAt Timestamp de expiración de la `Session`
      *
-     * @return array Se retorna un array con la estructura `["id" => string, "username" => string, "name" => string, "master_password_edited_at" => string, "recuperation_code" => string, "recuperation_code_edited_at" => string]`
+     * @return array Se retorna un array con la estructura `["id" => string, "user_id" => string, "token" => string, "token_created_at" => int, "token_expires_at" => int, "revoked" => bool, "user_agent" => string]`
      *
      * @throws \Exception Si se produce algún error
      */

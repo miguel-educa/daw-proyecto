@@ -37,7 +37,7 @@ class UsersModel {
           ? "SELECT " . self::COL_ID . ", " . self::COL_USERNAME . ", " . self::COL_NAME . ", UNIX_TIMESTAMP(" . self::COL_M_PASSWORD_EDITED . ") as " . self::COL_M_PASSWORD_EDITED . ", " . self::COL_REC_CODE . ", UNIX_TIMESTAMP(" . self::COL_REC_CODE_EDITED . ") as " . self::COL_REC_CODE_EDITED .
             " FROM " . self::TABLE .
             " WHERE " . self::COL_ID . " = ?"
-          : "SELECT " . self::COL_USERNAME . ", " . self::COL_NAME .
+          : "SELECT " . self::COL_ID . ", " . self::COL_USERNAME . ", " . self::COL_NAME .
             " FROM " . self::TABLE .
             " WHERE " . self::COL_ID . " = ?";
 
