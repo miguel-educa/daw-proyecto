@@ -3,14 +3,17 @@
 **Contenidos**
 
 - [1. Rutas API](#1-rutas-api)
-    - [1.1. /user.php](#11-userphp)
+    - [1.1. /folders.php](#11-foldersphp)
         - [1.1.1. GET](#111-get)
-    - [1.2. /users.php](#12-usersphp)
+        - [1.1.2. POST](#112-post)
+    - [1.2. /user.php](#12-userphp)
         - [1.2.1. GET](#121-get)
-        - [1.2.2. POST](#122-post)
-    - [1.3. /sessions.php](#13-sessionsphp)
-        - [1.3.1. DELETE](#131-delete)
+    - [1.3. /users.php](#13-usersphp)
+        - [1.3.1. GET](#131-get)
         - [1.3.2. POST](#132-post)
+    - [1.4. /sessions.php](#14-sessionsphp)
+        - [1.4.1. DELETE](#141-delete)
+        - [1.4.2. POST](#142-post)
 
 
 # 1. Rutas API
@@ -31,11 +34,48 @@ La **estructura** del JSON de todas las **respuestas** de la API es la siguiente
 - `errors`: `Array` con los mensajes de errores producidos. `null` si no se produjeron errores
 
 
-## 1.1. /user.php
-Proporciona información sobre el `User` autenticado
+## 1.1. /folders.php
+Proporciona información sobre los `Folder`
 
 
 ### 1.1.1. GET
+Permite **recuperar** las `Folder` de un `User`
+
+
+### 1.1.2. POST
+Permite **crear** una `Folder`. El `body` de la petición debe contener la siguiente estructura
+
+```json
+{
+  "name": "string"
+}
+```
+
+- `name`: Debe ser **único**. Puede contener **cualquier carácter**. Longitud entre `1` y `50` caracteres (\***Requerido**)
+
+> [!CAUTION]
+>
+> - Si el contenido del cuerpo no cumple los requisitos, se mostrará un error `400`
+
+
+Si los **datos** son **válidos**, se creará una `Folder` y se retornará la siguiente **data** del `Folder` creado:
+
+```jsonc
+{
+    "id": "string",
+    "name": "string"
+}
+```
+
+- `id`: GUID
+- `name`: Nombre del `Folder`
+
+
+## 1.2. /user.php
+Proporciona información sobre el `User` autenticado
+
+
+### 1.2.1. GET
 Permite **recuperar** información sobre el `User` autenticado
 
 - **Filtros** disponibles (*Query params*):
@@ -77,11 +117,11 @@ Permite **recuperar** información sobre el `User` autenticado
 - `recuperation_code_edited_at`: *Timestamp* de la última modificación del código de recuperación
 
 
-## 1.2. /users.php
+## 1.3. /users.php
 Proporciona información sobre los `Users`
 
 
-### 1.2.1. GET
+### 1.3.1. GET
 Permite **recuperar** uno o varios `User`
 
 - **Filtros** disponibles (*Query params*):
@@ -117,7 +157,7 @@ Permite **recuperar** uno o varios `User`
     ```
 
 
-### 1.2.2. POST
+### 1.3.2. POST
 Permite **crear** un `User`. El `body` de la petición debe contener la siguiente estructura
 
 ```json
@@ -161,11 +201,11 @@ Si los **datos** son **válidos**, se creará un `User` y se retornará la sigui
 > Se crea la Cookie `session_token` con la **sesión** del `User` recién creado
 
 
-## 1.3. /sessions.php
+## 1.4. /sessions.php
 Permite **gestionar** las sesiones de los `Users`
 
 
-### 1.3.1. DELETE
+### 1.4.1. DELETE
 Elimina una `Session` (se actualiza como revocada) para que no pueda ser utilizada
 
 
@@ -182,7 +222,7 @@ Si se revoca correctamente la `Session`, se retorna la siguiente **data**:
 ```
 
 
-### 1.3.2. POST
+### 1.4.2. POST
 Permite **crear** una `Session` para un `User` existente
 
 - **Body** de la petición debe contener la siguiente estructura
