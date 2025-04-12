@@ -99,6 +99,7 @@ class UserSchema {
       if (!preg_match(self::NAME_REGEX, $name)
       ) {
         $result["errors"][] = "'" . UsersModel::COL_NAME . "' debe tener una longitud entre 1 y 50 caracteres (ambos incluidos). Se admite cualquier carácter. Los espacios sobrantes al principio y final del '" . UsersModel::COL_NAME . "' son eliminados";
+        return;
       }
 
       $result["data"]["name"] = $name;
