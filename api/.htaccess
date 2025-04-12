@@ -10,4 +10,4 @@ RedirectMatch 404 schemas/.*$
 RedirectMatch 404 tools/.*$
 
 # 404 personalizado
-ErrorDocument 404 "{\"service_name\":\"Pass Warriors\",\"success\":false,\"data\":null,\"errors\":[\"Recurso no encontrado\"]}"
+ErrorDocument 404 /api/error/404.php

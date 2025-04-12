@@ -1,7 +1,7 @@
 **Contenidos**
 
 - [1. Proyecto Pass Warriors](#1-proyecto-pass-warriors)
-    - [1.1. Backend](#11-backend)
+    - [1.1. Api](#11-api)
     - [1.2. Base de Datos](#12-base-de-datos)
 
 
@@ -9,8 +9,8 @@
 Este proyecto está siendo desarrollado como proyecto de fin de Grado Superior de **DAW** (Desarrollo de Aplicaciones Web)
 
 
-## 1.1. [Backend](./backend/README.md)
-Contiene el código del **backend** de la aplicación
+## 1.1. [Api](./api/README.md)
+Contiene el código de la **api** de la aplicación
 
 
 ## 1.2. [Base de Datos](./db/README.md)

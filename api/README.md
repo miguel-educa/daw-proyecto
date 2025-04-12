@@ -6,15 +6,15 @@
 
 **Contenidos**
 
-- [1. Backend](#1-backend)
+- [1. Api](#1-api)
 - [2. Estructura del proyecto](#2-estructura-del-proyecto)
 - [3. Directorios y Archivos](#3-directorios-y-archivos)
 - [4. Métodos de encriptación](#4-métodos-de-encriptación)
 - [5. Rutas API](#5-rutas-api)
 
 
-# 1. Backend
-Backend de la aplicación. Se está utilizando **PHP** como lenguaje de programación y **MySQL** como base de datos relacional
+# 1. Api
+Api de la aplicación. Se está utilizando **PHP** como lenguaje de programación y **MySQL** como base de datos relacional
 
 Para el desarrollo en local se ha decidido utilizar [XAMPP] como entorno de desarrollo, aunque sólo se ha utilizado el servidor **Apache** con **PHP**.
 
