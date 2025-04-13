@@ -22,7 +22,7 @@
 # 1. Rutas API
 La **estructura** del JSON de todas las **respuestas** de la API es la siguiente:
 
-```json
+```jsonc
 {
   "service_name": "Pass Warriors",
   "success": true, // `true` o `false`
@@ -65,7 +65,7 @@ Permite **recuperar** los `Folder` de un `User`
 ### 1.1.2. POST
 Permite **crear** un `Folder`. El `body` de la petición debe contener la siguiente estructura
 
-```json
+```jsonc
 {
   "name": "string"
 }
@@ -121,7 +121,7 @@ Permite **recuperar** las `Password` de un `User`
 ### 1.2.2. POST
 Permite **crear** una `Password`. El `body` de la petición debe contener la siguiente estructura
 
-```json
+```jsonc
 {
   "name": "string",
   "folder_id": "string",
@@ -188,7 +188,7 @@ Permite **crear** una `Session` para un `User` existente
 
 - **Body** de la petición debe contener la siguiente estructura
 
-```json
+```jsonc
 {
   "username": "string",
   "master_password": "string",
@@ -290,7 +290,7 @@ Permite **recuperar** uno o varios `User`
 
 - Data del filtro `username`
 
-    ```json
+    ```jsonc
     {
         "username": "string",
         "name": "string",
@@ -299,7 +299,7 @@ Permite **recuperar** uno o varios `User`
 
 - Data del filtro `name`
 
-    ```json
+    ```jsonc
     [
         {
             "username": "string",
@@ -313,7 +313,7 @@ Permite **recuperar** uno o varios `User`
 ### 1.5.2. POST
 Permite **crear** un `User`. El `body` de la petición debe contener la siguiente estructura
 
-```json
+```jsonc
 {
   "username": "string",
   "name": "string",
