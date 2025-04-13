@@ -31,10 +31,12 @@ La **estructura** del JSON de todas las **respuestas** de la API es la siguiente
 }
 ```
 
-- `service_name`: Nombre del servicio
-- `success`: Muestra si la respuesta fue existosa (`true`) o hubo un error en la petición (`false`)
-- `data`: `Objeto` con el resultado obtenido o `Array` con los objetos obtenidos. `null` si se produce algún error
-- `errors`: `Array` con los mensajes de errores producidos. `null` si no se produjeron errores
+| Propiedad      | Descripción                                                                                              |
+| -------------- | -------------------------------------------------------------------------------------------------------- |
+| `service_name` | Nombre del servicio                                                                                      |
+| `success`      | Muestra si la respuesta fue existosa (`true`) o hubo un error en la petición (`false`)                   |
+| `data`         | `Objeto` con el resultado obtenido o `Array` con los objetos obtenidos. `null` si se produce algún error |
+| `errors`       | `Array` con los mensajes de errores producidos. `null` si no se produjeron errores                       |
 
 
 ## 1.1. /folders.php
@@ -59,9 +61,6 @@ Permite **recuperar** los `Folder` de un `User`
 ]
 ```
 
-- `id`: GUID
-- `name`: Nombre del `Folder`
-
 
 ### 1.1.2. POST
 Permite **crear** un `Folder`. El `body` de la petición debe contener la siguiente estructura
@@ -72,7 +71,9 @@ Permite **crear** un `Folder`. El `body` de la petición debe contener la siguie
 }
 ```
 
-- `name`: Debe ser **único**. Puede contener **cualquier carácter**. Longitud entre `1` y `50` caracteres (\***Requerido**)
+| Propiedad | Descripción                                                                                                     | Requerido |
+| --------- | --------------------------------------------------------------------------------------------------------------- | --------- |
+| `name`    | Debe ser **único** por cada `User`. Puede contener **cualquier carácter**. Longitud entre `1` y `50` caracteres | ✔️         |
 
 > [!CAUTION]
 >
@@ -88,12 +89,9 @@ Si los **datos** son **válidos**, se creará un `Folder` y se retornará la sig
 }
 ```
 
-- `id`: GUID
-- `name`: Nombre del `Folder`
-
 
 ## 1.2. /passwords.php
-Proporciona información sobre los `Folder`
+Proporciona información sobre las `Password`
 
 
 ### 1.2.1. GET
@@ -119,14 +117,6 @@ Permite **recuperar** las `Password` de un `User`
 ]
 ```
 
-- `id`: GUID
-- `folder_id`: Id del `Folder` que almacena la `Password`
-- `name`: Nombre de la `Password`
-- `password`: Contraseña de la `Password`
-- `username`: Nombre de usuario de la `Password`
-- `urls`: *Array* de *Strings* con las URLs de la `Password`
-- `notes`: Notas de la `Password`
-
 
 ### 1.2.2. POST
 Permite **crear** una `Password`. El `body` de la petición debe contener la siguiente estructura
@@ -134,20 +124,22 @@ Permite **crear** una `Password`. El `body` de la petición debe contener la sig
 ```json
 {
   "name": "string",
-  "folder_id": "string", // Opcional
-  "password": "string", // Opcional
-  "username": "string", // Opcional
-  "urls": "array", // Opcional
-  "notes": "string" // Opcional
+  "folder_id": "string",
+  "password": "string",
+  "username": "string",
+  "urls": "array",
+  "notes": "string"
 }
 ```
 
-- `name`: Puede contener **cualquier carácter**. Longitud entre `1` y `50` caracteres (\***Requerido**)
-- `name`: ID del `Folder` que almacenará la `Password`. Si no se expecifica, su valor es `null`
-- `password`: Puede contener **cualquier carácter**. Longitud entre `1` y `50` caracteres. Si no se expecifica, su valor es `null`
-- `username`: Puede contener **cualquier carácter**. Longitud entre `1` y `50` caracteres. Si no se expecifica, su valor es `null`
-- `urls`: *Array* de *Strings* (de 1 hasta 5 items) con las URLs de la `Password`. Si no se expecifica, su valor es `null`
-- `notes`: Puede contener **cualquier carácter**. Si no se expecifica, su valor es `null`
+| Propiedad   | Descripción                                                                                                          | Requerido |
+| ----------- | -------------------------------------------------------------------------------------------------------------------- | --------- |
+| `name`      | Puede contener **cualquier carácter**. Longitud entre `1` y `50` caracteres                                          | ✔️         |
+| `folder_id` | ID del `Folder` que almacenará la `Password`. Si no se expecifica, su valor es `null`                                | ❌         |
+| `password`  | Puede contener **cualquier carácter**. Longitud entre `1` y `50` caracteres. Si no se expecifica, su valor es `null` | ❌         |
+| `username`  | Puede contener **cualquier carácter**. Longitud entre `1` y `50` caracteres. Si no se expecifica, su valor es `null` | ❌         |
+| `urls`      | *Array* de *Strings* (de 1 hasta 5 items) con las URLs de la `Password`. Si no se expecifica, su valor es `null`     | ❌         |
+| `notes`     | Puede contener **cualquier carácter**. Si no se expecifica, su valor es `null`                                       | ❌         |
 
 
 > [!CAUTION]
@@ -168,14 +160,6 @@ Si los **datos** son **válidos**, se creará una `Password` y se retornará la 
     "notes": "string", // `string` o `null`
 }
 ```
-
-- `id`: GUID
-- `folder_id`: Id del `Folder` que almacena la `Password`
-- `name`: Nombre de la `Password`
-- `password`: Contraseña de la `Password`
-- `username`: Nombre de usuario de la `Password`
-- `urls`: *Array* de *Strings* con las URLs de la `Password`
-- `notes`: Notas de la `Password`
 
 
 ## 1.3. /sessions.php
@@ -208,21 +192,15 @@ Permite **crear** una `Session` para un `User` existente
 {
   "username": "string",
   "master_password": "string",
-  "session_duration": 0 // Tiempo en segundos
+  "session_duration": 0
 }
 ```
 
-- `username`: Nombre de usuario (\***Requerido**)
-- `master_password`: Contraseña maestra (\***Requerido**)
-- `session_duration`: Tiempo de duración de la `Session` en segundos. Se aceptan los siguientes valores:
-    - `3600`: Duración de `1 hora`
-    - `86400`: Duración de `1 día`
-    - `604800`: Duración de `7 días`
-    - `2592000`: Duración de `30 días`
-    - `7776000`: Duración de `90 días`
-
-> [!INFO]
-> Si no se especifica o contiene un valor inválido, se establece la duración de la `Session` en `1 hora`
+| Propiedad          | Descripción                                                                                                                                                                                                                                                                                                                                                                          | Requerido |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- |
+| `username`         | Nombre de usuario                                                                                                                                                                                                                                                                                                                                                                    | ✔️         |
+| `master_password`  | Contraseña maestra                                                                                                                                                                                                                                                                                                                                                                   | ✔️         |
+| `session_duration` | Tiempo de duración de la `Session` en segundos. Se aceptan los siguientes valores:<br>- `3600`: Duración de *1 hora*<br>- `86400`: Duración de *1 día*<br>- `604800`: Duración de *7 días*<br>- `2592000`: Duración de *30 días*<br>- `7776000`: Duración de *90 días*<br><br>Si no se especifica o contiene un valor inválido, se establece la duración de la `Session` en *1 hora* | ❌         |
 
 > [!CAUTION]
 >
@@ -243,14 +221,6 @@ Si los datos son **válidos**, se crea una `Session` y se retorna la siguiente *
 }
 ```
 
-- `id`: GUID
-- `user_id`: Id del `User` que ha creado la `Session`
-- `name`: Nombre del `User` que ha creado la `Session`
-- `token_created_at`: *Timestamp* de la creación de la `Session`
-- `token_expires_at`: *Timestamp* de la expiración de la `Session`
-- `revoked`: `true` si la `Session` ha sido revocada, `false` si no
-- `user_agent`: *User Agent* del dispositivo que ha creado la `Session`
-
 > [!IMPORTANT]
 > Se crea la Cookie `session_token` con la **sesión** del `User` recién creado
 
@@ -262,12 +232,15 @@ Proporciona información sobre el `User` autenticado
 ### 1.4.1. GET
 Permite **recuperar** información sobre el `User` autenticado
 
-- **Filtros** disponibles (*Query params*):
-    - `?confidential_data=<boolean>`: Si se establece en `true`, se devolverá información **sensible**. Si no se encuentra el filtro o su valor es `false`, no se mostrará esta información
+- **Filtros** disponibles:
+
+    | *Query param*                 | Descripción                                                                                                                                            |
+    | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+    | `?confidential_data=<string>` | Si se establece en `true`, se devolverá información **sensible**. Si no se encuentra el filtro o su valor es distinto, no se obtendrá esta información |
 
 > [!CAUTION]
 >
-> - Si no exisete la Cookie con el `session_token` o éste no es válido, ha expirado o el *user agent* del dispositivo no coincide, se mostrará un error `401`
+> - Si no existe la Cookie con el `session_token` o éste no es válido, ha expirado o el *user agent* del dispositivo no coincide, se mostrará un error `401`
 > - Si el token existe, pero no está asociado a un `User` (cuenta eliminada), se mostrará un error `404`
 
 - Data sin filtro:
@@ -293,13 +266,6 @@ Permite **recuperar** información sobre el `User` autenticado
 }
 ```
 
-- `id`: GUID
-- `username`: Nombre de usuario
-- `name`: Nombre a mostrar
-- `master_password_edited_at`: *Timestamp* de la última modificación de la contraseña maestra
-- `recuperation_code`: Código de recuperación de la cuenta
-- `recuperation_code_edited_at`: *Timestamp* de la última modificación del código de recuperación
-
 
 ## 1.5. /users.php
 Proporciona información sobre los `Users`
@@ -308,14 +274,17 @@ Proporciona información sobre los `Users`
 ### 1.5.1. GET
 Permite **recuperar** uno o varios `User`
 
-- **Filtros** disponibles (*Query params*):
-    - `?username=<string>`: Retorna un **único** `User` cuyo `username` **coincida completamente**. \**Case insensitive*
-    - `?name=<string>`: Retorna **varios** `User` cuyo `name` **contenga** el valor. \**Case insensitive*
+- **Filtros** disponibles:
+
+    | *Query param*        | Descripción                                                                                  |
+    | -------------------- | -------------------------------------------------------------------------------------------- |
+    | `?username=<string>` | Retorna un **único** `User` cuyo `username` **coincida completamente**. \**Case insensitive* |
+    | `?name=<string>`     | Retorna **varios** `User` cuyo `name` **contenga** el valor. \**Case insensitive*            |
 
 > [!CAUTION]
 >
 > - Se **debe utilizar** uno de los filtros. Si no se utiliza ninguno, se mostrará un error `400`
-> - Sólo se puede utilizar **un filtro** en cada petición. Si se encuentran varios filtros, se utilizará el filtro según el orden espicificado en *filtros disponibles*
+> - Sólo se puede utilizar **un filtro** en cada petición. Si se encuentran varios filtros, se utilizará el filtro según el orden espicificado en la tabla
 > - Si **no** se **encontraron** resultados, se mostrará un error `404`
 
 
@@ -352,9 +321,11 @@ Permite **crear** un `User`. El `body` de la petición debe contener la siguient
 }
 ```
 
-- `username`: Debe ser **único**. ***Regex*** que debe cumplir: `/^[a-zA-Z][a-zA-Z0-9_]{1,29}$/` (\***Requerido**)
-- `name`: Puede contener **cualquier carácter**. Longitud entre `1` y `50` caracteres (\***Requerido**)
-- `master_password`: Longitud entre `8` y `50` caracteres. Debe **contener** al menos **una** letra **minúscula** y **una** letra **mayúscula** (alfabeto inglés), **un número** y **alguno** de los siguientes **símbolos especiales** `_-,;!.@*&#%+$/`. (\***Requerido**)
+| Propiedad         | Descripción                                                                                                                                                                                                                          | Requerido |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- |
+| `username`        | Debe ser **único**. ***Regex*** que debe cumplir: `/^[a-zA-Z][a-zA-Z0-9_]{1,29}$/`                                                                                                                                                   | ✔️         |
+| `name`            | Puede contener **cualquier carácter**. Longitud entre `1` y `50` caracteres                                                                                                                                                          | ✔️         |
+| `master_password` | Longitud entre `8` y `50` caracteres. Debe **contener** al menos **una** letra **minúscula** y **una** letra **mayúscula** (alfabeto inglés), **un número** y **alguno** de los siguientes **símbolos especiales** `_-,;!.@*&#%+$/` | ✔️         |
 
 > [!CAUTION]
 >
@@ -373,13 +344,6 @@ Si los **datos** son **válidos**, se creará un `User` y se retornará la sigui
     "recuperation_code_edited_at": 0 // Unix Timestamp en segundos
 }
 ```
-
-- `id`: GUID
-- `username`: Nombre de usuario
-- `name`: Nombre a mostrar
-- `recuperation_code`: Código de recuperación de la cuenta
-- `master_password_edited_at`: *Timestamp* de la última modificación de la contraseña maestra
-- `recuperation_code_edited_at`: *Timestamp* de la última modificación del código de recuperación
 
 > [!IMPORTANT]
 > Se crea la Cookie `session_token` con la **sesión** del `User` recién creado

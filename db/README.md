@@ -53,50 +53,58 @@ La base de datos tiene las siguientes **entidades**:
 ### 1.1.1. User
 Representa a un **usuario registrado** en la aplicación y tiene las siguientes **propiedades**:
 
-- `id` (`UUID`): Identificador único (**Primary Key**)
-- `username` (`VARCHAR(30)`): Nombre único de usuario (**Unique**)
-- `name` (`VARCHAR(50)`): Nombre a mostrar del usuario
-- `master_password` (`CHAR(60)`): Hash de la contraseña maestra
-- `master_password_updated_at` (`TIMESTAMP`): Fecha de la última edición de la contraseña maestra
-- `recuperation_code` (`CHAR(24)`): Código de recuperación para poder restablecer la contraseña maestra en caso de olvido (**Unique**)
-- `recuperation_code_updated_at` (`TIMESTAMP`): Fecha de la última edición del código de recuperación
-- `created_at` (`TIMESTAMP`): Campo de control
-- `updated_at` (`TIMESTAMP`): Campo de control
+| Propiedad                        | Tipo          | Descripción                                                                                        |
+| -------------------------------- | ------------- | -------------------------------------------------------------------------------------------------- |
+| **id**                           | `UUID`        | Identificador único (**Primary Key**)                                                              |
+| **username**                     | `VARCHAR(30)` | Nombre único de usuario (**Unique**)                                                               |
+| **name**                         | `VARCHAR(50)` | Nombre a mostrar del usuario                                                                       |
+| **master_password**              | `CHAR(60)`    | Hash de la contraseña maestra                                                                      |
+| **master_password_updated_at**   | `TIMESTAMP`   | Fecha de la última edición de la contraseña maestra                                                |
+| **recuperation_code**            | `CHAR(24)`    | Código de recuperación para poder restablecer la contraseña maestra en caso de olvido (**Unique**) |
+| **recuperation_code_updated_at** | `TIMESTAMP`   | Fecha de la última edición del código de recuperación                                              |
+| **created_at**                   | `TIMESTAMP`   | Campo de control                                                                                   |
+| **updated_at**                   | `TIMESTAMP`   | Campo de control                                                                                   |
 
 
 ### 1.1.2. Session
 Representa una **sesión** de un `User` y tiene las siguientes **propiedades**:
 
-- `id` (`UUID`): Identificador único (**Primary Key**)
-- `token` (`CHAR(64)`): Token hexadecimal único como identificador de la sesión (**Unique**)
-- `token_created_at` (`TIMESTAMP`): Fecha de creación del token
-- `token_expires_at` (`TIMESTAMP`): Fecha de expiración del token
-- `revoked` (`BOOLEAN`): Indica si la sesión ha sido revocada
-- `user_agent` (`VARCHAR(255)`): *User Agent* del dispositivo que creó la sesión
-- `created_at` (`TIMESTAMP`): Campo de control
-- `updated_at` (`TIMESTAMP`): Campo de control
+| Propiedad            | Tipo           | Descripción                                                          |
+| -------------------- | -------------- | -------------------------------------------------------------------- |
+| **id**               | `UUID`         | Identificador único (**Primary Key**)                                |
+| **token**            | `CHAR(64)`     | Token hexadecimal único como identificador de la sesión (**Unique**) |
+| **token_created_at** | `TIMESTAMP`    | Fecha de creación del token                                          |
+| **token_expires_at** | `TIMESTAMP`    | Fecha de expiración del token                                        |
+| **revoked**          | `BOOLEAN`      | Indica si la sesión ha sido revocada                                 |
+| **user_agent**       | `VARCHAR(255)` | *User Agent* del dispositivo que creó la sesión                      |
+| **created_at**       | `TIMESTAMP`    | Campo de control                                                     |
+| **updated_at**       | `TIMESTAMP`    | Campo de control                                                     |
 
 
 ### 1.1.3. Folder
 Representa una **carpeta** y tiene las siguientes **propiedades**:
 
-- `id` (`UUID`): Identificador único (**Primary Key**)
-- `name` (`VARCHAR(50)`): Nombre de la carpeta
-- `created_at` (`TIMESTAMP`): Campo de control
-- `updated_at` (`TIMESTAMP`): Campo de control
+| Propiedad      | Tipo          | Descripción                           |
+| -------------- | ------------- | ------------------------------------- |
+| **id**         | `UUID`        | Identificador único (**Primary Key**) |
+| **name**       | `VARCHAR(50)` | Nombre de la carpeta                  |
+| **created_at** | `TIMESTAMP`   | Campo de control                      |
+| **updated_at** | `TIMESTAMP`   | Campo de control                      |
 
 
 ### 1.1.4. Password
 Representa una **contraseña** y tiene las siguientes **propiedades**:
 
-- `id` (`UUID`): Identificador único (**Primary Key**)
-- `name` (`VARCHAR(50)`): Nombre de la contraseña
-- `password` (`VARCHAR(100)`): Contraseña encriptada
-- `username` (`VARCHAR(50)`): Nombre de usuario
-- `urls` (`JSON`): Lista de URLs
-- `notes` (`TEXT`): Notas extra
-- `created_at` (`TIMESTAMP`): Campo de control
-- `updated_at` (`TIMESTAMP`): Campo de control
+| Propiedad      | Tipo           | Descripción                           |
+| -------------- | -------------- | ------------------------------------- |
+| **id**         | `UUID`         | Identificador único (**Primary Key**) |
+| **name**       | `VARCHAR(50)`  | Nombre de la contraseña               |
+| **password**   | `VARCHAR(100)` | Contraseña encriptada                 |
+| **username**   | `VARCHAR(50)`  | Nombre de usuario                     |
+| **urls**       | `JSON`         | Lista de URLs                         |
+| **notes**      | `TEXT`         | Notas extra                           |
+| **created_at** | `TIMESTAMP`    | Campo de control                      |
+| **updated_at** | `TIMESTAMP`    | Campo de control                      |
 
 
 ## 1.2. Relaciones entre Entidades
@@ -126,14 +134,15 @@ Un `User` puede **crear** 0, 1 o N `Passwords` y una `Password` **únicamente** 
 Además, un `User` puede compartir 0, 1 o N `Passwords` con otros `Users` y a un `User` le pueden compartir 0, 1 o N `Passwords`. Además, el `User` que comparte puede establecer permiso de *solo-lectura* o *lectura-escritura* a cada `User` compartido
 
 - La relación es `N:M`, por tanto, se debe crear una nueva entidad `Shared Password`. La entidad tiene las siguientes propiedades:
-    - `id` (`UUID`): Identificador único (**Primary Key**)
-    - `shared_user_id` (`UUID`): Clave foránea del `User` al que **le comparten** la `Password`
-    - `password_id` (`UUID`): Clave foránea de la `Password` que se comparte
-    - `permission` (`ENUM`): Tipo de permiso del usuario compartido
-        - `read-only`: Solo lectura
-        - `read-write`: Lectura y escritura
-    - `created_at` (`TIMESTAMP`): Campo de control
-    - `updated_at` (`TIMESTAMP`): Campo de control
+
+| Propiedad      | Tipo        | Descripción                                                                                            |
+| -------------- | ----------- | ------------------------------------------------------------------------------------------------------ |
+| id             | `UUID`      | Identificador único (**Primary Key**)                                                                  |
+| shared_user_id | `UUID`      | Clave foránea del `User` al que **le comparten** la `Password`                                         |
+| password_id    | `UUID`      | Clave foránea de la `Password` que se comparte                                                         |
+| permission     | `ENUM`      | Tipo de permiso del usuario compartido: `read-only` (solo lectura), `read-write` (lectura y escritura) |
+| created_at     | `TIMESTAMP` | Campo de control                                                                                       |
+| updated_at     | `TIMESTAMP` | Campo de control                                                                                       |
 
 > [!WARNING]
 > No se puede compartir una `Password` a un mismo `User` varias veces
