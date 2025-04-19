@@ -17,6 +17,7 @@ class UsersModel {
     public const COL_M_PASSWORD_EDITED = "master_password_edited_at";
     public const COL_REC_CODE = "recuperation_code";
     public const COL_REC_CODE_EDITED = "recuperation_code_edited_at";
+    public const COL_TOTP_2FA_SECRET = "totp_2fa_secret";
 
 
   /* Métodos */
@@ -34,7 +35,7 @@ class UsersModel {
      */
     public static function getUserById(string $id, bool $confidentialData = false): ?array {
         $query = $confidentialData
-          ? "SELECT " . self::COL_ID . ", " . self::COL_USERNAME . ", " . self::COL_NAME . ", UNIX_TIMESTAMP(" . self::COL_M_PASSWORD_EDITED . ") as " . self::COL_M_PASSWORD_EDITED . ", " . self::COL_REC_CODE . ", UNIX_TIMESTAMP(" . self::COL_REC_CODE_EDITED . ") as " . self::COL_REC_CODE_EDITED .
+          ? "SELECT " . self::COL_ID . ", " . self::COL_USERNAME . ", " . self::COL_NAME . ", UNIX_TIMESTAMP(" . self::COL_M_PASSWORD_EDITED . ") as " . self::COL_M_PASSWORD_EDITED . ", " . self::COL_REC_CODE . ", UNIX_TIMESTAMP(" . self::COL_REC_CODE_EDITED . ") as " . self::COL_REC_CODE_EDITED . ", " . self::COL_TOTP_2FA_SECRET .
             " FROM " . self::TABLE .
             " WHERE " . self::COL_ID . " = ?"
           : "SELECT " . self::COL_ID . ", " . self::COL_USERNAME . ", " . self::COL_NAME .
@@ -64,8 +65,8 @@ class UsersModel {
      *
      * @throws \Exception Si se produce algún error
      */
-    public static function getUserByUsername(string $username, bool $includeIdAndPassword = false): ?array {
-      $query = "SELECT " . self::COL_USERNAME . ", " . self::COL_NAME . ($includeIdAndPassword ? ", " . self::COL_M_PASSWORD . ", " . self::COL_ID : "") .
+    public static function getUserByUsername(string $username, bool $confidentialData = false): ?array {
+      $query = "SELECT " . self::COL_USERNAME . ", " . self::COL_NAME . ($confidentialData ? ", " . self::COL_M_PASSWORD . ", " . self::COL_ID . ", " . self::COL_TOTP_2FA_SECRET : "") .
         " FROM " . self::TABLE .
         " WHERE " . self::COL_USERNAME . " = ?";
 
@@ -153,5 +154,41 @@ class UsersModel {
       if ($newResource === null) throw new \Exception(DB::DB_GET_ERROR);
 
       return $newResource;
+    }
+
+
+    public static function create2FA(string $id, string $secret): bool {
+      $query = "UPDATE " . self::TABLE . " SET " . self::COL_TOTP_2FA_SECRET . " = ? WHERE " . self::COL_ID . " = ?";
+
+      // Conectar DB
+      $db = new DB();
+
+      if (!$db->isConnected()) throw new \Exception(DB::DB_CONNECTION_ERROR);
+
+      $db->addQuery($query, [
+        $secret,
+        $id
+      ]);
+
+      if ($db->executeTransaction() === false) throw new \Exception(DB::DB_CREATE_ERROR);
+
+      return true;
+    }
+
+    public static function delete2FA(string $id): bool {
+      $query = "UPDATE " . self::TABLE . " SET " . self::COL_TOTP_2FA_SECRET . " = NULL WHERE " . self::COL_ID . " = ?";
+
+      // Conectar DB
+      $db = new DB();
+
+      if (!$db->isConnected()) throw new \Exception(DB::DB_CONNECTION_ERROR);
+
+      $db->addQuery($query, [
+        $id
+      ]);
+
+      if ($db->executeTransaction() === false) throw new \Exception(DB::DB_CREATE_ERROR);
+
+      return true;
     }
 }

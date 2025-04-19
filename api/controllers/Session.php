@@ -3,6 +3,7 @@ require_once __DIR__ . "/../" . "env.php";
 require_once __DIR__ . "/../" . SESSION_SCHEMA_PATH;
 require_once __DIR__ . "/../" . SESSIONS_MODEL_PATH;
 require_once __DIR__ . "/../" . USERS_MODEL_PATH;
+require_once __DIR__ . "/../" . GOOGLE_AUTHENTICATOR_PATH;
 
 
 /**
@@ -26,10 +27,10 @@ class SessionController {
       }
 
       // Eliminar sesión y cookie
-      $result = SessionsModel::revokeSession($session["id"]);
+      SessionsModel::delete($session["id"]);
 
       $res->deleteCookie("session_token");
-      $res->setData(["session_revoked" => $result]);
+      $res->setData(["session_deleted" => true]);
       $res->showResponseAndExit(HttpCode::OK);
     } catch (\Exception $e) {
       $res->addError($e->getMessage());
@@ -59,14 +60,32 @@ class SessionController {
         $res->showResponseAndExit(HttpCode::BAD_REQUEST);
       }
 
-      $user = UsersModel::getUserByUsername($data["username"], includeIdAndPassword: true);
+      $user = UsersModel::getUserByUsername($data["username"], confidentialData: true);
 
       if ($user === null || !Encrypt::checkMasterPassword($result["data"]["master_password"], $user["master_password"])) {
         $res->addError("El usuario no existe o la contraseña es incorrecta");
         $res->showResponseAndExit(HttpCode::UNAUTHORIZED);
       }
 
-      // Crear  sesión
+      // Comprobar 2FA (si está habilitado)
+      if ($user[UsersModel::COL_TOTP_2FA_SECRET] !== null && $result["data"]["two_fa_code"] === null) {
+        $res->setData([ "two_fa_enabled" => true ]);
+        $res->showResponseAndExit(HttpCode::OK);
+      }
+
+      // Verificar 2FA (si está habilitado)
+      if ($user[UsersModel::COL_TOTP_2FA_SECRET] !== null) {
+        $ga = new PHPGangsta_GoogleAuthenticator();
+        $secret = $user[UsersModel::COL_TOTP_2FA_SECRET];
+        $code = $ga->getCode($secret);
+
+        if ($code !== $result["data"]["two_fa_code"]) {
+          $res->addError("El código de la autenticación de doble factor es incorrecto");
+          $res->showResponseAndExit(HttpCode::UNAUTHORIZED);
+        }
+      }
+
+      // Crear sesión
       $tokenExpiresAt = time() + $result["data"]["session_duration"]->value;
       $newSession = SessionsModel::create(
         $user["id"],

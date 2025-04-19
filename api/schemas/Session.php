@@ -26,6 +26,7 @@ class SessionSchema {
       self::validateUsername($data, $result);
       self::validateSessionDuration($data, $result);
       self::validateMasterPassword($data, $result);
+      $result["data"]["two_fa_code"] = isset($data["two_fa_code"]) ? trim($data["two_fa_code"]) : null;
 
       return $result;
     }

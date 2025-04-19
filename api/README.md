@@ -1,5 +1,6 @@
 [XAMPP imagen]: ../assets/xampp.png
 
+[PHPGangsta/GoogleAuthenticator]: https://github.com/PHPGangsta/GoogleAuthenticator
 [XAMPP]: https://www.apachefriends.org/es/index.html
 
 [Regresar](../README.md)
@@ -11,6 +12,7 @@
 - [3. Directorios y Archivos](#3-directorios-y-archivos)
 - [4. Métodos de encriptación](#4-métodos-de-encriptación)
 - [5. Rutas API](#5-rutas-api)
+- [6. Autenticación de Doble Factor](#6-autenticación-de-doble-factor)
 
 
 # 1. Api
@@ -30,6 +32,7 @@ Para el desarrollo en local se ha decidido utilizar [XAMPP] como entorno de desa
 📄 .htaccess
 📄 example-env.php (env.php)
 📁 controllers
+    📄 2FA.php
     📄 Folders.php
     📄 Passwords.php
     📄 Session.php
@@ -48,11 +51,13 @@ Para el desarrollo en local se ha decidido utilizar [XAMPP] como entorno de desa
 📁 tools
     📄 DB.php
     📄 Encrypt.php
+    📄 GoogleAuthenticator.php
     📄 HttpCode.php
     📄 Request.php
     📄 RequestMethod.php
     📄 Response.php
     📄 SessionDuration.php
+📄 2fa.php
 📄 folders.php
 📄 passwords.php
 📄 session.php
@@ -71,6 +76,10 @@ Explicación de los métodos de encriptación
 
 # 5. [Rutas API](api-routes.md)
 Rutas disponibles de la API
+
+
+# 6. Autenticación de Doble Factor
+Para realizar la autenticación de doble factor mediante código temporal (*TOTP*), se ha utilizado la librería [PHPGangsta/GoogleAuthenticator]
 
 
 ---

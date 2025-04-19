@@ -3,20 +3,25 @@
 **Contenidos**
 
 - [1. Rutas API](#1-rutas-api)
-    - [1.1. /folders.php](#11-foldersphp)
-        - [1.1.1. GET](#111-get)
+    - [1.1. /2fa.php](#11-2faphp)
+        - [1.1.1. DELETE](#111-delete)
         - [1.1.2. POST](#112-post)
-    - [1.2. /passwords.php](#12-passwordsphp)
+            - [1.1.2.1. Petición 1](#1121-petición-1)
+            - [1.1.2.2. Petición 2](#1122-petición-2)
+    - [1.2. /folders.php](#12-foldersphp)
         - [1.2.1. GET](#121-get)
         - [1.2.2. POST](#122-post)
-    - [1.3. /sessions.php](#13-sessionsphp)
-        - [1.3.1. DELETE](#131-delete)
+    - [1.3. /passwords.php](#13-passwordsphp)
+        - [1.3.1. GET](#131-get)
         - [1.3.2. POST](#132-post)
-    - [1.4. /user.php](#14-userphp)
-        - [1.4.1. GET](#141-get)
-    - [1.5. /users.php](#15-usersphp)
+    - [1.4. /session.php](#14-sessionphp)
+        - [1.4.1. DELETE](#141-delete)
+        - [1.4.2. POST](#142-post)
+    - [1.5. /user.php](#15-userphp)
         - [1.5.1. GET](#151-get)
-        - [1.5.2. POST](#152-post)
+    - [1.6. /users.php](#16-usersphp)
+        - [1.6.1. GET](#161-get)
+        - [1.6.2. POST](#162-post)
 
 
 # 1. Rutas API
@@ -39,11 +44,84 @@ La **estructura** del JSON de todas las **respuestas** de la API es la siguiente
 | `errors`       | `Array` con los mensajes de errores producidos. `null` si no se produjeron errores                       |
 
 
-## 1.1. /folders.php
+## 1.1. /2fa.php
+Proporciona información sobre las `Password`
+
+
+### 1.1.1. DELETE
+Permite **eliminar** la autenticación de doble factor de un `User`
+
+> [!CAUTION]
+> Se necesita estar autenticado. Si no se mostrará un error `401`
+> Si no existe la autenticación de doble factor, se mostrará un error `400`
+
+Si se elimina con éxito, se retorna la siguiente **data**:
+
+```jsonc
+{
+    "two_fa_deleted": true
+}
+```
+
+
+### 1.1.2. POST
+Permite **crear** la autenticación de doble factor de un `User`. Para la creación y activación de *2FA*, se debe realizar 2 peticiones.
+
+> [!CAUTION]
+> Se necesita estar autenticado. Si no se mostrará un error `401`
+
+
+#### 1.1.2.1. Petición 1
+
+Permite generar el ***secret*** de la autenticación de doble factor. El **body** de la petición debe estar **vacío** (pero **debe existir**):
+
+```jsonc
+{}
+```
+
+- Si se genera correctamente, se retorna la siguiente **data**:
+
+```jsonc
+{
+    "qr_code_url": "string",
+    "secret": "string"
+}
+```
+
+
+#### 1.1.2.2. Petición 2
+
+Permite **verificar** el código temporal generado al escanear el **código QR** por la aplicación correspondiente (*Google Authenticator*, *Microsoft Authenticator*, *Authy*...) para habilitar *2FA* en el proceso de *login*. El cuerpo de la petición debe contener la siguiente estructura:
+
+```jsonc
+{
+    "code": "string",
+    "secret": "string"
+}
+```
+
+| Propiedad | Descripción                                                                     | Requerido |
+| --------- | ------------------------------------------------------------------------------- | --------- |
+| `code`    | El código temporal generado por la aplicación correspondiente                   | ✔️         |
+| `secret`  | El *secret* de la autenticación de doble factor generado en la primera petición | ✔️         |
+
+- Si el código es correcto, se retorna la siguiente **data**:
+
+```jsonc
+{
+    "two_fa_created": true
+}
+```
+
+> [!IMPORTANT]
+> A partir de este momento, el usuario deberá usar el código temporal generado por la aplicación para poder iniciar sesión
+
+
+## 1.2. /folders.php
 Proporciona información sobre los `Folder`
 
 
-### 1.1.1. GET
+### 1.2.1. GET
 Permite **recuperar** los `Folder` de un `User`
 
 > [!CAUTION]
@@ -62,7 +140,7 @@ Permite **recuperar** los `Folder` de un `User`
 ```
 
 
-### 1.1.2. POST
+### 1.2.2. POST
 Permite **crear** un `Folder`. El `body` de la petición debe contener la siguiente estructura
 
 ```jsonc
@@ -90,11 +168,11 @@ Si los **datos** son **válidos**, se creará un `Folder` y se retornará la sig
 ```
 
 
-## 1.2. /passwords.php
+## 1.3. /passwords.php
 Proporciona información sobre las `Password`
 
 
-### 1.2.1. GET
+### 1.3.1. GET
 Permite **recuperar** las `Password` de un `User`
 
 > [!CAUTION]
@@ -118,7 +196,7 @@ Permite **recuperar** las `Password` de un `User`
 ```
 
 
-### 1.2.2. POST
+### 1.3.2. POST
 Permite **crear** una `Password`. El `body` de la petición debe contener la siguiente estructura
 
 ```jsonc
@@ -162,28 +240,28 @@ Si los **datos** son **válidos**, se creará una `Password` y se retornará la 
 ```
 
 
-## 1.3. /sessions.php
+## 1.4. /session.php
 Permite **gestionar** las sesiones de los `Users`
 
 
-### 1.3.1. DELETE
-Elimina una `Session` (se actualiza como revocada) para que no pueda ser utilizada
+### 1.4.1. DELETE
+Elimina una `Session` para que no pueda ser utilizada
 
 
 > [!CAUTION]
 >
 > - Si no se encuentra una Cookie con un `session_token` válido, se mostrará un error `401`
 
-Si se revoca correctamente la `Session`, se retorna la siguiente **data**:
+Si se elimina correctamente la `Session`, se retorna la siguiente **data**:
 
 ```jsonc
 {
-    "session_revoked": true
+    "session_deleted": true
 }
 ```
 
 
-### 1.3.2. POST
+### 1.4.2. POST
 Permite **crear** una `Session` para un `User` existente
 
 - **Body** de la petición debe contener la siguiente estructura
@@ -216,7 +294,6 @@ Si los datos son **válidos**, se crea una `Session` y se retorna la siguiente *
     "name": "string",
     "token_created_at": 0, // Unix Timestamp en segundos
     "token_expires_at": 0, // Unix Timestamp en segundos
-    "revoked": false,
     "user_agent": "string"
 }
 ```
@@ -225,11 +302,11 @@ Si los datos son **válidos**, se crea una `Session` y se retorna la siguiente *
 > Se crea la Cookie `session_token` con la **sesión** del `User` recién creado
 
 
-## 1.4. /user.php
+## 1.5. /user.php
 Proporciona información sobre el `User` autenticado
 
 
-### 1.4.1. GET
+### 1.5.1. GET
 Permite **recuperar** información sobre el `User` autenticado
 
 - **Filtros** disponibles:
@@ -267,11 +344,11 @@ Permite **recuperar** información sobre el `User` autenticado
 ```
 
 
-## 1.5. /users.php
+## 1.6. /users.php
 Proporciona información sobre los `Users`
 
 
-### 1.5.1. GET
+### 1.6.1. GET
 Permite **recuperar** uno o varios `User`
 
 - **Filtros** disponibles:
@@ -310,7 +387,7 @@ Permite **recuperar** uno o varios `User`
     ```
 
 
-### 1.5.2. POST
+### 1.6.2. POST
 Permite **crear** un `User`. El `body` de la petición debe contener la siguiente estructura
 
 ```jsonc
@@ -321,10 +398,10 @@ Permite **crear** un `User`. El `body` de la petición debe contener la siguient
 }
 ```
 
-| Propiedad         | Descripción                                                                                                                                                                                                                          | Requerido |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- |
-| `username`        | Debe ser **único**. ***Regex*** que debe cumplir: `/^[a-zA-Z][a-zA-Z0-9_]{1,29}$/`                                                                                                                                                   | ✔️         |
-| `name`            | Puede contener **cualquier carácter**. Longitud entre `1` y `50` caracteres                                                                                                                                                          | ✔️         |
+| Propiedad         | Descripción                                                                                                                                                                                                                         | Requerido |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
+| `username`        | Debe ser **único**. ***Regex*** que debe cumplir: `/^[a-zA-Z][a-zA-Z0-9_]{1,29}$/`                                                                                                                                                  | ✔️         |
+| `name`            | Puede contener **cualquier carácter**. Longitud entre `1` y `50` caracteres                                                                                                                                                         | ✔️         |
 | `master_password` | Longitud entre `8` y `50` caracteres. Debe **contener** al menos **una** letra **minúscula** y **una** letra **mayúscula** (alfabeto inglés), **un número** y **alguno** de los siguientes **símbolos especiales** `_-,;!.@*&#%+$/` | ✔️         |
 
 > [!CAUTION]

@@ -15,7 +15,6 @@ class SessionsModel {
     public const COL_TOKEN = "token";
     public const COL_TOKEN_CREATED = "token_created_at";
     public const COL_TOKEN_EXPIRES = "token_expires_at";
-    public const COL_REVOKED = "revoked";
     public const COL_USER_AGENT = "user_agent";
 
 
@@ -26,12 +25,12 @@ class SessionsModel {
      * @param string $id `id` de la `Session` a buscar
      *
      * @return ?array Si se encuntra una `Session`, retorna un `array` con la estructura
-     * `["id" => string, "user_id" => string, "token" => string, "token_created_at" => int, "token_expires_at" => int, "revoked" => bool, "user_agent" => string]`, si no se encuentra, retorna `null`
+     * `["id" => string, "user_id" => string, "token" => string, "token_created_at" => int, "token_expires_at" => int, "user_agent" => string]`, si no se encuentra, retorna `null`
      *
      * @throws \Exception Si se produce algún error
      */
     public static function getSessionById(string $id): ?array {
-      $query = "SELECT " . self::COL_ID . ", " . self::COL_USER_ID . ", " . self::COL_TOKEN . ", UNIX_TIMESTAMP(" . self::COL_TOKEN_CREATED . ") as " . self::COL_TOKEN_CREATED . ", UNIX_TIMESTAMP(" . self::COL_TOKEN_EXPIRES . ") as " . self::COL_TOKEN_EXPIRES . ", " . self::COL_REVOKED . ", " . self::COL_USER_AGENT .
+      $query = "SELECT " . self::COL_ID . ", " . self::COL_USER_ID . ", " . self::COL_TOKEN . ", UNIX_TIMESTAMP(" . self::COL_TOKEN_CREATED . ") as " . self::COL_TOKEN_CREATED . ", UNIX_TIMESTAMP(" . self::COL_TOKEN_EXPIRES . ") as " . self::COL_TOKEN_EXPIRES . ", " . self::COL_USER_AGENT .
         " FROM " . self::TABLE .
         " WHERE " .
             self::COL_ID . " = ?";
@@ -48,7 +47,6 @@ class SessionsModel {
 
       if (count($data) === 0) return null;
 
-      $data[0][self::COL_REVOKED] = $data[0][self::COL_REVOKED] === 1;
       return $data[0];
     }
 
@@ -70,7 +68,6 @@ class SessionsModel {
       $query = "SELECT " . self::COL_ID . ", " . self::COL_USER_ID .
         " FROM " . self::TABLE .
         " WHERE " .
-            self::COL_REVOKED . " = false AND " .
             self::COL_TOKEN_EXPIRES . " > CURRENT_TIMESTAMP AND " .
             self::COL_TOKEN . " = ? AND " .
             self::COL_USER_AGENT . " = ?";
@@ -96,7 +93,7 @@ class SessionsModel {
      * @param string $userAgent *User Agent* del dispositivo que está creando la `Session`
      * @param int $tokenExpiresAt Timestamp de expiración de la `Session`
      *
-     * @return array Se retorna un array con la estructura `["id" => string, "user_id" => string, "token" => string, "token_created_at" => int, "token_expires_at" => int, "revoked" => bool, "user_agent" => string]`
+     * @return array Se retorna un array con la estructura `["id" => string, "user_id" => string, "token" => string, "token_created_at" => int, "token_expires_at" => int, "user_agent" => string]`
      *
      * @throws \Exception Si se produce algún error
      */
@@ -132,16 +129,16 @@ class SessionsModel {
 
 
     /**
-     * Actualiza una `Session` como revocada
+     * Elimina una `Session`
      *
-     * @param string $id `id` de la `Session` a actualizar
+     * @param string $id `id` de la `Session` a eliminar
      *
-     * @return bool `true` si se ha revocado con éxito, `false` si no
+     * @return bool `true` si se ha eliminado con éxito
      *
      * @throws \Exception Si se produce algún error
      */
-    public static function revokeSession(string $id): bool {
-      $query = "UPDATE " . self::TABLE . " SET " . self::COL_REVOKED . " = true WHERE " . self::COL_ID . " = ?";
+    public static function delete(string $id): bool {
+      $query = "DELETE FROM " . self::TABLE . " WHERE " . self::COL_ID . " = ?";
 
       // Conectar DB
       $db = new DB();
@@ -152,10 +149,6 @@ class SessionsModel {
 
       if ($db->executeTransaction() === false) throw new \Exception(DB::DB_UPDATE_ERROR);
 
-      $resource = self::getSessionById($id);
-
-      if ($resource === null) throw new \Exception(DB::DB_GET_ERROR);
-
-      return $resource["revoked"];
+      return true;
     }
 }

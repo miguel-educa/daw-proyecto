@@ -62,6 +62,7 @@ Representa a un **usuario registrado** en la aplicación y tiene las siguientes 
 | **master_password_updated_at**   | `TIMESTAMP`   | Fecha de la última edición de la contraseña maestra                                                |
 | **recuperation_code**            | `CHAR(24)`    | Código de recuperación para poder restablecer la contraseña maestra en caso de olvido (**Unique**) |
 | **recuperation_code_updated_at** | `TIMESTAMP`   | Fecha de la última edición del código de recuperación                                              |
+| **totp_2fa_secret**              | `CHAR(32)`    | Clave de la autenticación de doble factor                                                          |
 | **created_at**                   | `TIMESTAMP`   | Campo de control                                                                                   |
 | **updated_at**                   | `TIMESTAMP`   | Campo de control                                                                                   |
 
@@ -75,7 +76,6 @@ Representa una **sesión** de un `User` y tiene las siguientes **propiedades**:
 | **token**            | `CHAR(64)`     | Token hexadecimal único como identificador de la sesión (**Unique**) |
 | **token_created_at** | `TIMESTAMP`    | Fecha de creación del token                                          |
 | **token_expires_at** | `TIMESTAMP`    | Fecha de expiración del token                                        |
-| **revoked**          | `BOOLEAN`      | Indica si la sesión ha sido revocada                                 |
 | **user_agent**       | `VARCHAR(255)` | *User Agent* del dispositivo que creó la sesión                      |
 | **created_at**       | `TIMESTAMP`    | Campo de control                                                     |
 | **updated_at**       | `TIMESTAMP`    | Campo de control                                                     |

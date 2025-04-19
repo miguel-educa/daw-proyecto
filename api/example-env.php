@@ -21,6 +21,7 @@ const CONTROLLERS_PATH = "controllers/";
 const FOLDERS_CONTROLLER_PATH = CONTROLLERS_PATH . "Folders.php";
 const PASSWORDS_CONTROLLER_PATH = CONTROLLERS_PATH . "Passwords.php";
 const SESSION_CONTROLLER_PATH = CONTROLLERS_PATH . "Session.php";
+const TWO_FA_CONTROLLER_PATH = CONTROLLERS_PATH . "2FA.php";
 const USER_CONTROLLER_PATH = CONTROLLERS_PATH . "User.php";
 const USERS_CONTROLLER_PATH = CONTROLLERS_PATH . "Users.php";
 
@@ -48,6 +49,7 @@ const TOOLS_PATH = "tools/";
 
 const DB_TOOLS_PATH = TOOLS_PATH . "DB.php";
 const ENCRYPT_TOOLS_PATH = TOOLS_PATH . "Encrypt.php";
+const GOOGLE_AUTHENTICATOR_PATH = TOOLS_PATH . "GoogleAuthenticator.php";
 const HTTP_CODE_PATH = TOOLS_PATH . "HttpCode.php";
 const REQUEST_METHOD_PATH = TOOLS_PATH . "RequestMethod.php";
 const REQUEST_PATH = TOOLS_PATH . "Request.php";
