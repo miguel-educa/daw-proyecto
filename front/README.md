@@ -45,11 +45,27 @@ También se han utilizado las siguientes herramientas:
     📁 img
 📁 src
     📄 App.vue
+    📄 config.js
     📄 main.js
     📁 assets
+        📁 css
+            📁 bulma
+                📄 bulma.css
+            📄 main.css
     📁 components
+        📄 AsideComponent.vue
+        📄 HeaderComponent.vue
+    📁 layout
+        📄 AppLayout.vue
     📁 router
+        📄 index.js
+    📁 stores
+        📄 userStore.js
+    📁 tools
+        📄 theme.js
+        📄 user.js
     📁 views
+        📄 HomeView.vue
 ```
 
 

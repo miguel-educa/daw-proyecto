@@ -1,0 +1,160 @@
+/* Fuentes */
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Winky+Rough:ital,wght@0,300..900;1,300..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&display=swap');
+
+/* Variables */
+:root {
+  /* Colores */
+  --black: #1a1818;
+  --blue: #4c646f;
+  --dark-blue: #2b3a42;
+  --dark-gold: #9e9788;
+  --gold: #b88c26;
+  --grey: #d3dae0;
+  --hyper-dark-blue: #1f2a30;
+  --hyper-white: #fdfdfd;
+  --light-blue: #6d8d9c;
+  --red: #ca2626;
+  --dark-red: #2e0009;
+  --white: #ecf6f8;
+
+  /* Transiciones */
+  --transition-time: 0.3s;
+  --transition-color: color var(--transition-time) ease-in-out;
+  --transition-background-color: background-color var(--transition-time) ease-in-out;
+  --transition-box-shadow: box-shadow var(--transition-time) ease-in-out;
+  --transition-opacity: opacity var(--transition-time) ease-in-out;
+}
+
+/* CSS Reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Tema claro */
+body[data-theme='light'] {
+  /* Body */
+  --body-background-color: var(--white);
+  --body-background-secundary-color: var(--grey);
+
+  /* Header */
+  --header-background-color: var(--light-blue);
+  --header-text-color: var(--hyper-white);
+  --header-link-hover-background-color: var(--white);
+  --header-link-hover-color: var(--dark-blue);
+  --header-separator-color: var(--hyper-white);
+  --header-link-active-background-color: var(--white);
+  --header-link-active-text-color: var(--dark-blue);
+
+  /* Aside */
+  --aside-background-color: var(--light-blue);
+  --aside-text-color: var(--hyper-white);
+  --aside-separator-color: var(--white);
+  --aside-link-active-background-color: var(--white);
+  --aside-link-active-text-color: var(--dark-blue);
+  --aside-link-hover-background-color: var(--white);
+  --aside-link-hover-text-color: var(--dark-blue);
+
+  /* Modal */
+  --modal-header-footer-background-color: var(--light-blue);
+  --modal-header-text-background-color: var(--hyper-white);
+  --modal-body-background-color: var(--white);
+  --modal-body-text-color: var(--hyper-dark-blue);
+  --modal-button-background-color: var(--dark-blue);
+  --modal-button-text-color: var(--hyper-white);
+}
+
+/* Tema oscuro */
+body[data-theme='dark'] {
+  /* Body */
+  --body-background-color: var(--hyper-dark-blue);
+  --body-background-secundary-color: var(--dark-blue);
+
+  /* Header */
+  --header-background-color: var(--dark-blue);
+  --header-text-color: var(--white);
+  --header-link-hover-background-color: var(--hyper-dark-blue);
+  --header-link-hover-color: var(--white);
+  --header-separator-color: var(--hyper-dark-blue);
+  --header-link-active-background-color: var(--hyper-dark-blue);
+  --header-link-active-text-color: var(--white);
+
+  /* Aside */
+  --aside-background-color: var(--dark-blue);
+  --aside-text-color: var(--white);
+  --aside-separator-color: var(--hyper-dark-blue);
+  --aside-link-hover-background-color: var(--hyper-dark-blue);
+  --aside-link-hover-text-color: var(--white);
+  --aside-link-active-background-color: var(--hyper-dark-blue);
+  --aside-link-active-text-color: var(--white);
+
+  /* Modal */
+  --modal-header-footer-background-color: var(--hyper-dark-blue);
+  --modal-header-text-background-color: var(--hyper-white);
+  --modal-body-background-color: var(--dark-blue);
+  --modal-body-text-color: var(--white);
+  --modal-button-background-color: var(--light-blue);
+  --modal-button-text-color: var(--hyper-white);
+}
+
+/* Body y Main */
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  background:
+    radial-gradient(var(--body-background-secundary-color) 15%, transparent 16%),
+    linear-gradient(
+      45deg,
+      transparent 49%,
+      var(--body-background-secundary-color) 49% 51%,
+      transparent 51%
+    ),
+    linear-gradient(
+      -45deg,
+      transparent 49%,
+      var(--body-background-secundary-color) 49% 51%,
+      transparent 51%
+    );
+  background-size: 3em 3em;
+  background-color: var(--body-background-color);
+
+  --box-shadow-0-5-10: 0px 5px 10px #00000075;
+  --box-shadow-5-5-10: 5px 5px 10px #00000075;
+  --box-shadow-8-8-10: 8px 8px 10px #00000075;
+}
+
+main {
+  padding: 2rem;
+}
+
+/* Clases de fuentes */
+.title-font {
+  font-family: 'Winky Rough', sans-serif;
+}
+
+.code-font {
+  font-family: 'Fira Code', monospace;
+}
+
+/* Botón */
+button {
+  box-shadow: 3px 3px 10px #00000055 !important;
+}
+
+button:hover {
+  opacity: 0.85;
+  transition: var(--transition-opacity);
+}
+
+button.danger {
+  background-color: var(--red) !important;
+}
+
+/* Checkbox */
+input[type='checkbox'] {
+  cursor: pointer;
+}
