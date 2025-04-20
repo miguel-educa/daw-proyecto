@@ -66,7 +66,6 @@ class SessionsModel {
       if ($token === null) return null;
 
       $tokenHash = Encrypt::sha256($token);
-      $userAgentHash = Encrypt::sha256($userAgent);
 
       $query = "SELECT " . self::COL_ID . ", " . self::COL_USER_ID .
         " FROM " . self::TABLE .
@@ -81,7 +80,7 @@ class SessionsModel {
       if (!$db->isConnected()) throw new \Exception(DB::DB_CONNECTION_ERROR);
 
       // Obtener resultados
-      $data = $db->select($query, [ $tokenHash, $userAgentHash ]);
+      $data = $db->select($query, [ $tokenHash, $userAgent ]);
 
       if ($data === false) throw new \Exception(DB::DB_GET_ERROR);
 
@@ -104,7 +103,6 @@ class SessionsModel {
       $id = Encrypt::generateUUIDv4();
       $token = Encrypt::generateSessionToken();
       $tokenHash = Encrypt::sha256($token);
-      $userAgentHash = Encrypt::sha256($userAgent);
 
       $query = "INSERT INTO " . self::TABLE . "
           (" . self::COL_ID . ", " . self::COL_USER_ID . ", " . self::COL_TOKEN . ", " . self::COL_USER_AGENT . ", " . self::COL_TOKEN_EXPIRES . ")
@@ -119,7 +117,7 @@ class SessionsModel {
         $id,
         $userId,
         $tokenHash,
-        $userAgentHash,
+        $userAgent,
         $tokenExpiresAt
       ]);
 

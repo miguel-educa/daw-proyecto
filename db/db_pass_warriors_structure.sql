@@ -33,7 +33,7 @@ CREATE TABLE `sessions` (
     `token` CHAR(64) NOT NULL,
     `token_created_at` TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP),
     `token_expires_at` TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP),
-    `user_agent` CHAR(64) DEFAULT NULL,
+    `user_agent` VARCHAR(255) DEFAULT NULL,
     `created_at` TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP),
     `updated_at` TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP) ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
@@ -93,3 +93,21 @@ CREATE TABLE `shared_passwords` (
     CONSTRAINT `fk_shared_passwords_passwords` FOREIGN KEY (`password_id`) REFERENCES `passwords`(`id`) ON UPDATE CASCADE ON DELETE CASCADE,
     UNIQUE KEY `u_shared_passwords_shared_user_password` (`shared_user_id`, `password_id`)
 );
+
+
+-- Evento Eliminar Sesiones Expiradas
+CREATE EVENT delete_expired_sessions
+ON SCHEDULE EVERY 1 DAY
+STARTS (CURRENT_DATE + INTERVAL 1 DAY)
+ON COMPLETION NOT PRESERVE
+ENABLE
+DO DELETE FROM sessions WHERE token_expires_at < NOW();
+
+
+-- Evento Marcar como `null` 2FA no activados
+CREATE EVENT set_null_not_activated_2fa
+ON SCHEDULE EVERY 1 DAY
+STARTS (CURRENT_DATE + INTERVAL 1 DAY)
+ON COMPLETION NOT PRESERVE
+ENABLE
+DO UPDATE users SET totp_2fa_secret = NULL WHERE totp_2fa_activated = FALSE AND updated_at < NOW() - INTERVAL 5 MINUTE;

@@ -51,7 +51,7 @@ class Request {
      *
      * @return string
      */
-    public function getUserAgent(): string { return  substr($this->userAgent,0, 255); }
+    public function getUserAgent(): string { return substr($this->userAgent,0, 255); }
 
 
     /**
