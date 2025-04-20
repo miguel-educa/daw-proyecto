@@ -22,7 +22,7 @@ class twoFAController {
       $data = $req->getData();
 
       // Obtener usuario mediante sesión
-      $session = SessionsModel::getActiveSessionByTokenAndUserAgent($req->getCookie("session_token"), $req->getUserAgent());
+      $session = SessionsModel::getSessionByTokenAndUserAgent($req->getCookie("session_token"), $req->getUserAgent());
 
       if ($session === null) {
         $res->addError(Response::ERROR_UNAUTHORIZED);
@@ -39,34 +39,36 @@ class twoFAController {
       }
 
       // Comprobar si ya ha sido habilitado
-      if ($user[UsersModel::COL_TOTP_2FA_SECRET] !== null) {
+      if ($user[UsersModel::COL_TOTP_2FA_ACTIVATED]) {
         $res->addError("Para configurar un nuevo doble factor de autenticación mediante código temporal, debe eliminar el actual");
         $res->showResponseAndExit(HttpCode::BAD_REQUEST);
       }
 
-      // Obtener data
-      $secret = $data["secret"] ?? null;
+      // Obtener código verificación
       $code = $data["code"] ?? null;
 
       $ga = new PHPGangsta_GoogleAuthenticator();
 
-      // Generar secreto y URL del código QR
-      if ($secret === null && $code === null) {
+      // Generar y almacenar secreto y URL del código QR
+      if ($code === null) {
         $secret = $ga->createSecret(32);
         $qrUrl = $ga->getQRCodeGoogleUrl('Pass Warriors', $secret);
 
-        $res->setData([ "secret" => $secret, "qr_code_url" => $qrUrl ]);
+        UsersModel::create2FA($user["id"], $secret);
+
+        $res->setData([ "qr_code_url" => $qrUrl ]);
         $res->showResponseAndExit(HttpCode::OK);
       }
 
       // Verificar código
+      $secret = Encrypt::decrypt($user[UsersModel::COL_TOTP_2FA_SECRET]);
       if ($ga->verifyCode($secret, $code) === false) {
         $res->addError("El código de la autenticación de doble factor es incorrecto");
         $res->showResponseAndExit(HttpCode::UNAUTHORIZED);
       }
 
-      // Crear 2FA
-      UsersModel::create2FA($user["id"], $secret);
+      // Activar 2FA
+      UsersModel::activate2FA($user["id"]);
 
       $res->setData([ "two_fa_created" => true ]);
       $res->showResponseAndExit(HttpCode::CREATED);
@@ -86,7 +88,7 @@ class twoFAController {
   public static function DELETE(Request $req, Response $res) {
     try {
       // Obtener usuario mediante sesión
-      $session = SessionsModel::getActiveSessionByTokenAndUserAgent($req->getCookie("session_token"), $req->getUserAgent());
+      $session = SessionsModel::getSessionByTokenAndUserAgent($req->getCookie("session_token"), $req->getUserAgent());
 
       if ($session === null) {
         $res->addError(Response::ERROR_UNAUTHORIZED);
@@ -103,7 +105,7 @@ class twoFAController {
       }
 
       // Comprobar que exista 2fa
-      if ($user[UsersModel::COL_TOTP_2FA_SECRET] === null) {
+      if (!$user[UsersModel::COL_TOTP_2FA_ACTIVATED]) {
         $res->addError("No hay ninguna autenticación de doble factor configurada");
         $res->showResponseAndExit(HttpCode::BAD_REQUEST);
       }

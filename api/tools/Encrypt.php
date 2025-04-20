@@ -9,62 +9,62 @@ class Encrypt {
   /**
    * Hashea una contraseña maestra sin que se pueda recuperar la cadena original
    *
-   * @param string $masterPassword Contraseña a hashear
+   * @param string $string Cadena a hashear
    *
-   * @return string Hash de la contraseña
+   * @return string Hash de la cadena
    */
-  public static function hashMasterPassword(string $masterPassword): string {
-    return password_hash($masterPassword, PASSWORD_BCRYPT);
+  public static function hash(string $string): string {
+    return password_hash($string, PASSWORD_BCRYPT);
   }
 
 
   /**
-   * Comprueba si una cadena corresponde a la contraseña hasheada
+   * Comprueba si una cadena corresponde a la cadena hasheada
    *
-   * @param string $masterPasswordCheck Contraseña a comprobar
-   * @param string $masterPasswordHash Hash de la contraseña
+   * @param string $string Cadena a comprobar
+   * @param string $hash Hash de la cadena
    *
    * @return bool `true` si coinciden, `false` si no
    */
-  public static function checkMasterPassword(string $masterPasswordCheck, string $masterPasswordHash): bool {
-    return password_verify($masterPasswordCheck, $masterPasswordHash);
+  public static function checkHash(string $string, string $hash): bool {
+    return password_verify($string, $hash);
   }
 
 
   /**
-   * Encripta una contraseña, pero pudiéndose desencriptar
+   * Encripta una cadena, pero pudiéndose desencriptar
    *
-   * @param string $password Contraseña a encriptar
+   * @param string $string Cadena a encriptar
    *
-   * @return string Contraseña cifrada en Base 64
+   * @return string Cadena cifrada en Base 64
    */
-  public static function encryptPassword(string $password): string {
+  public static function encrypt(string $string): string {
     $ivLength = openssl_cipher_iv_length(CIPHER_ALGORITHM);
     $iv = openssl_random_pseudo_bytes($ivLength);
 
-    $encryptedPassword = openssl_encrypt(
-      $password,
+    $encryptedString = openssl_encrypt(
+      $string,
       CIPHER_ALGORITHM,
       ENCRYPTION_PASSPHRASE,
       OPENSSL_RAW_DATA,
       $iv
     );
 
-    return base64_encode("$encryptedPassword::$iv");
+    return base64_encode("$encryptedString::$iv");
   }
 
 
   /**
-   * Desencripta una contraseña
+   * Desencripta una cadena
    *
-   * @param string $encryptedPassword Contraseña encriptada
+   * @param string $encryptedString Cadena encriptada
    *
-   * @return string|bool Contraseña original. `false` si se produce algún error
+   * @return string|bool Cadena original. `false` si se produce algún error
    */
-  public static function decryptPassword(string $encryptedPassword): string|bool {
+  public static function decrypt(string $encryptedString): string|bool {
     [ $encryptedData, $iv ] = explode(
       "::",
-      base64_decode($encryptedPassword),
+      base64_decode($encryptedString),
       2
     );
 
@@ -95,14 +95,21 @@ class Encrypt {
     );
   }
 
-
   /**
    * Genera un Session Token
    *
    * @return string
    */
   public static function generateSessionToken(): string {
-    return bin2hex(random_bytes(32));
+    $bytes = random_bytes(32);
+
+    return vsprintf(
+      "%s-%s-%s-%s-%s-%s-%s-%s",
+      str_split(
+        bin2hex($bytes),
+        8
+      )
+    );
   }
 
 
@@ -129,5 +136,16 @@ class Encrypt {
         4
       )
     );
+  }
+
+
+  /**
+   * Hashea una cadena usando SHA-256
+   *
+   * @param string $string
+   * @return string
+   */
+  public static function sha256(string $string): string {
+    return hash("sha256", $string);
   }
 }

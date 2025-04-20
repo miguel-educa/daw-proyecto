@@ -19,7 +19,7 @@ class SessionController {
   public static function DELETE(Request $req, Response $res) {
     try {
       // Recuperar sesión
-      $session = SessionsModel::getActiveSessionByTokenAndUserAgent($req->getCookie("session_token"), $req->getUserAgent());
+      $session = SessionsModel::getSessionByTokenAndUserAgent($req->getCookie("session_token"), $req->getUserAgent());
 
       if ($session === null) {
         $res->addError(Response::ERROR_UNAUTHORIZED);
@@ -62,25 +62,25 @@ class SessionController {
 
       $user = UsersModel::getUserByUsername($data["username"], confidentialData: true);
 
-      if ($user === null || !Encrypt::checkMasterPassword($result["data"]["master_password"], $user["master_password"])) {
+      if ($user === null || !Encrypt::checkHash($result["data"]["master_password"], $user["master_password"])) {
         $res->addError("El usuario no existe o la contraseña es incorrecta");
         $res->showResponseAndExit(HttpCode::UNAUTHORIZED);
       }
 
       // Comprobar 2FA (si está habilitado)
-      if ($user[UsersModel::COL_TOTP_2FA_SECRET] !== null && $result["data"]["two_fa_code"] === null) {
+      if ($user[UsersModel::COL_TOTP_2FA_ACTIVATED] && $result["data"]["two_fa_code"] === null) {
         $res->setData([ "two_fa_enabled" => true ]);
         $res->showResponseAndExit(HttpCode::OK);
       }
 
       // Verificar 2FA (si está habilitado)
-      if ($user[UsersModel::COL_TOTP_2FA_SECRET] !== null) {
+      if ($user[UsersModel::COL_TOTP_2FA_ACTIVATED]) {
         $ga = new PHPGangsta_GoogleAuthenticator();
-        $secret = $user[UsersModel::COL_TOTP_2FA_SECRET];
+        $secret = Encrypt::decrypt($user[UsersModel::COL_TOTP_2FA_SECRET]);
         $code = $ga->getCode($secret);
 
         if ($code !== $result["data"]["two_fa_code"]) {
-          $res->addError("El código de la autenticación de doble factor es incorrecto");
+          $res->addError("El código temporal de la autenticación de doble factor es incorrecto");
           $res->showResponseAndExit(HttpCode::UNAUTHORIZED);
         }
       }

@@ -2,23 +2,25 @@ DROP DATABASE IF EXISTS `pass_warriors`;
 CREATE DATABASE IF NOT EXISTS `pass_warriors`;
 USE `pass_warriors`;
 
-
 -- Tabla Users
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
     `id` CHAR(36) NOT NULL,
     `username` VARCHAR(30) NOT NULL,
     `name` VARCHAR(50) NOT NULL,
-    `master_password` CHAR(60) NOT NULL,
+    `master_password` VARCHAR(255) NOT NULL,
     `master_password_edited_at` TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP),
-    `recuperation_code` CHAR(24) NOT NULL,
+    `recuperation_code` VARCHAR(255) NOT NULL,
     `recuperation_code_edited_at` TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP),
-    `totp_2fa_secret` CHAR(32) DEFAULT NULL,
+    `totp_2fa_secret` VARCHAR(255) DEFAULT NULL,
+    `totp_2fa_activated` BOOLEAN NOT NULL DEFAULT FALSE,
+    `totp_2fa_activated_at` TIMESTAMP DEFAULT NULL,
     `created_at` TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP),
     `updated_at` TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP) ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),
     CONSTRAINT `ck_users_uuid` CHECK (regexp_like(`id`,_utf8mb4'^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$')),
     UNIQUE KEY `u_users_username` (`username`),
+    UNIQUE KEY `u_users_totp_2fa_secret` (`totp_2fa_secret`),
     UNIQUE KEY `u_users_recuperation_code` (`recuperation_code`)
 );
 
@@ -31,7 +33,7 @@ CREATE TABLE `sessions` (
     `token` CHAR(64) NOT NULL,
     `token_created_at` TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP),
     `token_expires_at` TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP),
-    `user_agent` VARCHAR(255) DEFAULT NULL,
+    `user_agent` CHAR(64) DEFAULT NULL,
     `created_at` TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP),
     `updated_at` TIMESTAMP NOT NULL DEFAULT (CURRENT_TIMESTAMP) ON UPDATE CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`),

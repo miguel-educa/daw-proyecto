@@ -53,58 +53,60 @@ La base de datos tiene las siguientes **entidades**:
 ### 1.1.1. User
 Representa a un **usuario registrado** en la aplicación y tiene las siguientes **propiedades**:
 
-| Propiedad                        | Tipo          | Descripción                                                                                        |
-| -------------------------------- | ------------- | -------------------------------------------------------------------------------------------------- |
-| **id**                           | `UUID`        | Identificador único (**Primary Key**)                                                              |
-| **username**                     | `VARCHAR(30)` | Nombre único de usuario (**Unique**)                                                               |
-| **name**                         | `VARCHAR(50)` | Nombre a mostrar del usuario                                                                       |
-| **master_password**              | `CHAR(60)`    | Hash de la contraseña maestra                                                                      |
-| **master_password_updated_at**   | `TIMESTAMP`   | Fecha de la última edición de la contraseña maestra                                                |
-| **recuperation_code**            | `CHAR(24)`    | Código de recuperación para poder restablecer la contraseña maestra en caso de olvido (**Unique**) |
-| **recuperation_code_updated_at** | `TIMESTAMP`   | Fecha de la última edición del código de recuperación                                              |
-| **totp_2fa_secret**              | `CHAR(32)`    | Clave de la autenticación de doble factor                                                          |
-| **created_at**                   | `TIMESTAMP`   | Campo de control                                                                                   |
-| **updated_at**                   | `TIMESTAMP`   | Campo de control                                                                                   |
+| Propiedad                        | Tipo        | Descripción                                                                                        |
+| -------------------------------- | ----------- | -------------------------------------------------------------------------------------------------- |
+| **id**                           | `UUID`      | Identificador único (**Primary Key**)                                                              |
+| **username**                     | `VARCHAR`   | Nombre único de usuario (**Unique**)                                                               |
+| **name**                         | `VARCHAR`   | Nombre a mostrar del usuario                                                                       |
+| **master_password**              | `VARCHAR`   | Hash de la contraseña maestra                                                                      |
+| **master_password_updated_at**   | `TIMESTAMP` | Fecha de la última edición de la contraseña maestra                                                |
+| **recuperation_code**            | `VARCHAR`   | Código de recuperación para poder restablecer la contraseña maestra en caso de olvido (**Unique**) |
+| **recuperation_code_updated_at** | `TIMESTAMP` | Fecha de la última edición del código de recuperación                                              |
+| **totp_2fa_secret**              | `VARCHAR`   | Clave de la autenticación de doble factor (**Unique**)                                             |
+| **totp_2fa_activated**           | `BOOLEAN`   | Indica si la autenticación de doble factor está activada                                           |
+| **totp_2fa_activated_at**        | `TIMESTAMP` | Fecha de activación de la autenticación de doble factor                                            |
+| **created_at**                   | `TIMESTAMP` | Campo de control                                                                                   |
+| **updated_at**                   | `TIMESTAMP` | Campo de control                                                                                   |
 
 
 ### 1.1.2. Session
 Representa una **sesión** de un `User` y tiene las siguientes **propiedades**:
 
-| Propiedad            | Tipo           | Descripción                                                          |
-| -------------------- | -------------- | -------------------------------------------------------------------- |
-| **id**               | `UUID`         | Identificador único (**Primary Key**)                                |
-| **token**            | `CHAR(64)`     | Token hexadecimal único como identificador de la sesión (**Unique**) |
-| **token_created_at** | `TIMESTAMP`    | Fecha de creación del token                                          |
-| **token_expires_at** | `TIMESTAMP`    | Fecha de expiración del token                                        |
-| **user_agent**       | `VARCHAR(255)` | *User Agent* del dispositivo que creó la sesión                      |
-| **created_at**       | `TIMESTAMP`    | Campo de control                                                     |
-| **updated_at**       | `TIMESTAMP`    | Campo de control                                                     |
+| Propiedad            | Tipo        | Descripción                                                          |
+| -------------------- | ----------- | -------------------------------------------------------------------- |
+| **id**               | `UUID`      | Identificador único (**Primary Key**)                                |
+| **token**            | `CHAR`      | Token hexadecimal único como identificador de la sesión (**Unique**) |
+| **token_created_at** | `TIMESTAMP` | Fecha de creación del token                                          |
+| **token_expires_at** | `TIMESTAMP` | Fecha de expiración del token                                        |
+| **user_agent**       | `CHAR`      | *User Agent* del dispositivo que creó la sesión                      |
+| **created_at**       | `TIMESTAMP` | Campo de control                                                     |
+| **updated_at**       | `TIMESTAMP` | Campo de control                                                     |
 
 
 ### 1.1.3. Folder
 Representa una **carpeta** y tiene las siguientes **propiedades**:
 
-| Propiedad      | Tipo          | Descripción                           |
-| -------------- | ------------- | ------------------------------------- |
-| **id**         | `UUID`        | Identificador único (**Primary Key**) |
-| **name**       | `VARCHAR(50)` | Nombre de la carpeta                  |
-| **created_at** | `TIMESTAMP`   | Campo de control                      |
-| **updated_at** | `TIMESTAMP`   | Campo de control                      |
+| Propiedad      | Tipo        | Descripción                           |
+| -------------- | ----------- | ------------------------------------- |
+| **id**         | `UUID`      | Identificador único (**Primary Key**) |
+| **name**       | `VARCHAR`   | Nombre de la carpeta                  |
+| **created_at** | `TIMESTAMP` | Campo de control                      |
+| **updated_at** | `TIMESTAMP` | Campo de control                      |
 
 
 ### 1.1.4. Password
 Representa una **contraseña** y tiene las siguientes **propiedades**:
 
-| Propiedad      | Tipo           | Descripción                           |
-| -------------- | -------------- | ------------------------------------- |
-| **id**         | `UUID`         | Identificador único (**Primary Key**) |
-| **name**       | `VARCHAR(50)`  | Nombre de la contraseña               |
-| **password**   | `VARCHAR(100)` | Contraseña encriptada                 |
-| **username**   | `VARCHAR(50)`  | Nombre de usuario                     |
-| **urls**       | `JSON`         | Lista de URLs                         |
-| **notes**      | `TEXT`         | Notas extra                           |
-| **created_at** | `TIMESTAMP`    | Campo de control                      |
-| **updated_at** | `TIMESTAMP`    | Campo de control                      |
+| Propiedad      | Tipo        | Descripción                           |
+| -------------- | ----------- | ------------------------------------- |
+| **id**         | `UUID`      | Identificador único (**Primary Key**) |
+| **name**       | `VARCHAR`   | Nombre de la contraseña               |
+| **password**   | `VARCHAR`   | Contraseña encriptada                 |
+| **username**   | `VARCHAR`   | Nombre de usuario                     |
+| **urls**       | `JSON`      | Lista de URLs                         |
+| **notes**      | `TEXT`      | Notas extra                           |
+| **created_at** | `TIMESTAMP` | Campo de control                      |
+| **updated_at** | `TIMESTAMP` | Campo de control                      |
 
 
 ## 1.2. Relaciones entre Entidades
@@ -178,6 +180,7 @@ Una `Folder` puede **tener** 0, 1 o N `Password` y una `Password` puede **perten
 
 - El código `SQL` con la **estructura** de la base de datos se encuentra en [db_pass_warriors_structure.sql]
 - El código `SQL` con la **datos de ejemplo** se encuentra en [db_pass_warriors_example_data.sql]
+
 
 ---
 

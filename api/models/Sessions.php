@@ -62,8 +62,11 @@ class SessionsModel {
      *
      * @throws \Exception Si se produce algún error
      */
-    public static function getActiveSessionByTokenAndUserAgent(?string $token, string $userAgent): ?array {
+    public static function getSessionByTokenAndUserAgent(?string $token, string $userAgent): ?array {
       if ($token === null) return null;
+
+      $tokenHash = Encrypt::sha256($token);
+      $userAgentHash = Encrypt::sha256($userAgent);
 
       $query = "SELECT " . self::COL_ID . ", " . self::COL_USER_ID .
         " FROM " . self::TABLE .
@@ -78,7 +81,7 @@ class SessionsModel {
       if (!$db->isConnected()) throw new \Exception(DB::DB_CONNECTION_ERROR);
 
       // Obtener resultados
-      $data = $db->select($query, [ $token, $userAgent ]);
+      $data = $db->select($query, [ $tokenHash, $userAgentHash ]);
 
       if ($data === false) throw new \Exception(DB::DB_GET_ERROR);
 
@@ -100,6 +103,8 @@ class SessionsModel {
     public static function create(string $userId, string $userAgent, int $tokenExpiresAt): array {
       $id = Encrypt::generateUUIDv4();
       $token = Encrypt::generateSessionToken();
+      $tokenHash = Encrypt::sha256($token);
+      $userAgentHash = Encrypt::sha256($userAgent);
 
       $query = "INSERT INTO " . self::TABLE . "
           (" . self::COL_ID . ", " . self::COL_USER_ID . ", " . self::COL_TOKEN . ", " . self::COL_USER_AGENT . ", " . self::COL_TOKEN_EXPIRES . ")
@@ -113,8 +118,8 @@ class SessionsModel {
       $db->addQuery($query, [
         $id,
         $userId,
-        $token,
-        $userAgent,
+        $tokenHash,
+        $userAgentHash,
         $tokenExpiresAt
       ]);
 
@@ -124,6 +129,8 @@ class SessionsModel {
 
       if ($newResource === null) throw new \Exception(DB::DB_GET_ERROR);
 
+      // Recuperar token original para almacenar en Cookie
+      $newResource["token"] = $token;
       return $newResource;
     }
 

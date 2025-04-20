@@ -22,7 +22,7 @@ class UserController {
   public static function GET(Request $req, Response $res) {
     try {
       // Obtener usuario mediante sesión
-      $session = SessionsModel::getActiveSessionByTokenAndUserAgent($req->getCookie("session_token"), $req->getUserAgent());
+      $session = SessionsModel::getSessionByTokenAndUserAgent($req->getCookie("session_token"), $req->getUserAgent());
 
       if ($session === null) {
         $res->addError(Response::ERROR_UNAUTHORIZED);
@@ -43,6 +43,7 @@ class UserController {
         $res->showResponseAndExit(HttpCode::NOT_FOUND);
       }
 
+      unset($user[UsersModel::COL_TOTP_2FA_SECRET]);
       $res->setData($user);
       $res->showResponseAndExit(HttpCode::OK);
     } catch (\Exception $e) {

@@ -47,7 +47,7 @@ class PasswordsModel {
 
       foreach ($data as &$item) {
         $item["urls"] = json_decode($item["urls"], true);
-        $item["password"] = $item["password"] === null ? $item["password"] : Encrypt::decryptPassword($item["password"]);
+        $item["password"] = $item["password"] !== null ? Encrypt::decrypt($item["password"]) : null;
       }
 
       return $data;
@@ -82,7 +82,7 @@ class PasswordsModel {
       if ($data === null) return null;
 
       $data[0]["urls"] = json_decode($data[0]["urls"], true);
-      $data[0]["password"] = $data[0]["password"] === null ? $data[0]["password"] : Encrypt::decryptPassword($data[0]["password"]);
+      $data[0]["password"] = $data[0]["password"] === null ? $data[0]["password"] : Encrypt::decrypt($data[0]["password"]);
 
       return $data[0] ?? null;
     }
@@ -121,7 +121,7 @@ class PasswordsModel {
         $data[self::COL_OWNER_ID],
         $data[self::COL_FOLDER_ID],
         $data[self::COL_NAME],
-        Encrypt::encryptPassword($data[self::COL_PASSWORD]),
+        Encrypt::encrypt($data[self::COL_PASSWORD]),
         $data[self::COL_USERNAME],
         $data[self::COL_URLS],
         $data[self::COL_NOTES]

@@ -18,6 +18,8 @@ class UsersModel {
     public const COL_REC_CODE = "recuperation_code";
     public const COL_REC_CODE_EDITED = "recuperation_code_edited_at";
     public const COL_TOTP_2FA_SECRET = "totp_2fa_secret";
+    public const COL_TOTP_2FA_ACTIVATED = "totp_2fa_activated";
+    public const COL_TOTP_2FA_ACTIVATED_AT = "totp_2fa_activated_at";
 
 
   /* Métodos */
@@ -35,7 +37,7 @@ class UsersModel {
      */
     public static function getUserById(string $id, bool $confidentialData = false): ?array {
         $query = $confidentialData
-          ? "SELECT " . self::COL_ID . ", " . self::COL_USERNAME . ", " . self::COL_NAME . ", UNIX_TIMESTAMP(" . self::COL_M_PASSWORD_EDITED . ") as " . self::COL_M_PASSWORD_EDITED . ", " . self::COL_REC_CODE . ", UNIX_TIMESTAMP(" . self::COL_REC_CODE_EDITED . ") as " . self::COL_REC_CODE_EDITED . ", " . self::COL_TOTP_2FA_SECRET .
+          ? "SELECT " . self::COL_ID . ", " . self::COL_USERNAME . ", " . self::COL_NAME . ", UNIX_TIMESTAMP(" . self::COL_M_PASSWORD_EDITED . ") as " . self::COL_M_PASSWORD_EDITED . ", " . self::COL_REC_CODE . ", UNIX_TIMESTAMP(" . self::COL_REC_CODE_EDITED . ") as " . self::COL_REC_CODE_EDITED . ", " . self::COL_TOTP_2FA_SECRET . ", " . self::COL_TOTP_2FA_ACTIVATED . ", " . "UNIX_TIMESTAMP(" . self::COL_TOTP_2FA_ACTIVATED_AT . ") as " . self::COL_TOTP_2FA_ACTIVATED_AT .
             " FROM " . self::TABLE .
             " WHERE " . self::COL_ID . " = ?"
           : "SELECT " . self::COL_ID . ", " . self::COL_USERNAME . ", " . self::COL_NAME .
@@ -52,6 +54,13 @@ class UsersModel {
 
       if ($data === false) throw new \Exception(DB::DB_GET_ERROR);
 
+      // Transformar datos
+      if (isset($data[0][self::COL_TOTP_2FA_ACTIVATED]))
+        $data[0][self::COL_TOTP_2FA_ACTIVATED] = $data[0][self::COL_TOTP_2FA_ACTIVATED] === 1;
+
+      if (isset($data[0][self::COL_REC_CODE]))
+        $data[0][self::COL_REC_CODE] = Encrypt::decrypt($data[0][self::COL_REC_CODE]);
+
       return $data[0] ?? null;
     }
 
@@ -66,9 +75,14 @@ class UsersModel {
      * @throws \Exception Si se produce algún error
      */
     public static function getUserByUsername(string $username, bool $confidentialData = false): ?array {
-      $query = "SELECT " . self::COL_USERNAME . ", " . self::COL_NAME . ($confidentialData ? ", " . self::COL_M_PASSWORD . ", " . self::COL_ID . ", " . self::COL_TOTP_2FA_SECRET : "") .
-        " FROM " . self::TABLE .
-        " WHERE " . self::COL_USERNAME . " = ?";
+      $query = $confidentialData
+          ? "SELECT " . self::COL_ID . ", " . self::COL_USERNAME . ", " . self::COL_NAME . ", " . self::COL_M_PASSWORD . ", UNIX_TIMESTAMP(" . self::COL_M_PASSWORD_EDITED . ") as " . self::COL_M_PASSWORD_EDITED . ", " . self::COL_REC_CODE . ", UNIX_TIMESTAMP(" . self::COL_REC_CODE_EDITED . ") as " . self::COL_REC_CODE_EDITED . ", " . self::COL_TOTP_2FA_SECRET . ", " . self::COL_TOTP_2FA_ACTIVATED . ", " . "UNIX_TIMESTAMP(" . self::COL_TOTP_2FA_ACTIVATED_AT . ") as " . self::COL_TOTP_2FA_ACTIVATED_AT .
+            " FROM " . self::TABLE .
+            " WHERE " . self::COL_USERNAME . " = ?"
+          : "SELECT " . self::COL_USERNAME . ", " . self::COL_NAME .
+            " FROM " . self::TABLE .
+            " WHERE " . self::COL_USERNAME . " = ?";
+
 
       // Conectar DB
       $db = new DB();
@@ -79,6 +93,9 @@ class UsersModel {
       $data = $db->select($query, [ $username ]);
 
       if ($data === false) throw new \Exception(DB::DB_GET_ERROR);
+
+      if (isset($data[0]["totp_2fa_activated"]))
+        $data[0]["totp_2fa_activated"] = $data[0]["totp_2fa_activated"] === 1;
 
       return $data[0] ?? null;
     }
@@ -127,8 +144,9 @@ class UsersModel {
     public static function create(array $data): array {
       // Generar campos
       $id = Encrypt::generateUUIDv4();
-      $masterPasswordHash = Encrypt::hashMasterPassword($data[self::COL_M_PASSWORD]);
+      $masterPasswordHash = Encrypt::hash($data[self::COL_M_PASSWORD]);
       $recuperationCode = Encrypt::generateRecuperationCode();
+      $recuperationCodeEnc = Encrypt::encrypt($recuperationCode);
 
       $query = "INSERT INTO " . self::TABLE . "
          (" . self::COL_ID . ", " . self::COL_USERNAME . ", " . self::COL_NAME . ", " . self::COL_M_PASSWORD . ", " . self::COL_REC_CODE . ")
@@ -144,7 +162,7 @@ class UsersModel {
         $data[self::COL_USERNAME],
         $data[self::COL_NAME],
         $masterPasswordHash,
-        $recuperationCode
+        $recuperationCodeEnc
       ]);
 
       if ($db->executeTransaction() === false) throw new \Exception(DB::DB_CREATE_ERROR);
@@ -157,8 +175,20 @@ class UsersModel {
     }
 
 
+    /**
+     * Crea el secret de la autenticación de doble factor
+     *
+     * @param string $id Id del `User`
+     * @param string $secret Secreto generado
+     *
+     * @return bool `true` si se crea con éxito
+     *
+     * @throws \Exception Si se produce algún error
+     */
     public static function create2FA(string $id, string $secret): bool {
-      $query = "UPDATE " . self::TABLE . " SET " . self::COL_TOTP_2FA_SECRET . " = ? WHERE " . self::COL_ID . " = ?";
+      $secretEnc = Encrypt::encrypt($secret);
+
+      $query = "UPDATE " . self::TABLE . " SET " . self::COL_TOTP_2FA_SECRET . " = ?, " . self::COL_TOTP_2FA_ACTIVATED . " = FALSE, " . self::COL_TOTP_2FA_ACTIVATED_AT . " = NULL WHERE " . self::COL_ID . " = ?";
 
       // Conectar DB
       $db = new DB();
@@ -166,7 +196,7 @@ class UsersModel {
       if (!$db->isConnected()) throw new \Exception(DB::DB_CONNECTION_ERROR);
 
       $db->addQuery($query, [
-        $secret,
+        $secretEnc,
         $id
       ]);
 
@@ -175,17 +205,50 @@ class UsersModel {
       return true;
     }
 
-    public static function delete2FA(string $id): bool {
-      $query = "UPDATE " . self::TABLE . " SET " . self::COL_TOTP_2FA_SECRET . " = NULL WHERE " . self::COL_ID . " = ?";
+
+    /**
+     * Activa la autenticación de doble factor
+     *
+     * @param string $id Id del `User`
+     *
+     * @return bool `true` si se activa con éxito
+     *
+     * @throws \Exception Si se produce algún error
+     */
+    public static function activate2FA(string $id): bool {
+      $query = "UPDATE " . self::TABLE . " SET " . self::COL_TOTP_2FA_ACTIVATED . " = TRUE, " . self::COL_TOTP_2FA_ACTIVATED_AT . " = CURRENT_TIMESTAMP WHERE " . self::COL_ID . " = ?";
 
       // Conectar DB
       $db = new DB();
 
       if (!$db->isConnected()) throw new \Exception(DB::DB_CONNECTION_ERROR);
 
-      $db->addQuery($query, [
-        $id
-      ]);
+      $db->addQuery($query, [ $id ]);
+
+      if ($db->executeTransaction() === false) throw new \Exception(DB::DB_CREATE_ERROR);
+
+      return true;
+    }
+
+
+    /**
+     * Desactiva y elimina la autenticación de doble factor
+     *
+     * @param string $id Id del `User`
+     *
+     * @return bool `true` si se desactiva con éxito
+     *
+     * @throws \Exception Si se produce algún error
+     */
+    public static function delete2FA(string $id): bool {
+      $query = "UPDATE " . self::TABLE . " SET " . self::COL_TOTP_2FA_SECRET . " = NULL, " . self::COL_TOTP_2FA_ACTIVATED . " = FALSE, " . self::COL_TOTP_2FA_ACTIVATED_AT . " = NULL WHERE " . self::COL_ID . " = ?";
+
+      // Conectar DB
+      $db = new DB();
+
+      if (!$db->isConnected()) throw new \Exception(DB::DB_CONNECTION_ERROR);
+
+      $db->addQuery($query, [ $id ]);
 
       if ($db->executeTransaction() === false) throw new \Exception(DB::DB_CREATE_ERROR);
 
