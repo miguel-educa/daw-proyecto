@@ -14,17 +14,27 @@
     - [4.5. Components](#45-components)
         - [4.5.1. HeaderComponent](#451-headercomponent)
         - [4.5.2. AsideComponent](#452-asidecomponent)
+        - [4.5.3. NotificationComponent](#453-notificationcomponent)
+        - [4.5.4. PassGenerator](#454-passgenerator)
+            - [4.5.4.1. CharControlsComponent](#4541-charcontrolscomponent)
+            - [4.5.4.2. PassGeneratorComponent](#4542-passgeneratorcomponent)
+            - [4.5.4.3. PassHistoryComponent](#4543-passhistorycomponent)
+            - [4.5.4.4. PassLengthComponent](#4544-passlengthcomponent)
     - [4.6. Layouts](#46-layouts)
         - [4.6.1. AppLayout.vue](#461-applayoutvue)
     - [4.7. Router](#47-router)
         - [4.7.1. index](#471-index)
     - [4.8. Stores](#48-stores)
-        - [4.8.1. userStore](#481-userstore)
+        - [4.8.1. passwordStore](#481-passwordstore)
+        - [4.8.2. userStore](#482-userstore)
     - [4.9. Tools](#49-tools)
-        - [4.9.1. theme](#491-theme)
+        - [4.9.1. clipboard](#491-clipboard)
+        - [4.9.2. passGenerator](#492-passgenerator)
+        - [4.9.3. theme](#493-theme)
     - [4.10. user](#410-user)
     - [4.11. Views](#411-views)
         - [4.11.1. HomeView](#4111-homeview)
+        - [4.11.2. PassGeneratorView](#4112-passgeneratorview)
 
 
 # 1. [.env-example](./.env-example)
@@ -69,8 +79,9 @@ Almacena **archivos** que se utilizarán en la aplicación pero que necesitan se
 ### 4.4.1. CSS
 Archivos CSS para proporcionar estilos a la aplicación
 
-- [main.css](./src/assets/css/main.css): Archivo principal
-- [bulma/bulma.css](./src/assets/css/bulma/bulma.css): Archivo principal del framework CSS [Bulma](https://github.com/jgthms/bulma/blob/main/css/bulma.css)
+- [main.css](./src/assets/css/main.css): Archivo principal de estilos
+- [pass-generator.css](./src/assets/css/pass-generator.css): Estilos del generador de contraseñas
+- [bulma/bulma.css](./src/assets/css/bulma/bulma.css): Archivo principal de estilos del framework CSS [Bulma](https://github.com/jgthms/bulma/blob/main/css/bulma.css)
 
 
 ## 4.5. Components
@@ -83,6 +94,30 @@ Contiene el Header de la aplicación, mostrando las opciones de navegación corr
 
 ### 4.5.2. [AsideComponent](./src/components/AsideComponent.vue)
 Contiene la barra lateral de la aplicación, disponible cuando hay un usuario autenticado
+
+
+### 4.5.3. [NotificationComponent](./src/components/NotificationComponent.vue)
+Componente para mostrar notificaciones temporales
+
+
+### 4.5.4. PassGenerator
+Contiene los componentes de la vista `PassGeneratorView`
+
+
+#### 4.5.4.1. [CharControlsComponent](./src/components/passGenerator/CharControlsComponent.vue)
+Componente para modificar los caracteres mínimos de la contraseña a generar
+
+
+#### 4.5.4.2. [PassGeneratorComponent](./src/components/passGenerator/PassGeneratorComponent.vue)
+Componente principal del generador de la vista `PassGeneratorView`
+
+
+#### 4.5.4.3. [PassHistoryComponent](./src/components/passGenerator/PassHistoryComponent.vue)
+Componente para mostrar el historial de contraseñas generadas
+
+
+#### 4.5.4.4. [PassLengthComponent](./src/components/passGenerator/PassLengthComponent.vue)
+Componente para modificar la longitud de la contraseña
 
 
 ## 4.6. Layouts
@@ -105,7 +140,11 @@ Es el **archivo de configuración** del enrutador. En él se definen las rutas y
 Contiene los almacenes de estado de la aplicación. Permite sincronizar estados desde distintos componentes
 
 
-### 4.8.1. [userStore](./src/stores/userStore.js)
+### 4.8.1. [passwordStore](./src/stores/passwordStore.js)
+Almacena los estados del generador de contraseñas (longitud, caracteres mínimos...)
+
+
+### 4.8.2. [userStore](./src/stores/userStore.js)
 Almacena los estados de la sesión de un usuario
 
 
@@ -113,7 +152,15 @@ Almacena los estados de la sesión de un usuario
 Contiene herramientas que se utilizan en la aplicación
 
 
-### 4.9.1. [theme](./src/tools/theme.js)
+### 4.9.1. [clipboard](./src/tools/clipboard.js)
+Permite copiar texto al portapapeles
+
+
+### 4.9.2. [passGenerator](./src/tools/passGenerator.js)
+Contiene clases y métodos para el generador de contraseñas (configuración, caracteres, historial...)
+
+
+### 4.9.3. [theme](./src/tools/theme.js)
 Contiene métodos para establecer y editar distintos parámetros del tema de la aplicación (modo oscuro/claro, posición de la barra lateral...)
 
 
@@ -127,6 +174,10 @@ Contiene las **vistas** (páginas) de la aplicación. Cada vista suele tener aso
 
 ### 4.11.1. [HomeView](./src/views/HomeView.vue)
 Es la vista de la página de inico de la aplicación
+
+
+### 4.11.2. [PassGeneratorView](./src/views/PassGeneratorView.vue)
+Es la vista de la página **Generador de contraseñas**
 
 
 ---

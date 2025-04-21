@@ -5,6 +5,31 @@ export const api = {
   userEndpoint: `${API_URL}/user.php`,
 }
 
+// Generador de contraseñas
+export const passGenerator = {
+  config: {
+    passwordLength: 8,
+    lowerCharCount: 1,
+    upperCharCount: 1,
+    numberCharCount: 1,
+    specialCharCount: 1,
+  },
+  limits: {
+    minPasswordLength: 5,
+    maxPasswordLength: 50,
+    maxNumberMinimumChars: 10,
+  },
+  availableChars: {
+    lower: 'abcdefghijklmnopqrstuvwxyz'.split(''),
+    upper: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
+    number: '0123456789'.split(''),
+    special: '_-,;!.@*&#%+$/'.split(''),
+  },
+  history: {
+    maxHistory: 50,
+  },
+}
+
 // Menú de navegación
 export const navMenuOptions = {
   userLogin: [
@@ -18,7 +43,7 @@ export const navMenuOptions = {
     { label: 'Generador', path: '/pass-generator' },
     { label: 'Auditoría', path: '/pass-audit' },
     {
-      label: 'Ajustes',
+      label: 'Ajustes de cuenta',
       path: '/settings',
     },
     {
@@ -37,6 +62,7 @@ export const navMenuOptions = {
 const config = {
   api,
   navMenuOptions,
+  passGenerator,
 }
 
 export default config

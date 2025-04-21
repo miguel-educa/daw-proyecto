@@ -6,6 +6,14 @@ const routes = [
     name: 'home',
     component: () => import('@/views/HomeView.vue'),
   },
+  {
+    path: '/pass-generator',
+    name: '/pass-generator',
+    component: () => import('@/views/PassGeneratorView.vue'),
+    meta: {
+      title: 'Generador de contraseñas',
+    },
+  },
 ]
 
 const router = createRouter({

@@ -52,20 +52,31 @@ También se han utilizado las siguientes herramientas:
             📁 bulma
                 📄 bulma.css
             📄 main.css
+            📄 pass-generator.css
     📁 components
         📄 AsideComponent.vue
         📄 HeaderComponent.vue
-    📁 layout
+        📄 NotificationComponent.vue
+        📁 passGenerator
+            📄 CharControlsComponent.vue
+            📄 PassGeneratorComponent.vue
+            📄 PassHistoryComponent.vue
+            📄 PassLengthComponent.vue
+    📁 layouts
         📄 AppLayout.vue
     📁 router
         📄 index.js
     📁 stores
+        📄 passwordStore.js
         📄 userStore.js
     📁 tools
+        📄 clipboard.js
+        📄 passGenerator.js
         📄 theme.js
         📄 user.js
     📁 views
         📄 HomeView.vue
+        📄 PassGeneratorView.vue
 ```
 
 
