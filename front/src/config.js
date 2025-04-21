@@ -2,6 +2,7 @@
 const API_URL = import.meta.env.VITE_API_URL
 
 export const api = {
+  sessionEndpoint: `${API_URL}/session.php`,
   userEndpoint: `${API_URL}/user.php`,
 }
 
@@ -58,11 +59,35 @@ export const navMenuOptions = {
   ],
 }
 
+export const sessionDuration = [
+  {
+    label: '1 hora',
+    value: 3600,
+  },
+  {
+    label: '1 día',
+    value: 86400,
+  },
+  {
+    label: '1 semana',
+    value: 604800,
+  },
+  {
+    label: '1 mes',
+    value: 2592000,
+  },
+  {
+    label: '3 meses',
+    value: 7776000,
+  },
+]
+
 // Configuración global
 const config = {
   api,
   navMenuOptions,
   passGenerator,
+  sessionDuration,
 }
 
 export default config

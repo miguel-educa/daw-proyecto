@@ -51,12 +51,16 @@ También se han utilizado las siguientes herramientas:
         📁 css
             📁 bulma
                 📄 bulma.css
+            📄 forms.css
             📄 main.css
             📄 pass-generator.css
     📁 components
         📄 AsideComponent.vue
         📄 HeaderComponent.vue
         📄 NotificationComponent.vue
+        📁 forms
+            📄 LoginFormComponent.vue
+            📄 TwoFactorComponent.vue
         📁 passGenerator
             📄 CharControlsComponent.vue
             📄 PassGeneratorComponent.vue
@@ -76,7 +80,9 @@ También se han utilizado las siguientes herramientas:
         📄 user.js
     📁 views
         📄 HomeView.vue
+        📄 LoginView.vue
         📄 PassGeneratorView.vue
+        📄 VaultView.vue
 ```
 
 

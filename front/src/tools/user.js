@@ -35,6 +35,67 @@ class UserTools {
       return null
     }
   }
+
+  /**
+   * Inicia sesión de un usuario
+   *
+   * @param {Object} data Datos del usuario
+   *
+   * @returns {Object|null} Datos del resultado obtenido o `null` si se produce un error
+   */
+  static async login(data) {
+    const options = {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }
+
+    try {
+      const res = await fetch(api.sessionEndpoint, options)
+
+      if (res.status === 401) {
+        return {}
+      }
+
+      if (res.status !== 200) {
+        throw new Error('No se ha podido iniciar sesión')
+      }
+
+      sessionStorage.removeItem('anonymous-user')
+      const result = await res.json()
+
+      return result.data
+    } catch (error) {
+      console.error(error)
+      return null
+    }
+  }
+
+  /**
+   * Cierra la sesión de un usuario
+   *
+   * @returns {boolean|null} `true` si se ha cerrado la sesión correctamente, `null` si se produce un error
+   */
+  static async logout() {
+    const options = {
+      method: 'DELETE',
+      credentials: 'include',
+    }
+
+    try {
+      const res = await fetch(api.sessionEndpoint, options)
+
+      if (res.status !== 200) {
+        throw new Error('No se ha podido cerrar la sesión')
+      }
+
+      return true
+    } catch (error) {
+      console.error(error)
+      return null
+    }
+  }
 }
 
 export default UserTools

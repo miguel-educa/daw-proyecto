@@ -15,11 +15,14 @@
         - [4.5.1. HeaderComponent](#451-headercomponent)
         - [4.5.2. AsideComponent](#452-asidecomponent)
         - [4.5.3. NotificationComponent](#453-notificationcomponent)
-        - [4.5.4. PassGenerator](#454-passgenerator)
-            - [4.5.4.1. CharControlsComponent](#4541-charcontrolscomponent)
-            - [4.5.4.2. PassGeneratorComponent](#4542-passgeneratorcomponent)
-            - [4.5.4.3. PassHistoryComponent](#4543-passhistorycomponent)
-            - [4.5.4.4. PassLengthComponent](#4544-passlengthcomponent)
+        - [4.5.4. Forms](#454-forms)
+            - [4.5.4.1. LoginFormComponent](#4541-loginformcomponent)
+            - [4.5.4.2. TwoFactorComponent](#4542-twofactorcomponent)
+        - [4.5.5. PassGenerator](#455-passgenerator)
+            - [4.5.5.1. CharControlsComponent](#4551-charcontrolscomponent)
+            - [4.5.5.2. PassGeneratorComponent](#4552-passgeneratorcomponent)
+            - [4.5.5.3. PassHistoryComponent](#4553-passhistorycomponent)
+            - [4.5.5.4. PassLengthComponent](#4554-passlengthcomponent)
     - [4.6. Layouts](#46-layouts)
         - [4.6.1. AppLayout.vue](#461-applayoutvue)
     - [4.7. Router](#47-router)
@@ -34,7 +37,9 @@
     - [4.10. user](#410-user)
     - [4.11. Views](#411-views)
         - [4.11.1. HomeView](#4111-homeview)
-        - [4.11.2. PassGeneratorView](#4112-passgeneratorview)
+        - [4.11.2. LoginView](#4112-loginview)
+        - [4.11.3. PassGeneratorView](#4113-passgeneratorview)
+        - [VaultView](#vaultview)
 
 
 # 1. [.env-example](./.env-example)
@@ -79,6 +84,7 @@ Almacena **archivos** que se utilizarán en la aplicación pero que necesitan se
 ### 4.4.1. CSS
 Archivos CSS para proporcionar estilos a la aplicación
 
+- [forms.css](./src/assets/css/forms.css): Estilos de los formularios
 - [main.css](./src/assets/css/main.css): Archivo principal de estilos
 - [pass-generator.css](./src/assets/css/pass-generator.css): Estilos del generador de contraseñas
 - [bulma/bulma.css](./src/assets/css/bulma/bulma.css): Archivo principal de estilos del framework CSS [Bulma](https://github.com/jgthms/bulma/blob/main/css/bulma.css)
@@ -100,23 +106,35 @@ Contiene la barra lateral de la aplicación, disponible cuando hay un usuario au
 Componente para mostrar notificaciones temporales
 
 
-### 4.5.4. PassGenerator
+### 4.5.4. Forms
+Contiene componentes relacionados con formularios
+
+
+#### 4.5.4.1. [LoginFormComponent](./src/components/forms/LoginFormComponent.vue)
+Componente principal de la vista `LoginView`
+
+
+#### 4.5.4.2. [TwoFactorComponent](./src/components/forms/TwoFactorComponent.vue)
+Componente para introducir el código de autenticación de dos factores si el usuario lo tiene habilitado
+
+
+### 4.5.5. PassGenerator
 Contiene los componentes de la vista `PassGeneratorView`
 
 
-#### 4.5.4.1. [CharControlsComponent](./src/components/passGenerator/CharControlsComponent.vue)
+#### 4.5.5.1. [CharControlsComponent](./src/components/passGenerator/CharControlsComponent.vue)
 Componente para modificar los caracteres mínimos de la contraseña a generar
 
 
-#### 4.5.4.2. [PassGeneratorComponent](./src/components/passGenerator/PassGeneratorComponent.vue)
+#### 4.5.5.2. [PassGeneratorComponent](./src/components/passGenerator/PassGeneratorComponent.vue)
 Componente principal del generador de la vista `PassGeneratorView`
 
 
-#### 4.5.4.3. [PassHistoryComponent](./src/components/passGenerator/PassHistoryComponent.vue)
+#### 4.5.5.3. [PassHistoryComponent](./src/components/passGenerator/PassHistoryComponent.vue)
 Componente para mostrar el historial de contraseñas generadas
 
 
-#### 4.5.4.4. [PassLengthComponent](./src/components/passGenerator/PassLengthComponent.vue)
+#### 4.5.5.4. [PassLengthComponent](./src/components/passGenerator/PassLengthComponent.vue)
 Componente para modificar la longitud de la contraseña
 
 
@@ -176,8 +194,16 @@ Contiene las **vistas** (páginas) de la aplicación. Cada vista suele tener aso
 Es la vista de la página de inico de la aplicación
 
 
-### 4.11.2. [PassGeneratorView](./src/views/PassGeneratorView.vue)
+### 4.11.2. [LoginView](./src/views/LoginView.vue)
+Es la vista de la página de inicio de sesión
+
+
+### 4.11.3. [PassGeneratorView](./src/views/PassGeneratorView.vue)
 Es la vista de la página **Generador de contraseñas**
+
+
+### [VaultView](./src/views/VaultView.vue)
+Es la vista de la página **Baúl personal**
 
 
 ---

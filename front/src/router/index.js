@@ -1,3 +1,4 @@
+import UserTools from '@/tools/user'
 import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
@@ -7,11 +8,29 @@ const routes = [
     component: () => import('@/views/HomeView.vue'),
   },
   {
-    path: '/pass-generator',
-    name: '/pass-generator',
-    component: () => import('@/views/PassGeneratorView.vue'),
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/LoginView.vue'),
     meta: {
-      title: 'Generador de contraseñas',
+      title: 'Login',
+    },
+  },
+  {
+    path: '/logut',
+    name: 'logout',
+    beforeEnter: async (to, from, next) => {
+      const result = await UserTools.logout()
+
+      if (result) next('/login')
+      else alert('No se ha podido cerrar la sesión, inténtelo más tarde')
+    },
+  },
+  {
+    path: '/vault',
+    name: 'vault',
+    component: () => import('@/views/VaultView.vue'),
+    meta: {
+      title: 'Baúl personal',
     },
   },
 ]
