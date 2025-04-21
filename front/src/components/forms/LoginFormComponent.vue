@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import config from '@/config.js'
 import UserTools from '@/tools/user.js'
 import TwoFactorComponent from '@/components/forms/TwoFactorComponent.vue'
+import AccountRecoveryComponent from './AccountRecoveryComponent.vue'
 import '@/assets/css/forms.css'
 
 const router = useRouter()
@@ -17,6 +18,7 @@ const showError = ref(false)
 const errorMessage = ref('')
 const isLoading = ref(false)
 const twoFactorModalActive = ref(false)
+const recuperationCodeModalActive = ref(false)
 
 /**
  * Controlador del formulario de inicio de sesión
@@ -70,7 +72,13 @@ const LoginSubmitHandler = async () => {
   <TwoFactorComponent
     v-if="twoFactorModalActive"
     :user="{ username: username, password: password, sessionDuration: sessionDuration }"
-    @close2FA="twoFactorModalActive = false"
+    @close2-f-a="twoFactorModalActive = false"
+  />
+
+  <!-- Modal de Recuperation Code -->
+  <AccountRecoveryComponent
+    v-if="recuperationCodeModalActive"
+    @close-recuperation-code="recuperationCodeModalActive = false"
   />
 
   <!-- Formulario de inicio de sesión -->
@@ -155,6 +163,9 @@ const LoginSubmitHandler = async () => {
         <!-- Botón -->
         <div class="field mt-6">
           <div class="control has-text-centered">
+            <p>¿No tiene cuenta? <RouterLink to="/register">Crear una</RouterLink></p>
+            <p class="mb-2"><a @click="recuperationCodeModalActive = true">Recuperar cuenta</a></p>
+
             <button
               class="button input-button"
               :class="{ 'is-loading': isLoading }"
@@ -182,5 +193,9 @@ button {
 
 .input-field {
   box-shadow: var(--box-shadow-5-5-10);
+}
+
+p {
+  color: var(--form-text-color);
 }
 </style>

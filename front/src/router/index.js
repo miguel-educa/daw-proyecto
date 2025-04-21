@@ -16,13 +16,21 @@ const routes = [
     },
   },
   {
-    path: '/logut',
+    path: '/logout',
     name: 'logout',
     beforeEnter: async (to, from, next) => {
       const result = await UserTools.logout()
 
       if (result) next('/login')
       else alert('No se ha podido cerrar la sesión, inténtelo más tarde')
+    },
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('@/views/RegisterView.vue'),
+    meta: {
+      title: 'Registro',
     },
   },
   {

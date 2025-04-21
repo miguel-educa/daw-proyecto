@@ -16,8 +16,9 @@
         - [4.5.2. AsideComponent](#452-asidecomponent)
         - [4.5.3. NotificationComponent](#453-notificationcomponent)
         - [4.5.4. Forms](#454-forms)
-            - [4.5.4.1. LoginFormComponent](#4541-loginformcomponent)
-            - [4.5.4.2. TwoFactorComponent](#4542-twofactorcomponent)
+            - [4.5.4.1. AccountRecoveryComponent](#4541-accountrecoverycomponent)
+            - [4.5.4.2. LoginFormComponent](#4542-loginformcomponent)
+            - [4.5.4.3. TwoFactorComponent](#4543-twofactorcomponent)
         - [4.5.5. PassGenerator](#455-passgenerator)
             - [4.5.5.1. CharControlsComponent](#4551-charcontrolscomponent)
             - [4.5.5.2. PassGeneratorComponent](#4552-passgeneratorcomponent)
@@ -33,13 +34,15 @@
     - [4.9. Tools](#49-tools)
         - [4.9.1. clipboard](#491-clipboard)
         - [4.9.2. passGenerator](#492-passgenerator)
-        - [4.9.3. theme](#493-theme)
+        - [4.9.3. password](#493-password)
+        - [4.9.4. theme](#494-theme)
     - [4.10. user](#410-user)
     - [4.11. Views](#411-views)
         - [4.11.1. HomeView](#4111-homeview)
         - [4.11.2. LoginView](#4112-loginview)
         - [4.11.3. PassGeneratorView](#4113-passgeneratorview)
-        - [VaultView](#vaultview)
+        - [4.11.4. RegisterView](#4114-registerview)
+        - [4.11.5. VaultView](#4115-vaultview)
 
 
 # 1. [.env-example](./.env-example)
@@ -110,11 +113,15 @@ Componente para mostrar notificaciones temporales
 Contiene componentes relacionados con formularios
 
 
-#### 4.5.4.1. [LoginFormComponent](./src/components/forms/LoginFormComponent.vue)
+#### 4.5.4.1. [AccountRecoveryComponent](./src/components/forms/AccountRecoveryComponent.vue)
+Componente para la recuperación de una cuenta
+
+
+#### 4.5.4.2. [LoginFormComponent](./src/components/forms/LoginFormComponent.vue)
 Componente principal de la vista `LoginView`
 
 
-#### 4.5.4.2. [TwoFactorComponent](./src/components/forms/TwoFactorComponent.vue)
+#### 4.5.4.3. [TwoFactorComponent](./src/components/forms/TwoFactorComponent.vue)
 Componente para introducir el código de autenticación de dos factores si el usuario lo tiene habilitado
 
 
@@ -178,7 +185,11 @@ Permite copiar texto al portapapeles
 Contiene clases y métodos para el generador de contraseñas (configuración, caracteres, historial...)
 
 
-### 4.9.3. [theme](./src/tools/theme.js)
+### 4.9.3. [password](./src/tools/password.js)
+Contiene métodos para comprobar la validez de una contraseña
+
+
+### 4.9.4. [theme](./src/tools/theme.js)
 Contiene métodos para establecer y editar distintos parámetros del tema de la aplicación (modo oscuro/claro, posición de la barra lateral...)
 
 
@@ -191,18 +202,22 @@ Contiene las **vistas** (páginas) de la aplicación. Cada vista suele tener aso
 
 
 ### 4.11.1. [HomeView](./src/views/HomeView.vue)
-Es la vista de la página de inico de la aplicación
+Es la vista de la página de **inico** de la aplicación
 
 
 ### 4.11.2. [LoginView](./src/views/LoginView.vue)
-Es la vista de la página de inicio de sesión
+Es la vista de la página de **inicio de sesión**
 
 
 ### 4.11.3. [PassGeneratorView](./src/views/PassGeneratorView.vue)
 Es la vista de la página **Generador de contraseñas**
 
 
-### [VaultView](./src/views/VaultView.vue)
+### 4.11.4. [RegisterView](./src/views/RegisterView.vue)
+Es la vista de la página de **registro** de un usuario
+
+
+### 4.11.5. [VaultView](./src/views/VaultView.vue)
 Es la vista de la página **Baúl personal**
 
 

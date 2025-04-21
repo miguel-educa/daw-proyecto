@@ -2,8 +2,12 @@
 const API_URL = import.meta.env.VITE_API_URL
 
 export const api = {
+  foldersEndpoint: `${API_URL}/folders.php`,
+  paswordsEndpoint: `${API_URL}/passwords.php`,
+  accountRecoveryEndpoint: `${API_URL}/account-recovery.php`,
   sessionEndpoint: `${API_URL}/session.php`,
   userEndpoint: `${API_URL}/user.php`,
+  usersEndpoint: `${API_URL}/users.php`,
 }
 
 // Generador de contraseñas
@@ -49,7 +53,7 @@ export const navMenuOptions = {
     },
     {
       label: 'Cerrar sesión',
-      path: '/logut',
+      path: '/logout',
     },
   ],
   anonymousUser: [

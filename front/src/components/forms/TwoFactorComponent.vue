@@ -1,11 +1,9 @@
 <script setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
-import { useUserStore } from '@/stores/userStore.js'
 import UserTools from '@/tools/user.js'
 
 const router = useRouter()
-const uStore = useUserStore()
 
 const authCode = ref('')
 const showError = ref(false)
@@ -47,7 +45,6 @@ const twoFactorSubmitHandler = async () => {
     return
   }
 
-  uStore.user = await UserTools.getUserInfo()
   router.push('/vault')
 }
 
@@ -55,7 +52,7 @@ const twoFactorSubmitHandler = async () => {
  * Emite el evento de cierre del modal
  */
 const close = () => {
-  emit('close2FA', authCode.value)
+  emit('close2FA')
 }
 </script>
 
@@ -150,5 +147,6 @@ const close = () => {
 
 label {
   font-weight: normal;
+  color: var(--form-text-color);
 }
 </style>

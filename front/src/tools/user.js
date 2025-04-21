@@ -96,6 +96,41 @@ class UserTools {
       return null
     }
   }
+
+  /**
+   * Recupera una cuenta de usuario mediante un código de recuperación
+   *
+   * @param {Object} data Datos para recuperar la cuenta
+   *
+   * @returns {Object|null} Nuevo código de recuperación o `null` si se produce un error
+   */
+  static async recuperationCode(data) {
+    const options = {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }
+
+    try {
+      const res = await fetch(api.accountRecoveryEndpoint, options)
+
+      if (res.status === 401) {
+        return {}
+      }
+
+      if (res.status !== 200 && res.status !== 400) {
+        throw new Error('No se ha podido recuperar la cuenta')
+      }
+
+      const result = await res.json()
+      console.log(result)
+      return result.data
+    } catch (error) {
+      console.error(error)
+      return null
+    }
+  }
 }
 
 export default UserTools
