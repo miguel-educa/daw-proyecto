@@ -62,6 +62,7 @@ Contiene los **archivos estáticos** públicos que se utilizan en la aplicación
 
 - [icons/](./public/icons/): Contiene iconos
 - [img/](./public/img/): Contiene imágenes
+- [.htaccess](./public/.htaccess): Archivo de configuración del servidor web. Permite realizar redirecciones y configuraciones de seguridad
 
 
 # 4. Src

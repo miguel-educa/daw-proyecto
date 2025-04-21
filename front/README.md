@@ -41,6 +41,7 @@ También se han utilizado las siguientes herramientas:
 📄 .env-example (.env)
 📄 index.html
 📁 public
+    📄 .htaccess
     📁 icons
     📁 img
 📁 src
@@ -49,11 +50,11 @@ También se han utilizado las siguientes herramientas:
     📄 main.js
     📁 assets
         📁 css
-            📁 bulma
-                📄 bulma.css
             📄 forms.css
             📄 main.css
             📄 pass-generator.css
+            📁 bulma
+                📄 bulma.css
     📁 components
         📄 AsideComponent.vue
         📄 HeaderComponent.vue
