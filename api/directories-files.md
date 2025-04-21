@@ -11,18 +11,20 @@
 - [2. example-env](#2-example-env)
 - [3. Controllers](#3-controllers)
     - [3.1. 2FA](#31-2fa)
-    - [3.2. Folders](#32-folders)
-    - [3.3. Session](#33-session)
-    - [3.4. User](#34-user)
-    - [3.5. Users](#35-users)
+    - [3.2. AccountRecovery](#32-accountrecovery)
+    - [3.3. Folders](#33-folders)
+    - [3.4. Session](#34-session)
+    - [3.5. User](#35-user)
+    - [3.6. Users](#36-users)
 - [4. Models](#4-models)
     - [4.1. Folders](#41-folders)
     - [4.2. Sessions](#42-sessions)
     - [4.3. Users](#43-users)
 - [5. Schemas](#5-schemas)
-    - [5.1. Folder](#51-folder)
-    - [5.2. Session](#52-session)
-    - [5.3. User](#53-user)
+    - [5.1. AccountRecovery](#51-accountrecovery)
+    - [5.2. Folder](#52-folder)
+    - [5.3. Session](#53-session)
+    - [5.4. User](#54-user)
 - [6. Tools](#6-tools)
     - [6.1. DB](#61-db)
     - [6.2. Encrypt](#62-encrypt)
@@ -61,19 +63,23 @@ Los controladores permiten organizar las distintas rutas y los distintos método
 Contiene la lógica de la ruta `/2fa.php`
 
 
-## 3.2. [Folders](./controllers/Folders.php)
+## 3.2. [AccountRecovery](./controllers/AccountRecovery.php)
+Contiene la lógica de la ruta `/account-recovery.php`
+
+
+## 3.3. [Folders](./controllers/Folders.php)
 Contiene la lógica de la ruta `/folders.php`
 
 
-## 3.3. [Session](./controllers/Session.php)
+## 3.4. [Session](./controllers/Session.php)
 Contiene la lógica de la ruta `/session.php`
 
 
-## 3.4. [User](./controllers/User.php)
+## 3.5. [User](./controllers/User.php)
 Contiene la lógica de la ruta `/user.php`
 
 
-## 3.5. [Users](./controllers/Users.php)
+## 3.6. [Users](./controllers/Users.php)
 Contiene la lógica de la ruta `/users.php`
 
 
@@ -97,15 +103,19 @@ Clase que permite interactuar con `User` en la base de datos
 Contiene las **estructuras** y las **validaciones** de los objetos. Este directorio **NO** debe ser **accesible** mediante una petición HTTP ([.htaccess])
 
 
-## 5.1. [Folder](./schemas/Folder.php)
+## 5.1. [AccountRecovery](./schemas/AccountRecovery.php)
+Clase con la estructura y validaciones para realizar una recuperación de cuenta
+
+
+## 5.2. [Folder](./schemas/Folder.php)
 Clase con la estructura y validaciones de una `Folder`
 
 
-## 5.2. [Session](./schemas/Session.php)
+## 5.3. [Session](./schemas/Session.php)
 Clase con la estructura y validaciones de una `Session`
 
 
-## 5.3. [User](./schemas/User.php)
+## 5.4. [User](./schemas/User.php)
 Clase con la estructura y validaciones de un `User`
 
 

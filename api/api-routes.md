@@ -8,20 +8,22 @@
         - [1.1.2. POST](#112-post)
             - [1.1.2.1. Petición 1](#1121-petición-1)
             - [1.1.2.2. Petición 2](#1122-petición-2)
-    - [1.2. /folders.php](#12-foldersphp)
-        - [1.2.1. GET](#121-get)
-        - [1.2.2. POST](#122-post)
-    - [1.3. /passwords.php](#13-passwordsphp)
+    - [1.2. /account-recovery.php](#12-account-recoveryphp)
+        - [1.2.1. POST](#121-post)
+    - [1.3. /folders.php](#13-foldersphp)
         - [1.3.1. GET](#131-get)
         - [1.3.2. POST](#132-post)
-    - [1.4. /session.php](#14-sessionphp)
-        - [1.4.1. DELETE](#141-delete)
+    - [1.4. /passwords.php](#14-passwordsphp)
+        - [1.4.1. GET](#141-get)
         - [1.4.2. POST](#142-post)
-    - [1.5. /user.php](#15-userphp)
-        - [1.5.1. GET](#151-get)
-    - [1.6. /users.php](#16-usersphp)
+    - [1.5. /session.php](#15-sessionphp)
+        - [1.5.1. DELETE](#151-delete)
+        - [1.5.2. POST](#152-post)
+    - [1.6. /user.php](#16-userphp)
         - [1.6.1. GET](#161-get)
-        - [1.6.2. POST](#162-post)
+    - [1.7. /users.php](#17-usersphp)
+        - [1.7.1. GET](#171-get)
+        - [1.7.2. POST](#172-post)
 
 
 # 1. Rutas API
@@ -117,11 +119,43 @@ Permite **verificar** el código temporal generado al escanear el **código QR**
 > A partir de este momento, el usuario deberá usar el código temporal generado por la aplicación para poder iniciar sesión
 
 
-## 1.2. /folders.php
+## 1.2. /account-recovery.php
+Permite recuperar la cuenta de un usuario
+
+
+### 1.2.1. POST
+Permite **recuperar** la cuenta de un usuario proporcionando el **código de recuperación**
+
+- El **body** de la petición debe contener la siguiente estructura
+
+```jsonc
+{
+    "username": "string",
+    "recuperation_code": "string",
+    "master_password": "string"
+}
+```
+
+| Propiedad           | Descripción                                     | Requerido |
+| ------------------- | ----------------------------------------------- | --------- |
+| `username`          | Nombre de usuario de la cuenta a recuperar      | ✔️         |
+| `recuperation_code` | Código de recuperación de la cuenta a recuperar | ✔️         |
+| `master_password`   | Contraseña maestra                              | ✔️         |
+
+- Si el `username` existe y el `recuperation_code` es correcto, se genera un nuevo código de recuperación y se actualizan los datos del usuario. También se creará una `Session` y se retornará el nuevo código de recuperación:
+
+```jsonc
+{
+    "recuperation_code": "string"
+}
+```
+
+
+## 1.3. /folders.php
 Proporciona información sobre los `Folder`
 
 
-### 1.2.1. GET
+### 1.3.1. GET
 Permite **recuperar** los `Folder` de un `User`
 
 > [!CAUTION]
@@ -140,7 +174,7 @@ Permite **recuperar** los `Folder` de un `User`
 ```
 
 
-### 1.2.2. POST
+### 1.3.2. POST
 Permite **crear** un `Folder`. El `body` de la petición debe contener la siguiente estructura
 
 ```jsonc
@@ -168,11 +202,11 @@ Si los **datos** son **válidos**, se creará un `Folder` y se retornará la sig
 ```
 
 
-## 1.3. /passwords.php
+## 1.4. /passwords.php
 Proporciona información sobre las `Password`
 
 
-### 1.3.1. GET
+### 1.4.1. GET
 Permite **recuperar** las `Password` de un `User`
 
 > [!CAUTION]
@@ -196,7 +230,7 @@ Permite **recuperar** las `Password` de un `User`
 ```
 
 
-### 1.3.2. POST
+### 1.4.2. POST
 Permite **crear** una `Password`. El `body` de la petición debe contener la siguiente estructura
 
 ```jsonc
@@ -240,11 +274,11 @@ Si los **datos** son **válidos**, se creará una `Password` y se retornará la 
 ```
 
 
-## 1.4. /session.php
+## 1.5. /session.php
 Permite **gestionar** las sesiones de los `Users`
 
 
-### 1.4.1. DELETE
+### 1.5.1. DELETE
 Elimina una `Session` para que no pueda ser utilizada
 
 
@@ -261,7 +295,7 @@ Si se elimina correctamente la `Session`, se retorna la siguiente **data**:
 ```
 
 
-### 1.4.2. POST
+### 1.5.2. POST
 Permite **crear** una `Session` para un `User` existente
 
 - **Body** de la petición debe contener la siguiente estructura
@@ -302,11 +336,11 @@ Si los datos son **válidos**, se crea una `Session` y se retorna la siguiente *
 > Se crea la Cookie `session_token` con la **sesión** del `User` recién creado
 
 
-## 1.5. /user.php
+## 1.6. /user.php
 Proporciona información sobre el `User` autenticado
 
 
-### 1.5.1. GET
+### 1.6.1. GET
 Permite **recuperar** información sobre el `User` autenticado
 
 - **Filtros** disponibles:
@@ -344,11 +378,11 @@ Permite **recuperar** información sobre el `User` autenticado
 ```
 
 
-## 1.6. /users.php
+## 1.7. /users.php
 Proporciona información sobre los `Users`
 
 
-### 1.6.1. GET
+### 1.7.1. GET
 Permite **recuperar** uno o varios `User`
 
 - **Filtros** disponibles:
@@ -387,7 +421,7 @@ Permite **recuperar** uno o varios `User`
     ```
 
 
-### 1.6.2. POST
+### 1.7.2. POST
 Permite **crear** un `User`. El `body` de la petición debe contener la siguiente estructura
 
 ```jsonc

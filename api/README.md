@@ -33,6 +33,7 @@ Para el desarrollo en local se ha decidido utilizar [XAMPP] como entorno de desa
 📄 example-env.php (env.php)
 📁 controllers
     📄 2FA.php
+    📄 AccountRecovery.php
     📄 Folders.php
     📄 Passwords.php
     📄 Session.php
@@ -44,6 +45,7 @@ Para el desarrollo en local se ha decidido utilizar [XAMPP] como entorno de desa
     📄 Sessions.php
     📄 Users.php
 📁 schemas
+    📄 AccountRecovery.php
     📄 Folder.php
     📄 Password.php
     📄 Session.php
@@ -58,6 +60,7 @@ Para el desarrollo en local se ha decidido utilizar [XAMPP] como entorno de desa
     📄 Response.php
     📄 SessionDuration.php
 📄 2fa.php
+📄 account-recovery.php
 📄 folders.php
 📄 passwords.php
 📄 session.php

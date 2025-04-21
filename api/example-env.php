@@ -18,6 +18,7 @@ const ENCRYPTION_PASSPHRASE = "<secure_encryption_key>"; // Editar
 // Controllers
 const CONTROLLERS_PATH = "controllers/";
 
+const ACCOUNT_RECOVERY_CONTROLLER_PATH = CONTROLLERS_PATH . "AccountRecovery.php";
 const FOLDERS_CONTROLLER_PATH = CONTROLLERS_PATH . "Folders.php";
 const PASSWORDS_CONTROLLER_PATH = CONTROLLERS_PATH . "Passwords.php";
 const SESSION_CONTROLLER_PATH = CONTROLLERS_PATH . "Session.php";
@@ -38,6 +39,7 @@ const USERS_MODEL_PATH = MODELS_PATH . "Users.php";
 // Schemas
 const SCHEMAS_PATH = "schemes/";
 
+const ACCOUNT_RECOVERY_SCHEMA_PATH = SCHEMAS_PATH . "AccountRecovery.php";
 const FOLDER_SCHEMA_PATH = SCHEMAS_PATH . "Folder.php";
 const PASSWORD_SCHEMA_PATH = SCHEMAS_PATH . "Password.php";
 const SESSION_SCHEMA_PATH = SCHEMAS_PATH . "Session.php";

@@ -254,4 +254,38 @@ class UsersModel {
 
       return true;
     }
+
+
+    /**
+     * Actualiza los datos de un usuario que desea recuperar la cuenta
+     *
+     * @param string $id `id` del usuario
+     * @param string $recuperationCode Código de recuperación nuevo
+     * @param string $masterPassword Contraseña maestra nueva
+     *
+     * @return bool `true` si se actualiza con éxito
+     *
+     * @throws \Exception Si se produce algún error
+     */
+    public static function recoveryAccount(string $id, string $recuperationCode, string $masterPassword ): bool {
+      $masterPasswordHash = Encrypt::hash($masterPassword);
+      $recuperationCodeEnc = Encrypt::encrypt($recuperationCode);
+
+      $query = "UPDATE " . self::TABLE . " SET " . self::COL_M_PASSWORD . " = ?, " . self::COL_M_PASSWORD_EDITED . " = CURRENT_TIMESTAMP, " . self::COL_REC_CODE . " = ?, " . self::COL_REC_CODE_EDITED . " = CURRENT_TIMESTAMP, " . self::COL_TOTP_2FA_SECRET . " = NULL, " . self::COL_TOTP_2FA_ACTIVATED . " = FALSE, " . self::COL_TOTP_2FA_ACTIVATED_AT . " = NULL WHERE " . self::COL_ID . " = ?";
+
+      // Conectar DB
+      $db = new DB();
+
+      if (!$db->isConnected()) throw new \Exception(DB::DB_CONNECTION_ERROR);
+
+      $db->addQuery($query, [
+        $masterPasswordHash,
+        $recuperationCodeEnc,
+        $id
+      ]);
+
+      if ($db->executeTransaction() === false) throw new \Exception(DB::DB_UPDATE_ERROR);
+
+      return true;
+    }
 }
