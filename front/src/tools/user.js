@@ -16,7 +16,10 @@ class UserTools {
     try {
       const res = await fetch(api.userEndpoint, options)
 
-      if (res.status === 401) return null
+      if (res.status === 401) {
+        sessionStorage.setItem('anonymous-user', 'true')
+        return null
+      }
 
       if (res.status !== 200) {
         throw new Error('No se ha podido recuperar la información del usuario')
@@ -123,8 +126,65 @@ class UserTools {
         throw new Error('No se ha podido recuperar la cuenta')
       }
 
+      sessionStorage.removeItem('anonymous-user')
+
       const result = await res.json()
-      console.log(result)
+      return result.data
+    } catch (error) {
+      console.error(error)
+      return null
+    }
+  }
+
+  /**
+   * Comprueba si existe el nombre de usuario
+   *
+   * @param {String} username Nombre de usuario a comprobar
+   *
+   * @returns {boolean|null} `true` si existe, `false` si no existe o `null` si se produce un error
+   */
+  static async existsUsername(username) {
+    const options = {
+      method: 'GET',
+    }
+
+    try {
+      const res = await fetch(`${api.usersEndpoint}?username=${username}`, options)
+
+      if (res.status !== 200 && res.status !== 404) {
+        throw new Error('No se ha podido comprobar la existencia del nombre de usuario')
+      }
+
+      return res.status === 200
+    } catch (error) {
+      console.error(error)
+      return null
+    }
+  }
+
+  /**
+   * Registra un nuevo usuario
+   *
+   * @returns {Object|null} Datos del resultado obtenido o `null` si se produce un error
+   */
+  static async register(data) {
+    const options = {
+      method: 'POST',
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    }
+
+    try {
+      const res = await fetch(api.usersEndpoint, options)
+
+      if (res.status !== 200 && res.status !== 400) {
+        throw new Error('No se ha podido registrar el usuario')
+      }
+
+      sessionStorage.removeItem('anonymous-user')
+
+      const result = await res.json()
       return result.data
     } catch (error) {
       console.error(error)

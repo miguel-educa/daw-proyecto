@@ -26,6 +26,14 @@ const routes = [
     },
   },
   {
+    path: '/pass-generator',
+    name: '/pass-generator',
+    component: () => import('@/views/PassGeneratorView.vue'),
+    meta: {
+      title: 'Generador de contraseñas',
+    },
+  },
+  {
     path: '/register',
     name: 'register',
     component: () => import('@/views/RegisterView.vue'),

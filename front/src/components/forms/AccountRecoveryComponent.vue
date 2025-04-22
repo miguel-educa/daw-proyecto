@@ -55,7 +55,7 @@ const recuperationCodeSubmitHandler = async () => {
   }
 
   // Redireccionar
-  sessionStorage.setItem('recuperation_code', result.recuperation_code)
+  sessionStorage.setItem('recuperation-code', result.recuperation_code)
   router.push('/vault')
 }
 

@@ -48,7 +48,7 @@ export const navMenuOptions = {
     { label: 'Generador', path: '/pass-generator' },
     { label: 'Auditoría', path: '/pass-audit' },
     {
-      label: 'Ajustes de cuenta',
+      label: 'Ajustes',
       path: '/settings',
     },
     {

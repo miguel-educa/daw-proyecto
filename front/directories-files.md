@@ -12,18 +12,24 @@
     - [4.4. Assets](#44-assets)
         - [4.4.1. CSS](#441-css)
     - [4.5. Components](#45-components)
-        - [4.5.1. HeaderComponent](#451-headercomponent)
-        - [4.5.2. AsideComponent](#452-asidecomponent)
-        - [4.5.3. NotificationComponent](#453-notificationcomponent)
-        - [4.5.4. Forms](#454-forms)
-            - [4.5.4.1. AccountRecoveryComponent](#4541-accountrecoverycomponent)
-            - [4.5.4.2. LoginFormComponent](#4542-loginformcomponent)
-            - [4.5.4.3. TwoFactorComponent](#4543-twofactorcomponent)
-        - [4.5.5. PassGenerator](#455-passgenerator)
-            - [4.5.5.1. CharControlsComponent](#4551-charcontrolscomponent)
-            - [4.5.5.2. PassGeneratorComponent](#4552-passgeneratorcomponent)
-            - [4.5.5.3. PassHistoryComponent](#4553-passhistorycomponent)
-            - [4.5.5.4. PassLengthComponent](#4554-passlengthcomponent)
+        - [4.5.1. AsideComponent](#451-asidecomponent)
+        - [4.5.2. HeaderComponent](#452-headercomponent)
+        - [4.5.3. LoadingComponent](#453-loadingcomponent)
+        - [4.5.4. ModalComponent](#454-modalcomponent)
+        - [4.5.5. NotificationComponent](#455-notificationcomponent)
+        - [4.5.6. Forms](#456-forms)
+            - [4.5.6.1. AccountRecoveryComponent](#4561-accountrecoverycomponent)
+            - [4.5.6.2. LoginFormComponent](#4562-loginformcomponent)
+            - [4.5.6.3. RegisterFormComponent](#4563-registerformcomponent)
+            - [4.5.6.4. RegisterRequirementsComponent](#4564-registerrequirementscomponent)
+            - [4.5.6.5. TwoFactorComponent](#4565-twofactorcomponent)
+        - [4.5.7. PassGenerator](#457-passgenerator)
+            - [4.5.7.1. CharControlsComponent](#4571-charcontrolscomponent)
+            - [4.5.7.2. PassGeneratorComponent](#4572-passgeneratorcomponent)
+            - [4.5.7.3. PassHistoryComponent](#4573-passhistorycomponent)
+            - [4.5.7.4. PassLengthComponent](#4574-passlengthcomponent)
+        - [4.5.8. Vault](#458-vault)
+            - [4.5.8.1. VaultComponent](#4581-vaultcomponent)
     - [4.6. Layouts](#46-layouts)
         - [4.6.1. AppLayout.vue](#461-applayoutvue)
     - [4.7. Router](#47-router)
@@ -98,52 +104,76 @@ Archivos CSS para proporcionar estilos a la aplicación
 Contiene los **componentes** utilizados en la aplicación
 
 
-### 4.5.1. [HeaderComponent](./src/components/HeaderComponent.vue)
-Contiene el Header de la aplicación, mostrando las opciones de navegación correspondientes dependiendo si hay un usuario autenticado o no
-
-
-### 4.5.2. [AsideComponent](./src/components/AsideComponent.vue)
+### 4.5.1. [AsideComponent](./src/components/AsideComponent.vue)
 Contiene la barra lateral de la aplicación, disponible cuando hay un usuario autenticado
 
 
-### 4.5.3. [NotificationComponent](./src/components/NotificationComponent.vue)
+### 4.5.2. [HeaderComponent](./src/components/HeaderComponent.vue)
+Contiene el Header de la aplicación, mostrando las opciones de navegación correspondientes dependiendo si hay un usuario autenticado o no
+
+
+### 4.5.3. [LoadingComponent](./src/components/LoadingComponent.vue)
+Componente para mostrar un indicador de carga mientras carga la aplicación por primera vez
+
+
+### 4.5.4. [ModalComponent](./src/components/ModalComponent.vue)
+Componente para mostrar modales
+
+
+### 4.5.5. [NotificationComponent](./src/components/NotificationComponent.vue)
 Componente para mostrar notificaciones temporales
 
 
-### 4.5.4. Forms
+### 4.5.6. Forms
 Contiene componentes relacionados con formularios
 
 
-#### 4.5.4.1. [AccountRecoveryComponent](./src/components/forms/AccountRecoveryComponent.vue)
+#### 4.5.6.1. [AccountRecoveryComponent](./src/components/forms/AccountRecoveryComponent.vue)
 Componente para la recuperación de una cuenta
 
 
-#### 4.5.4.2. [LoginFormComponent](./src/components/forms/LoginFormComponent.vue)
+#### 4.5.6.2. [LoginFormComponent](./src/components/forms/LoginFormComponent.vue)
 Componente principal de la vista `LoginView`
 
 
-#### 4.5.4.3. [TwoFactorComponent](./src/components/forms/TwoFactorComponent.vue)
+#### 4.5.6.3. [RegisterFormComponent](./src/components/forms/RegisterFormComponent.vue)
+Componente principal para la vista `RegisterView`
+
+
+#### 4.5.6.4. [RegisterRequirementsComponent](./src/components/forms/RegisterRequirementsComponent.vue)
+Componente auxiliar para mostrar los requisitos de registro
+
+
+#### 4.5.6.5. [TwoFactorComponent](./src/components/forms/TwoFactorComponent.vue)
 Componente para introducir el código de autenticación de dos factores si el usuario lo tiene habilitado
 
 
-### 4.5.5. PassGenerator
+### 4.5.7. PassGenerator
 Contiene los componentes de la vista `PassGeneratorView`
 
 
-#### 4.5.5.1. [CharControlsComponent](./src/components/passGenerator/CharControlsComponent.vue)
+#### 4.5.7.1. [CharControlsComponent](./src/components/passGenerator/CharControlsComponent.vue)
 Componente para modificar los caracteres mínimos de la contraseña a generar
 
 
-#### 4.5.5.2. [PassGeneratorComponent](./src/components/passGenerator/PassGeneratorComponent.vue)
+#### 4.5.7.2. [PassGeneratorComponent](./src/components/passGenerator/PassGeneratorComponent.vue)
 Componente principal del generador de la vista `PassGeneratorView`
 
 
-#### 4.5.5.3. [PassHistoryComponent](./src/components/passGenerator/PassHistoryComponent.vue)
+#### 4.5.7.3. [PassHistoryComponent](./src/components/passGenerator/PassHistoryComponent.vue)
 Componente para mostrar el historial de contraseñas generadas
 
 
-#### 4.5.5.4. [PassLengthComponent](./src/components/passGenerator/PassLengthComponent.vue)
+#### 4.5.7.4. [PassLengthComponent](./src/components/passGenerator/PassLengthComponent.vue)
 Componente para modificar la longitud de la contraseña
+
+
+### 4.5.8. Vault
+Contiene los componentes para la vista `VaultView`
+
+
+#### 4.5.8.1. [VaultComponent](./src/components/vault/VaultComponent.vue)
+Componente principal para la vista `VaultView`
 
 
 ## 4.6. Layouts

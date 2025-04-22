@@ -58,16 +58,22 @@ También se han utilizado las siguientes herramientas:
     📁 components
         📄 AsideComponent.vue
         📄 HeaderComponent.vue
+        📄 LoadingComponent.vue
+        📄 ModalComponent.vue
         📄 NotificationComponent.vue
         📁 forms
-            📄 LoginFormComponent.vue
-            📄 TwoFactorComponent.vue
             📄 AccountRecoveryComponent.vue
+            📄 LoginFormComponent.vue
+            📄 RegisterFormComponent.vue
+            📄 RegisterRequirementsComponent.vue
+            📄 TwoFactorComponent.vue
         📁 passGenerator
             📄 CharControlsComponent.vue
             📄 PassGeneratorComponent.vue
             📄 PassHistoryComponent.vue
             📄 PassLengthComponent.vue
+        📁 vault
+            📄 VaultComponent.vue
     📁 layouts
         📄 AppLayout.vue
     📁 router
@@ -95,7 +101,16 @@ Explicación de los directorios y archivos
 
 
 # 4. [Rutas](routes.md)
-Rutas disponibles de la aplicación
+La aplicación web dipsone de las siguientes rutas:
+
+| Ruta              | Descripción                                                    | Acceso anónimo | Acceso autenticado |
+| ----------------- | -------------------------------------------------------------- | -------------- | ------------------ |
+| `/`               | Página de inicio (*home*) de la aplicación                     | ✔️              | ✔️                  |
+| `/login`          | Permite al usuario iniciar sesión en la aplicación             | ✔️              | ❌                  |
+| `/logout`         | Permite al usuario autenticado cerrar sesión                   | ❌              | ✔️                  |
+| `/pass-generator` | Permite al usuario generar contraseñas seguras                 | ✔️              | ✔️                  |
+| `/register`       | Permite a un usuario registrase en la aplicación               | ✔️              | ❌                  |
+| `/vault`          | Permite al usuario autenticado ver las contraseñas almacenadas | ❌              | ✔️                  |
 
 
 ---

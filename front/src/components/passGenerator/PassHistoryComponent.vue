@@ -33,13 +33,16 @@ const cleanHistoryHandler = () => {
           <template v-if="passHistory.length > 0">
             <template v-for="(pass, index) in passHistory" :key="pass.pass">
               <div class="box is-max-desktop pass-history-item">
-                <p class="pass-history-title title code-font is-5 is-size-6-mobile">
+                <p class="pass-history-subtitle has-text-centered subtitle is-6 is-size-7-mobile">
+                  {{ index + 1 }}/{{ passHistory.length }}
+                </p>
+                <p class="pass-history-title title code-font is-5 is-size-6-mobile mt-3">
                   {{ pass.pass }}
                 </p>
                 <p
                   class="pass-history-subtitle has-text-centered subtitle is-6 is-size-7-mobile mt-3"
                 >
-                  {{ index }}. {{ new Date(pass.timestamp).toLocaleString() }}
+                  {{ new Date(pass.timestamp).toLocaleString() }}
                 </p>
               </div>
             </template>
