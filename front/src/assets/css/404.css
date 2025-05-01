@@ -1,0 +1,11 @@
+body[data-theme='light'] {
+  --nf-border: 2px solid var(--black);
+  --nf-container-background-color: var(--grey);
+  --nf-text-color: var(--hyper-dark-blue);
+}
+
+body[data-theme='dark'] {
+  --nf-border: 2px solid var(--white);
+  --nf-container-background-color: var(--dark-blue);
+  --nf-text-color: var(--white);
+}

@@ -4,12 +4,12 @@ import { createRouter, createWebHistory } from 'vue-router'
 const routes = [
   {
     path: '/',
-    name: 'home',
+    name: 'Home',
     component: () => import('@/views/HomeView.vue'),
   },
   {
     path: '/login',
-    name: 'login',
+    name: 'Inicio de sesión',
     component: () => import('@/views/LoginView.vue'),
     meta: {
       title: 'Login',
@@ -17,7 +17,7 @@ const routes = [
   },
   {
     path: '/logout',
-    name: 'logout',
+    name: 'Cerrar sesión',
     beforeEnter: async (to, from, next) => {
       const result = await UserTools.logout()
 
@@ -27,7 +27,7 @@ const routes = [
   },
   {
     path: '/pass-generator',
-    name: '/pass-generator',
+    name: 'Generador de contraseñas',
     component: () => import('@/views/PassGeneratorView.vue'),
     meta: {
       title: 'Generador de contraseñas',
@@ -35,7 +35,7 @@ const routes = [
   },
   {
     path: '/register',
-    name: 'register',
+    name: 'Registro',
     component: () => import('@/views/RegisterView.vue'),
     meta: {
       title: 'Registro',
@@ -43,12 +43,17 @@ const routes = [
   },
   {
     path: '/vault',
-    name: 'vault',
+    name: 'Baúl personal',
     component: () => import('@/views/VaultView.vue'),
     meta: {
       title: 'Baúl personal',
     },
   },
+  {
+    path: '/:pathMatch(.*)*',
+    name: '404',
+    component: () => import('@/views/Error404View.vue')
+  }
 ]
 
 const router = createRouter({
