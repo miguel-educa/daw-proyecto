@@ -121,7 +121,7 @@ class PasswordsModel {
         $data[self::COL_OWNER_ID],
         $data[self::COL_FOLDER_ID],
         $data[self::COL_NAME],
-        Encrypt::encrypt($data[self::COL_PASSWORD]),
+        $data[self::COL_PASSWORD] === null ? null : Encrypt::encrypt($data[self::COL_PASSWORD]),
         $data[self::COL_USERNAME],
         $data[self::COL_URLS],
         $data[self::COL_NOTES]
@@ -134,5 +134,68 @@ class PasswordsModel {
       if ($newResource === null) throw new \Exception(DB::DB_GET_ERROR);
 
       return $newResource;
+    }
+
+
+    /**
+     * Actualiza una `Password`
+     * @param array $data Array asociativo con los datos de la `Password` a actualizar
+     * @param mixed $passwordId ID de la `Password` a actualizar
+     * @param mixed $userId ID del `User` que es el dueño
+     *
+     * @return array Se retorna un array con la estructura `["id" => string, "folder_id" => string, "name" => string, "password" => string, "username" => string, "urls" => array, "notes" => string]`
+     *
+     * @throws \Exception Si se produce algún error
+     */
+    public static function update(array $data, $passId, $userId): array {
+      if (isset($data[self::COL_PASSWORD])) {
+        $data[self::COL_PASSWORD] = Encrypt::encrypt($data[self::COL_PASSWORD]);
+      }
+
+      // Claves y valores
+      $keys = implode(" = ?,", array_keys($data));
+      $values = array_values($data);
+      $values[] = $passId;
+
+      $query = "UPDATE " . self::TABLE . " SET $keys = ? WHERE " . self::COL_ID . " = ?";
+
+      // Conectar DB
+      $db = new DB();
+
+      if (!$db->isConnected()) throw new \Exception(DB::DB_CONNECTION_ERROR);
+
+      $db->addQuery($query, $values);
+
+      if ($db->executeTransaction() === false) throw new \Exception(DB::DB_UPDATE_ERROR);
+
+      $updatedPassword = self::getPasswordByUserIdAndId($userId, $passId);
+
+      if ($updatedPassword === null) throw new \Exception(DB::DB_GET_ERROR);
+
+      return $updatedPassword;
+    }
+
+
+    /**
+     * Elimina una `Password`
+     * @param string $id ID de la `Password` a eliminar
+     *
+     * @return bool `true` si se eliminó con éxito
+     *
+     * @throws \Exception Si se produce algún error
+     */
+    public static function delete(string $id) {
+      $query = "DELETE FROM " . self::TABLE . " WHERE " . self::COL_ID . " = ?";
+
+      // Conectar DB
+      $db = new DB();
+
+      if (!$db->isConnected()) throw new \Exception(DB::DB_CONNECTION_ERROR);
+
+      $db->addQuery($query, [ $id ]);
+
+      if ($db->executeTransaction() === false) throw new \Exception(DB::DB_DELETE_ERROR);
+
+      return true;
     }
 }

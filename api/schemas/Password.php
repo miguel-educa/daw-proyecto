@@ -43,6 +43,51 @@ class PasswordSchema {
 
 
     /**
+     * Valida parcialmente la data de una `Password`. Retorna un **array asociativo** con un *array* con la **data validada** y otro *array* de **errores** (si se ha encontrado alguno):
+     * `["data" => [...], "errors" => [...]]`
+     *
+     * @param array<string, mixed> $newData Data a validar
+     * @param array<string, mixed> $data Data existente
+     *
+     * @return array{data: array, errors: array}
+     */
+    public static function partialValidate(array $newData, array $data): array {
+      $result = [
+        "data" => [],
+        "errors" => []
+      ];
+
+      if (isset($newData[PasswordsModel::COL_NAME]) && $newData[PasswordsModel::COL_NAME] !== $data[PasswordsModel::COL_NAME]) {
+        self::validateName($newData, $result);
+      }
+
+      if (array_key_exists(PasswordsModel::COL_FOLDER_ID, $newData) && $newData[PasswordsModel::COL_FOLDER_ID] !== $data[PasswordsModel::COL_FOLDER_ID]) {
+        self::validateFolder($newData, $result);
+      }
+
+      if (isset($newData[PasswordsModel::COL_PASSWORD]) && $newData[PasswordsModel::COL_PASSWORD] !== $data[PasswordsModel::COL_PASSWORD]) {
+        self::validatePassword($newData, $result);
+      }
+
+      if (isset($newData[PasswordsModel::COL_USERNAME]) && $newData[PasswordsModel::COL_USERNAME] !== $data[PasswordsModel::COL_USERNAME]) {
+        self::validateUsername($newData, $result);
+      }
+
+      if (array_key_exists(PasswordsModel::COL_URLS, $newData) && $newData[PasswordsModel::COL_URLS] !== $data[PasswordsModel::COL_URLS]) {
+        self::validateUrls($newData, $result);
+      }
+
+      if (isset($newData[PasswordsModel::COL_NOTES]) && $newData[PasswordsModel::COL_NOTES] !== $data[PasswordsModel::COL_NOTES]) {
+        self::validateNotes($newData, $result);
+      }
+
+      unset($data[FoldersModel::COL_OWNER_ID]);
+
+      return $result;
+    }
+
+
+    /**
      * Valida el campo `name`:
      * - Debe existir
      * - Longitud entre `1` y `50` caracteres

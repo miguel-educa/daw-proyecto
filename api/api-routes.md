@@ -16,8 +16,10 @@
         - [1.3.3. PATCH](#133-patch)
         - [1.3.4. POST](#134-post)
     - [1.4. /passwords.php](#14-passwordsphp)
-        - [1.4.1. GET](#141-get)
-        - [1.4.2. POST](#142-post)
+        - [1.4.1. DELETE](#141-delete)
+        - [1.4.2. GET](#142-get)
+        - [1.4.3. PATCH](#143-patch)
+        - [1.4.4. POST](#144-post)
     - [1.5. /session.php](#15-sessionphp)
         - [1.5.1. DELETE](#151-delete)
         - [1.5.2. POST](#152-post)
@@ -158,10 +160,10 @@ Proporciona información sobre los `Folder`
 
 
 ### 1.3.1. DELETE
-Permite **eliminar** un `Folder`
+Permite **eliminar** un `Folder`. El cuerpo de la petición debe contener el `id` del `Folder` a eliminar
 
 > [!CAUTION]
-> Se necesita estar autenticado. Si no se mostrará un error `401`
+> Se necesita estar autenticado y ser el dueño. Si no se mostrará un error `401`
 
 Si se elimina con éxito, se retorna la siguiente **data**:
 
@@ -192,21 +194,23 @@ Permite **recuperar** los `Folder` de un `User`
 
 
 ### 1.3.3. PATCH
-Permite **actualizar** un `Folder`. El `body` de la petición debe contener la siguiente estructura. Todas las propiedades son opcionales, si no se especifican, se mantendrán los mismos valores
+Permite **actualizar** un `Folder`. El `body` de la petición debe contener la siguiente estructura. Todas las propiedades son opcionales (excepto `id`), si no se especifican, se mantendrán los mismos valores
 
 ```jsonc
 {
-  "name": "string"
+    "id": "string",
+    "name": "string"
 }
 ```
 
 | Propiedad | Descripción                                                                                                     |
 | --------- | --------------------------------------------------------------------------------------------------------------- |
+| `id`      | ID del `Folder` a actualizar                                                                                    |
 | `name`    | Debe ser **único** por cada `User`. Puede contener **cualquier carácter**. Longitud entre `1` y `50` caracteres |
 
 > [!CAUTION]
 >
-> - Se necesita estar autenticado. Si no se mostrará un error `401`
+> - Se necesita estar autenticado y ser el dueño. Si no se mostrará un error `401`
 > - Si el contenido del cuerpo no cumple los requisitos, se mostrará un error `400`
 
 
@@ -253,7 +257,22 @@ Si los **datos** son **válidos**, se creará un `Folder` y se retornará la sig
 Proporciona información sobre las `Password`
 
 
-### 1.4.1. GET
+### 1.4.1. DELETE
+Permite **eliminar** una `Password`. El cuerpo de la petición debe contener el `id` de la `Password` a eliminar
+
+> [!CAUTION]
+> Se necesita estar autenticado y ser el dueño. Si no se mostrará un error `401`
+
+Si se elimina con éxito, se retorna la siguiente **data**:
+
+```jsonc
+{
+    "password_deleted": true
+}
+```
+
+
+### 1.4.2. GET
 Permite **recuperar** las `Password` de un `User`
 
 > [!CAUTION]
@@ -277,7 +296,38 @@ Permite **recuperar** las `Password` de un `User`
 ```
 
 
-### 1.4.2. POST
+### 1.4.3. PATCH
+Permite **actualizar** una `Password`. El `body` de la petición debe contener la siguiente estructura. Todas las propiedades son opcionales (excepto `id`), si no se especifican, se mantendrán los mismos valores
+
+```jsonc
+{
+  "id": "string",
+  "name": "string",
+  "folder_id": "string",
+  "password": "string",
+  "username": "string",
+  "urls": "array",
+  "notes": "string"
+}
+```
+
+| Propiedad   | Descripción                                                                                   |
+| ----------- | --------------------------------------------------------------------------------------------- |
+| `id`        | ID de la `Password` a actualizar                                                              |
+| `name`      | Puede contener **cualquier carácter**. Longitud entre `1` y `50` caracteres                   |
+| `folder_id` | ID del `Folder` que almacenará la `Password`. Puede ser `null`                                |
+| `password`  | Puede contener **cualquier carácter**. Longitud entre `1` y `50` caracteres. Puede ser `null` |
+| `username`  | Puede contener **cualquier carácter**. Longitud entre `1` y `50` caracteres. Puede ser `null` |
+| `urls`      | *Array* de *Strings* (de 1 hasta 5 items) con las URLs de la `Password`. Puede ser `null`     |
+| `notes`     | Puede contener **cualquier carácter**. Puede ser `null`                                       |
+
+> [!CAUTION]
+>
+> - Se necesita estar autenticado y ser el dueño. Si no se mostrará un error `401`
+> - Si el contenido del cuerpo no cumple los requisitos, se mostrará un error `400`
+
+
+### 1.4.4. POST
 Permite **crear** una `Password`. El `body` de la petición debe contener la siguiente estructura
 
 ```jsonc
