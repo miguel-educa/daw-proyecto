@@ -11,8 +11,10 @@
     - [1.2. /account-recovery.php](#12-account-recoveryphp)
         - [1.2.1. POST](#121-post)
     - [1.3. /folders.php](#13-foldersphp)
-        - [1.3.1. GET](#131-get)
-        - [1.3.2. POST](#132-post)
+        - [1.3.1. DELETE](#131-delete)
+        - [1.3.2. GET](#132-get)
+        - [1.3.3. PATCH](#133-patch)
+        - [1.3.4. POST](#134-post)
     - [1.4. /passwords.php](#14-passwordsphp)
         - [1.4.1. GET](#141-get)
         - [1.4.2. POST](#142-post)
@@ -155,7 +157,22 @@ Permite **recuperar** la cuenta de un usuario proporcionando el **código de rec
 Proporciona información sobre los `Folder`
 
 
-### 1.3.1. GET
+### 1.3.1. DELETE
+Permite **eliminar** un `Folder`
+
+> [!CAUTION]
+> Se necesita estar autenticado. Si no se mostrará un error `401`
+
+Si se elimina con éxito, se retorna la siguiente **data**:
+
+```jsonc
+{
+    "folder_deleted": true
+}
+```
+
+
+### 1.3.2. GET
 Permite **recuperar** los `Folder` de un `User`
 
 > [!CAUTION]
@@ -174,7 +191,36 @@ Permite **recuperar** los `Folder` de un `User`
 ```
 
 
-### 1.3.2. POST
+### 1.3.3. PATCH
+Permite **actualizar** un `Folder`. El `body` de la petición debe contener la siguiente estructura. Todas las propiedades son opcionales, si no se especifican, se mantendrán los mismos valores
+
+```jsonc
+{
+  "name": "string"
+}
+```
+
+| Propiedad | Descripción                                                                                                     |
+| --------- | --------------------------------------------------------------------------------------------------------------- |
+| `name`    | Debe ser **único** por cada `User`. Puede contener **cualquier carácter**. Longitud entre `1` y `50` caracteres |
+
+> [!CAUTION]
+>
+> - Se necesita estar autenticado. Si no se mostrará un error `401`
+> - Si el contenido del cuerpo no cumple los requisitos, se mostrará un error `400`
+
+
+Si los **datos** son **válidos**, se actualizará el `Folder` y se retornará la siguiente **data**:
+
+```jsonc
+{
+    "id": "string",
+    "name": "string"
+}
+```
+
+
+### 1.3.4. POST
 Permite **crear** un `Folder`. El `body` de la petición debe contener la siguiente estructura
 
 ```jsonc
@@ -189,6 +235,7 @@ Permite **crear** un `Folder`. El `body` de la petición debe contener la siguie
 
 > [!CAUTION]
 >
+> - Se necesita estar autenticado. Si no se mostrará un error `401`
 > - Si el contenido del cuerpo no cumple los requisitos, se mostrará un error `400`
 
 

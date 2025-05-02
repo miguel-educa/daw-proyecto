@@ -35,6 +35,28 @@ class FolderSchema {
 
 
     /**
+     * Valida parcialmente la data de un `Folder`. Retorna un **array asociativo** con un *array* con la **data validada** y otro *array* de **errores** (si se ha encontrado alguno):
+     * `["data" => [...], "errors" => [...]]`
+     *
+     * @param array<string, mixed> $newData Data a validar
+     *
+     * @return array{data: array, errors: array}
+     */
+    public static function partialValidate(array $newData, array $data): array {
+      $result = [
+        "data" => [],
+        "errors" => []
+      ];
+
+      if (isset($newData[FoldersModel::COL_NAME]) && $newData[FoldersModel::COL_NAME] !== $data[FoldersModel::COL_NAME]) {
+        self::validateName($newData, $result);
+      }
+
+      return $result;
+    }
+
+
+    /**
      * Valida el campo `name`:
      * - Debe existir
      * - Longitud entre `1` y `50` caracteres

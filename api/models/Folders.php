@@ -140,4 +140,63 @@ class FoldersModel {
 
       return $newResource;
     }
+
+
+    /**
+     * Actualiza un `Folder`
+     * @param array $data Array asociativo con los datos del `Folder` a actualizar
+     * @param mixed $folderId ID del `Folder` a actualizar
+     * @param mixed $userId ID del `User` que es el dueño
+     *
+     * @return array Se retorna un array con la estructura `["id" => string, "name" => string]`
+     *
+     * @throws \Exception Si se produce algún error
+     */
+    public static function update(array $data, $folderId, $userId): array {
+      // Claves y valores
+      $keys = implode(" = ?,", array_keys($data));
+      $values = array_values($data);
+      $values[] = $folderId;
+
+      $query = "UPDATE " . self::TABLE . " SET $keys = ? WHERE " . self::COL_ID . " = ?";
+
+      // Conectar DB
+      $db = new DB();
+
+      if (!$db->isConnected()) throw new \Exception(DB::DB_CONNECTION_ERROR);
+
+      $db->addQuery($query, $values);
+
+      if ($db->executeTransaction() === false) throw new \Exception(DB::DB_UPDATE_ERROR);
+
+      $updatedFolder = self::getFolderByUserIdAndId($userId, $folderId);
+
+      if ($updatedFolder === null) throw new \Exception(DB::DB_GET_ERROR);
+
+      return $updatedFolder;
+    }
+
+
+    /**
+     * Elimina un `Folder`
+     * @param string $id ID del `Folder` a eliminar
+     *
+     * @return bool `true` si se eliminó con éxito
+     *
+     * @throws \Exception Si se produce algún error
+     */
+    public static function delete(string $id) {
+      $query = "DELETE FROM " . self::TABLE . " WHERE " . self::COL_ID . " = ?";
+
+      // Conectar DB
+      $db = new DB();
+
+      if (!$db->isConnected()) throw new \Exception(DB::DB_CONNECTION_ERROR);
+
+      $db->addQuery($query, [ $id ]);
+
+      if ($db->executeTransaction() === false) throw new \Exception(DB::DB_DELETE_ERROR);
+
+      return true;
+    }
 }
