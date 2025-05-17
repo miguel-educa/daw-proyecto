@@ -9,7 +9,9 @@
 # 1. Proyecto Pass Warriors
 Este proyecto está siendo desarrollado como proyecto de fin de Grado Superior de **DAW** (Desarrollo de Aplicaciones Web)
 
-La **aplicación web** es un **gestor de contraseñas** que permite a los usuarios **almacenar** y **compartir** contraseñas de forma **segura**. Además, dispone de un **generador de contraseñas** que permite generar contraseñas **aleatorias** y **seguras**
+La **aplicación web** es un **gestor de contraseñas** que permite a los usuarios **almacenar** y **compartir** contraseñas de forma **segura**. Además, dispone de un **generador de contraseñas** que permite generar contraseñas **aleatorias** y **seguras**. 
+
+Se puede probar en [https://passwarriors.es](https://passwarriors.es)
 
 ![Pass Warriors image](./assets/pass-warriors.png)
 
