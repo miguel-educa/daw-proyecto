@@ -1,10 +1,10 @@
 <script setup>
 import { storeToRefs } from 'pinia'
-import { usePasswordStore } from '@/stores/passwordStore.js'
+import { usePassGeneratorStore } from '@/stores/passGeneratorStore.js'
 
 const emit = defineEmits(['closePasswordHistory'])
 
-const pStore = usePasswordStore()
+const pStore = usePassGeneratorStore()
 const { history: passHistory } = storeToRefs(pStore)
 
 const cleanHistoryHandler = () => {

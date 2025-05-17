@@ -1,15 +1,16 @@
 <script setup>
 import { useRoute } from 'vue-router'
+import { storeToRefs } from 'pinia'
 import { useUserStore } from '@/stores/userStore'
 import { navMenuOptions } from '@/config'
 
 const route = useRoute()
 const uStore = useUserStore()
-const user = uStore.user
+const { user } = storeToRefs(uStore)
 </script>
 
 <template>
-  <aside class="column is-3 p-0 is-flex is-flex-direction-column is-justify-content-space-between">
+  <aside class="column is-2 p-0 is-flex is-flex-direction-column is-justify-content-space-between">
     <!-- Información del usuario -->
     <div class="user-info has-text-centered py-5 border-bottom">
       <h2 class="title is-4">{{ user.name }}</h2>
@@ -38,7 +39,7 @@ const user = uStore.user
     <div class="logo py-5">
       <RouterLink class="navbar-item" to="/">
         <img src="/img/pass-warriors-logo.png" class="logo-image" />
-        <span class="title-font is-size-2 is-size-3-mobile">Pass Warriors</span>
+        <span class="title-font">Pass Warriors</span>
       </RouterLink>
     </div>
   </aside>
@@ -47,7 +48,6 @@ const user = uStore.user
 <style scoped>
 aside {
   max-width: 360px;
-  min-width: 330px;
   position: sticky;
   top: 0;
   height: 100vh;
@@ -115,18 +115,10 @@ nav a:not(.active):hover {
   justify-content: center;
   align-items: center;
   gap: 1rem;
+  font-size: 2rem;
   text-decoration: none;
   transition: var(--transition-opacity);
-}
-
-.logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  font-size: 1.5rem;
   color: var(--header-text-color);
-  transition: var(--transition-opacity);
 }
 
 .logo:hover {
@@ -134,6 +126,31 @@ nav a:not(.active):hover {
 }
 
 .logo img {
-  max-height: 85px;
+  max-width: 55px;
+}
+
+@media (max-width: 1400px) {
+  .logo img {
+    max-height: 45px;
+  }
+
+  .title-font {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-height: 700px) {
+  nav {
+    padding: 0;
+  }
+
+  nav a.child-link {
+    font-size: 1.1rem;
+  }
+
+  .section-title,
+  nav a.not-child-link {
+    font-size: 1.25rem;
+  }
 }
 </style>

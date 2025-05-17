@@ -247,7 +247,10 @@ const checkCheckMasterPassHandler = () => {
               required
             />
             <span class="icon is-left">
-              <i class="fa-solid fa-at" :class="{ 'icon-error-color': usernameError }"></i>
+              <i
+                class="fa-solid fa-at form-icon"
+                :class="{ 'icon-error-color': usernameError }"
+              ></i>
             </span>
           </div>
 
@@ -269,7 +272,10 @@ const checkCheckMasterPassHandler = () => {
               required
             />
             <span class="icon is-left">
-              <i class="fa-solid fa-user-tag" :class="{ 'icon-error-color': nameError }"></i>
+              <i
+                class="fa-solid fa-user-tag form-icon"
+                :class="{ 'icon-error-color': nameError }"
+              ></i>
             </span>
           </div>
 
@@ -292,7 +298,10 @@ const checkCheckMasterPassHandler = () => {
                 required
               />
               <span class="icon is-left">
-                <i class="fas fa-lock" :class="{ 'icon-error-color': masterPassError }"></i>
+                <i
+                  class="fas fa-lock form-icon"
+                  :class="{ 'icon-error-color': masterPassError }"
+                ></i>
               </span>
             </div>
 
@@ -332,7 +341,7 @@ const checkCheckMasterPassHandler = () => {
               />
               <span class="icon is-left">
                 <i
-                  class="fas fa-lock-open"
+                  class="fas fa-lock-open form-icon"
                   :class="{ 'icon-error-color': checkMasterPassError }"
                 ></i>
               </span>

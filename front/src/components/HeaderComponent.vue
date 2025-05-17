@@ -45,29 +45,47 @@ const options = user.value ? navMenuOptions.userLogin : navMenuOptions.anonymous
       <!-- Elementos de navegación -->
       <div id="navMenu" class="navbar-menu" :class="{ 'is-active': isMobileMenuOpen }">
         <div class="navbar-end">
-          <div class="navbar-item">
-            <div class="buttons">
-              <template v-for="(item, i) in options" :key="i">
+          <template v-for="(item, i) in options" :key="i">
+            <template v-if="item.children">
+              <div class="navbar-item has-dropdown is-hoverable">
+                <div class="navbar-item is-size-5 is-size-6-mobile is-hidden-touch">
+                  <a
+                    class="navbar-item"
+                    :class="{
+                      active: item.children.some((child) => route.path === child.path),
+                    }"
+                    style="cursor: default"
+                  >
+                    {{ item.label }}
+                  </a>
+                </div>
+
+                <div class="navbar-dropdown">
+                  <RouterLink
+                    v-for="(child, j) in item.children || [item]"
+                    :key="j"
+                    :to="child.path"
+                    :class="[{ active: route.path === child.path }]"
+                    class="navbar-item is-size-5 is-size-6-mobile"
+                  >
+                    <span class="mobile-visible">{{ item.label }}</span>
+                    <span>{{ child.label }}</span>
+                  </RouterLink>
+                </div>
+              </div>
+            </template>
+            <template v-else>
+              <div class="navbar-item">
                 <RouterLink
-                  v-for="(child, j) in item.children || [item]"
-                  :key="j"
-                  :to="child.path"
-                  :class="[
-                    { active: route.path === child.path },
-                    item.children ? 'child-link' : 'not-child-link',
-                  ]"
+                  :to="item.path"
+                  :class="[{ active: route.path === item.path }]"
                   class="navbar-item is-size-5 is-size-6-mobile"
                 >
-                  <template v-if="item.children">
-                    {{ item.label }} {{ child.label.toLocaleLowerCase() }}
-                  </template>
-                  <template v-else>
-                    {{ child.label }}
-                  </template>
+                  {{ item.label }}
                 </RouterLink>
-              </template>
-            </div>
-          </div>
+              </div>
+            </template>
+          </template>
         </div>
       </div>
     </nav>
@@ -81,20 +99,29 @@ header {
   z-index: 10;
 }
 
-nav {
+nav,
+.navbar-dropdown {
   background-color: var(--header-background-color);
   box-shadow: 0px 7px 10px #00000033;
+  padding: 0;
 }
 
-nav a.active {
-  background-color: var(--header-link-active-background-color);
-  color: var(--header-link-active-text-color);
+.navbar-dropdown a {
+  background-color: transparent !important;
+  color: var(--header-text-color) !important;
+}
+
+nav a.active,
+.navbar-dropdown a.active {
+  background-color: var(--header-link-active-background-color) !important;
+  color: var(--header-link-active-text-color) !important;
 }
 
 a:hover,
+.navbar-dropdown a:hover,
 .navbar-burger:hover {
-  background-color: var(--header-link-hover-background-color);
-  color: var(--header-link-hover-color);
+  background-color: var(--header-link-hover-background-color) !important;
+  color: var(--header-link-hover-color) !important;
 }
 
 .navbar-menu {
@@ -118,6 +145,10 @@ a:hover,
   box-shadow: none !important;
 }
 
+.mobile-visible {
+  display: none;
+}
+
 /* Responsive */
 @media screen and (max-width: 1023px) {
   .navbar-menu.is-active {
@@ -130,14 +161,7 @@ a:hover,
     box-shadow: 0px 7px 10px #00000033;
   }
 
-  .navbar-menu .buttons {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-  }
-
-  .navbar-menu .buttons .navbar-item {
+  .navbar-menu .navbar-item {
     justify-content: center;
     width: 100%;
     text-align: center;
@@ -145,6 +169,19 @@ a:hover,
 
   .logo-image {
     max-height: 3rem;
+  }
+
+  .mobile-visible {
+    display: inline-block;
+    margin-right: 0.5rem;
+  }
+
+  .mobile-visible + span {
+    text-transform: lowercase;
+  }
+
+  .navbar-dropdown {
+    box-shadow: none;
   }
 }
 </style>

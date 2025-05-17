@@ -84,7 +84,10 @@ const close = () => {
                   required
                 />
                 <span class="icon is-left">
-                  <i class="fa-solid fa-shield-halved"></i>
+                  <i
+                    class="fa-solid fa-shield-halved form-icon"
+                    :class="{ 'icon-error-color': showError }"
+                  ></i>
                 </span>
               </div>
             </div>

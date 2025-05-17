@@ -1,9 +1,9 @@
 <script setup>
 import { storeToRefs } from 'pinia'
 import { PassCharacters } from '@/tools/passGenerator.js'
-import { usePasswordStore } from '@/stores/passwordStore.js'
+import { usePassGeneratorStore } from '@/stores/passGeneratorStore.js'
 
-const pStore = usePasswordStore()
+const pStore = usePassGeneratorStore()
 
 // Constantes
 const MAX_CHARS_MIN_COUNT = PassCharacters.maxCharsMinCount

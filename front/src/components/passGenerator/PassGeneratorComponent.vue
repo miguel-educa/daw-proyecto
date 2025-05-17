@@ -1,12 +1,12 @@
 <script setup>
 import { ref } from 'vue'
 import { PassCharacters } from '@/tools/passGenerator.js'
-import { usePasswordStore } from '@/stores/passwordStore.js'
+import { usePassGeneratorStore } from '@/stores/passGeneratorStore.js'
 import { ClipboardTools } from '@/tools/clipboard.js'
 import PassLengthComponent from './PassLengthComponent.vue'
 import CharMinComponent from './CharControlsComponent.vue'
 
-const pStore = usePasswordStore()
+const pStore = usePassGeneratorStore()
 
 // Campos reactivos
 const password = ref('')
@@ -92,7 +92,7 @@ generatePassword()
           title="Copiar contraseña al portapapeles"
           @click="copyPasswordHandler"
         >
-          <i class="fas fa-copy"></i>
+          <i class="fas fa-copy pg-icon"></i>
         </button>
       </div>
     </div>
@@ -106,7 +106,7 @@ generatePassword()
       >
         <span class="icon-text">
           <span class="icon">
-            <i class="fa-solid fa-repeat"></i>
+            <i class="fa-solid fa-repeat pg-icon"></i>
           </span>
           <span>Generar contraseña</span>
         </span>
@@ -119,7 +119,7 @@ generatePassword()
         @click="emit('showPasswordHistory')"
       >
         <span class="icon">
-          <i class="fa-solid fa-clock-rotate-left"></i>
+          <i class="fa-solid fa-clock-rotate-left pg-icon"></i>
         </span>
       </button>
     </div>

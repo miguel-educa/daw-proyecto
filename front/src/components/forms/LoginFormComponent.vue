@@ -11,7 +11,7 @@ const router = useRouter()
 
 const username = ref('')
 const password = ref('')
-const sessionDuration = ref(config.sessionDuration[0].value)
+const sessionDuration = ref(config.sessionDuration[2].value)
 
 const showPassword = ref(false)
 const showError = ref(false)
@@ -105,7 +105,7 @@ const LoginSubmitHandler = async () => {
               required
             />
             <span class="icon is-left">
-              <i class="fa-solid fa-at" :class="{ 'icon-error-color': showError }"></i>
+              <i class="fa-solid fa-at form-icon" :class="{ 'icon-error-color': showError }"></i>
             </span>
           </div>
         </div>
@@ -124,7 +124,7 @@ const LoginSubmitHandler = async () => {
                 required
               />
               <span class="icon is-left">
-                <i class="fas fa-lock" :class="{ 'icon-error-color': showError }"></i>
+                <i class="fas fa-lock form-icon" :class="{ 'icon-error-color': showError }"></i>
               </span>
             </div>
 

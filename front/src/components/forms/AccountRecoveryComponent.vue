@@ -156,7 +156,10 @@ const close = () => {
                 required
               />
               <span class="icon is-left">
-                <i class="fa-solid fa-at" :class="{ 'icon-error-color': usernameErrorMessage }"></i>
+                <i
+                  class="fa-solid fa-at form-icon"
+                  :class="{ 'icon-error-color': usernameErrorMessage }"
+                ></i>
               </span>
             </div>
 
@@ -179,7 +182,7 @@ const close = () => {
               />
               <span class="icon is-left">
                 <i
-                  class="fa-solid fa-shield-halved"
+                  class="fa-solid fa-shield-halved form-icon"
                   :class="{
                     'icon-error-color': recuperationCodeErrorMessage,
                   }"
@@ -209,7 +212,7 @@ const close = () => {
                 />
                 <span class="icon is-left">
                   <i
-                    class="fas fa-lock"
+                    class="fas fa-lock form-icon"
                     :class="{
                       'icon-error-color': passwordErrorMessage || passwordCheckErrorMessage,
                     }"
@@ -253,7 +256,7 @@ const close = () => {
                 />
                 <span class="icon is-left">
                   <i
-                    class="fas fa-lock-open"
+                    class="fas fa-lock-open form-icon"
                     :class="{ 'icon-error-color': passwordCheckErrorMessage }"
                   ></i>
                 </span>
