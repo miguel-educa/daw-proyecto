@@ -5,7 +5,6 @@
 
 [modelo-entidad-relacion.drawio]: ../assets/modelo-entidad-relacion.drawio
 [modelo-relacional.drawio]: ../assets/modelo-relacional.drawio
-[db_pass_warriors_example_data.sql]: ./db_pass_warriors_example_data.sql
 [db_pass_warriors_structure.sql]: ./db_pass_warriors_structure.sql
 
 [DBeaver]: https://dbeaver.io/
@@ -179,7 +178,6 @@ Una `Folder` puede **tener** 0, 1 o N `Password` y una `Password` puede **perten
 # 3. Código
 
 - El código `SQL` con la **estructura** de la base de datos se encuentra en [db_pass_warriors_structure.sql]
-- El código `SQL` con la **datos de ejemplo** se encuentra en [db_pass_warriors_example_data.sql]
 
 
 ---
