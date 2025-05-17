@@ -3,7 +3,7 @@ body[data-theme='light'] {
   --form-text-color: var(--hyper-dark-blue);
   --form-border: 2px solid var(--black);
 
-  --form-container-background-color: var(--grey);
+  --form-container-background-color: var(--hyper-light-blue);
   --form-container-separator-color: var(--black);
 
   --form-input-background-color: var(--white);
@@ -18,6 +18,8 @@ body[data-theme='light'] {
   --form-button-blocked-background-color: var(--dark-blue);
 
   --form-checkbox-accent-color: var(--blue);
+
+  --form-select-arrow-color: var(--hyper-dark-blue);
 
   --form-history-button-background-color: var(--dark-blue);
   --form-history-item-background-color: var(--blue);
@@ -45,6 +47,8 @@ body[data-theme='dark'] {
   --form-button-blocked-background-color: var(--dark-blue);
 
   --form-checkbox-accent-color: var(--light-blue);
+
+  --form-select-arrow-color: var(--white);
 
   --form-history-button-background-color: var(--blue);
   --form-history-item-background-color: var(--blue);
@@ -86,7 +90,11 @@ body[data-theme='dark'] {
   color: var(--form-button-text-color);
 }
 
-i {
+.select {
+  --bulma-arrow-color: var(--form-select-arrow-color);
+}
+
+.form-icon {
   color: var(--form-icon-color);
 }
 

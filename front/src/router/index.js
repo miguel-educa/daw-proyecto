@@ -50,10 +50,34 @@ const routes = [
     },
   },
   {
+    path: '/shared-vault',
+    name: 'Baúl compartido',
+    component: () => import('@/views/SharedVaultView.vue'),
+    meta: {
+      title: 'Baúl compartido',
+    },
+  },
+  {
+    path: '/pass-audit',
+    name: '/Auditoría de contraseñas',
+    component: () => import('@/views/PassAuditView.vue'),
+    meta: {
+      title: 'Auditoría de contraseñas',
+    },
+  },
+  {
+    path: '/settings',
+    name: 'Ajuestes de cuenta',
+    component: () => import('@/views/SettingsView.vue'),
+    meta: {
+      title: 'Ajustes de cuenta',
+    },
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: '404',
-    component: () => import('@/views/Error404View.vue')
-  }
+    component: () => import('@/views/Error404View.vue'),
+  },
 ]
 
 const router = createRouter({

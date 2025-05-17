@@ -27,7 +27,7 @@ const props = defineProps({
 const loading = ref(!isUserLogged.value && !sessionStorage.getItem('anonymous-user'))
 
 // Responsive
-const RESPONSIVE_RESOLUTION = 1024
+const RESPONSIVE_RESOLUTION = 1216
 
 const isMobile = ref(window.innerWidth < RESPONSIVE_RESOLUTION)
 const handleResize = () => {

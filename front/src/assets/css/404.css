@@ -1,6 +1,6 @@
 body[data-theme='light'] {
   --nf-border: 2px solid var(--black);
-  --nf-container-background-color: var(--grey);
+  --nf-container-background-color: var(--hyper-light-blue);
   --nf-text-color: var(--hyper-dark-blue);
 }
 

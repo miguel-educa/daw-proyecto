@@ -1,0 +1,52 @@
+body[data-theme='light'] {
+  --s-title-color: var(--hyper-dark-blue);
+
+  --s-text-color: var(--hyper-dark-blue);
+  --s-border: 2px solid var(--black);
+
+  --s-container-background-color: var(--hyper-light-blue);
+
+  --s-button-background-color: var(--light-blue);
+  --s-button-text-color: var(--hyper-white);
+  --s-button-active-background-color: var(--dark-blue);
+}
+
+body[data-theme='dark'] {
+  --s-title-color: var(--white);
+
+  --s-text-color: var(--white);
+  --s-border: 2px solid var(--white);
+
+  --s-container-background-color: var(--dark-blue);
+
+  --s-button-background-color: var(--light-blue);
+  --s-button-text-color: var(--white);
+  --s-button-active-background-color: var(--hyper-dark-blue);
+}
+
+.setting-title {
+  color: var(--s-title-color);
+  font-weight: normal;
+}
+
+.setting-text {
+  color: var(--s-text-color);
+  font-weight: normal;
+}
+
+.setting-container {
+  border: var(--s-border);
+  border-radius: 12px;
+  background-color: var(--s-container-background-color);
+  box-shadow: var(--box-shadow-8-8-10);
+}
+
+.setting-button {
+  border: none;
+  background-color: var(--s-button-background-color);
+  color: var(--s-button-text-color);
+}
+
+.icon-text-color {
+  color: var(--s-text-color) !important;
+}

@@ -50,17 +50,12 @@ También se han utilizado las siguientes herramientas:
     📄 main.js
     📁 assets
         📁 css
-            📄 forms.css
-            📄 main.css
-            📄 pass-generator.css
             📁 bulma
-                📄 bulma.css
     📁 components
-        📄 AsideComponent.vue
-        📄 HeaderComponent.vue
-        📄 LoadingComponent.vue
-        📄 ModalComponent.vue
-        📄 NotificationComponent.vue
+        📁 audit
+            📄 DuplicatedPasswordsComponent.vue
+            📄 FilteredPasswordsComponent.vue
+            📄 InsecurePasswordsComponent.vue
         📁 forms
             📄 AccountRecoveryComponent.vue
             📄 LoginFormComponent.vue
@@ -72,26 +67,51 @@ También se han utilizado las siguientes herramientas:
             📄 PassGeneratorComponent.vue
             📄 PassHistoryComponent.vue
             📄 PassLengthComponent.vue
+        📁 settings
+            📄 AccountComponent.vue
+            📄 PreferenceComponent.vue
+        📁 shared-vault
+            📄 SharedControlComponent.vue
+            📄 SharedVaultComponent.vue
         📁 vault
+            📄 DeleteFolderComponent.vue
+            📄 DeletePasswordComponent.vue
+            📄 FolderFormComponent.vue
+            📄 FoldersComponent.vue
+            📄 PassVaultComponent.vue
+            📄 PasswordFormComponent.vue
+            📄 SearchPasswordComponent.vue
             📄 VaultComponent.vue
+        📄 AsideComponent.vue
+        📄 HeaderComponent.vue
+        📄 HomeComponent.vue
+        📄 LoadingComponent.vue
+        📄 ModalComponent.vue
+        📄 NotificationComponent.vue
     📁 layouts
         📄 AppLayout.vue
     📁 router
         📄 index.js
     📁 stores
+        📄 passGeneratorStore.js
         📄 passwordStore.js
         📄 userStore.js
     📁 tools
         📄 clipboard.js
+        📄 folder.js
         📄 passGenerator.js
         📄 password.js
         📄 theme.js
         📄 user.js
     📁 views
+        📄 Error404View.vue
         📄 HomeView.vue
         📄 LoginView.vue
+        📄 PassAuditView.vue
         📄 PassGeneratorView.vue
         📄 RegisterView.vue
+        📄 SettingsView.vue
+        📄 SharedVaultView.vue
         📄 VaultView.vue
 ```
 
@@ -103,14 +123,17 @@ Explicación de los directorios y archivos
 # 4. [Rutas](routes.md)
 La aplicación web dipsone de las siguientes rutas:
 
-| Ruta              | Descripción                                                    | Acceso anónimo | Acceso autenticado |
-| ----------------- | -------------------------------------------------------------- | -------------- | ------------------ |
-| `/`               | Página de inicio (*home*) de la aplicación                     | ✔️              | ✔️                  |
-| `/login`          | Permite al usuario iniciar sesión en la aplicación             | ✔️              | ❌                  |
-| `/logout`         | Permite al usuario autenticado cerrar sesión                   | ❌              | ✔️                  |
-| `/pass-generator` | Permite al usuario generar contraseñas seguras                 | ✔️              | ✔️                  |
-| `/register`       | Permite a un usuario registrase en la aplicación               | ✔️              | ❌                  |
-| `/vault`          | Permite al usuario autenticado ver las contraseñas almacenadas | ❌              | ✔️                  |
+| Ruta              | Descripción                                                                   | Acceso anónimo | Acceso autenticado |
+| ----------------- | ----------------------------------------------------------------------------- | -------------- | ------------------ |
+| `/`               | Página de inicio (*home*) de la aplicación                                    | ✔️              | ✔️                  |
+| `/login`          | Permite al usuario iniciar sesión en la aplicación                            | ✔️              | ❌                  |
+| `/logout`         | Permite al usuario autenticado cerrar sesión                                  | ❌              | ✔️                  |
+| `/pass-generator` | Permite al usuario generar contraseñas seguras                                | ✔️              | ✔️                  |
+| `/register`       | Permite a un usuario registrase en la aplicación                              | ✔️              | ❌                  |
+| `/vault`          | Permite al usuario autenticado ver las contraseñas almacenadas                | ❌              | ✔️                  |
+| `/shared-vault`   | Permite al usuario autenticado ver las contraseñas compartidas                | ❌              | ✔️                  |
+| `pass-audit`      | Permite al usuario autenticado ver el resumen de seguridad de las contraseñas | ❌              | ✔️                  |
+| `/settings`       | Permite al usuario autenticado acceder a los ajustes de prefrencias y cuenta  | ❌              | ✔️                  |
 
 
 ---

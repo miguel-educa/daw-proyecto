@@ -14,6 +14,7 @@
   --gold: #b88c26;
   --grey: #d3dae0;
   --hyper-dark-blue: #1f2a30;
+  --hyper-light-blue: #d5e6ee;
   --hyper-white: #fdfdfd;
   --light-blue: #6d8d9c;
   --red: #ca2626;
@@ -63,7 +64,7 @@ body[data-theme='light'] {
   /* Modal */
   --modal-header-footer-background-color: var(--light-blue);
   --modal-header-text-background-color: var(--hyper-white);
-  --modal-body-background-color: var(--white);
+  --modal-body-background-color: var(--hyper-light-blue);
   --modal-body-text-color: var(--hyper-dark-blue);
   --modal-button-background-color: var(--dark-blue);
   --modal-button-text-color: var(--hyper-white);
@@ -129,7 +130,7 @@ body {
 }
 
 main {
-  padding: 2rem;
+  padding: 2rem !important;
 }
 
 /* Clases de fuentes */
@@ -158,4 +159,11 @@ button.danger {
 /* Checkbox */
 input[type='checkbox'] {
   cursor: pointer;
+}
+
+@media screen and (max-width: 768px) {
+  main {
+    padding-left: 0.5rem !important;
+    padding-right: 0.5rem !important;
+  }
 }

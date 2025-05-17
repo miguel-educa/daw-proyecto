@@ -1,0 +1,50 @@
+body[data-theme='light'] {
+  --audit-title-color: var(--hyper-dark-blue);
+
+  --audit-text-color: var(--hyper-dark-blue);
+  --audit-border: 2px solid var(--black);
+
+  --audit-container-background-color: var(--hyper-light-blue);
+
+  --audit-button-background-color: var(--light-blue);
+  --audit-button-text-color: var(--hyper-white);
+  --audit-button-active-background-color: var(--dark-blue);
+}
+
+body[data-theme='dark'] {
+  --audit-title-color: var(--white);
+
+  --audit-text-color: var(--white);
+  --audit-border: 2px solid var(--white);
+
+  --audit-container-background-color: var(--dark-blue);
+
+  --audit-button-background-color: var(--light-blue);
+  --audit-button-text-color: var(--white);
+  --audit-button-active-background-color: var(--hyper-dark-blue);
+}
+
+.audit-title {
+  color: var(--audit-title-color);
+}
+
+.audit-text {
+  color: var(--audit-text-color);
+}
+
+.audit-container {
+  border: var(--audit-border);
+  border-radius: 12px;
+  background-color: var(--audit-container-background-color);
+  box-shadow: var(--box-shadow-8-8-10);
+}
+
+.audit-button {
+  border: none;
+  background-color: var(--audit-button-background-color);
+  color: var(--audit-button-text-color);
+}
+
+.icon-text-color {
+  color: var(--audit-text-color) !important;
+}

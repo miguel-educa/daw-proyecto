@@ -4,20 +4,23 @@ const API_URL = import.meta.env.VITE_API_URL
 export const api = {
   foldersEndpoint: `${API_URL}/folders.php`,
   paswordsEndpoint: `${API_URL}/passwords.php`,
+  sharedPasswordsEndpoint: `${API_URL}/shared-passwords.php`,
   accountRecoveryEndpoint: `${API_URL}/account-recovery.php`,
   sessionEndpoint: `${API_URL}/session.php`,
   userEndpoint: `${API_URL}/user.php`,
   usersEndpoint: `${API_URL}/users.php`,
+  twoFAEndpoint: `${API_URL}/2fa.php`,
+  filteredPasswordsEndpoint: 'https://api.pwnedpasswords.com/range/',
 }
 
 // Generador de contraseñas
 export const passGenerator = {
   config: {
     passwordLength: 8,
-    lowerCharCount: 1,
-    upperCharCount: 1,
-    numberCharCount: 1,
-    specialCharCount: 1,
+    lowerCharCount: 2,
+    upperCharCount: 2,
+    numberCharCount: 2,
+    specialCharCount: 2,
   },
   limits: {
     minPasswordLength: 5,
@@ -31,7 +34,7 @@ export const passGenerator = {
     special: '_-,;!.@*&#%+$/'.split(''),
   },
   history: {
-    maxHistory: 50,
+    maxHistory: 75,
   },
 }
 
@@ -65,8 +68,24 @@ export const navMenuOptions = {
 
 export const sessionDuration = [
   {
+    label: '15 minutos',
+    value: 900,
+  },
+  {
+    label: '30 minutos',
+    value: 1800,
+  },
+  {
     label: '1 hora',
     value: 3600,
+  },
+  {
+    label: '4 horas',
+    value: 14400,
+  },
+  {
+    label: '8 horas',
+    value: 28800,
   },
   {
     label: '1 día',
