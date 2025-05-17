@@ -316,4 +316,103 @@ class UsersModel {
 
       return true;
     }
+
+
+    /**
+     * Actualiza una `Password`
+     * @param array $data Array asociativo con los datos de la `Password` a actualizar
+     * @param mixed $userId ID del `User` que es el dueño
+     *
+     * @return array Se retorna un array con la estructura `["id" => string, "folder_id" => string, "name" => string, "password" => string, "username" => string, "urls" => array, "notes" => string]`
+     *
+     * @throws \Exception Si se produce algún error
+    */
+    public static function update(array $data, $userId): array {
+      $passTimeSet = "";
+      if (isset($data[self::COL_M_PASSWORD])) {
+        $data[self::COL_M_PASSWORD] = Encrypt::hash($data[self::COL_M_PASSWORD]);
+        $passTimeSet = ", master_password_edited_at = CURRENT_TIMESTAMP";
+      }
+
+      $recCodeTimeSet = "";
+      if (isset($data[self::COL_REC_CODE])) {
+        $data[self::COL_REC_CODE] = Encrypt::encrypt(string: $data[self::COL_REC_CODE]);
+        $recCodeTimeSet = ", recuperation_code_edited_at = CURRENT_TIMESTAMP";
+      }
+
+      // Claves y valores
+      $keys = implode(" = ?,", array_keys($data));
+      $values = array_values($data);
+      $values[] = $userId;
+
+      $query = "UPDATE " . self::TABLE . " SET $keys = ?$passTimeSet$recCodeTimeSet WHERE " . self::COL_ID . " = ?";
+
+      // Conectar DB
+      $db = new DB();
+
+      if (!$db->isConnected()) throw new \Exception(DB::DB_CONNECTION_ERROR);
+
+      $db->addQuery($query, $values);
+
+      if ($db->executeTransaction() === false) throw new \Exception(DB::DB_UPDATE_ERROR);
+
+      $updatedUser = self::getUserById($userId, confidentialData: true);
+
+      if ($updatedUser === null) throw new \Exception(DB::DB_GET_ERROR);
+
+      return $updatedUser;
+    }
+
+
+    public static function delete(string $id): bool {
+      $db = new DB();
+
+      if (!$db->isConnected()) throw new \Exception(DB::DB_CONNECTION_ERROR);
+
+      $db->addQuery("DELETE FROM " . self::TABLE . " WHERE id = ?", [$id]);
+
+      if ($db->executeTransaction() === false) throw new \Exception(DB::DB_DELETE_ERROR);
+
+      return true;
+    }
+
+
+    public static function deleteVault(string $id): bool {
+      $db = new DB();
+
+      if (!$db->isConnected()) throw new \Exception(DB::DB_CONNECTION_ERROR);
+
+      $db->addQuery("DELETE FROM passwords
+        WHERE owner_user_id = ?
+        AND id NOT IN (
+          SELECT password_id
+          FROM shared_passwords
+        )", [$id]);
+
+      $db->addQuery("DELETE FROM folders WHERE owner_user_id = ?", [$id]);
+
+      if ($db->executeTransaction() === false) throw new \Exception(DB::DB_DELETE_ERROR);
+
+      return true;
+    }
+
+
+    public static function deleteSharedVault(string $id): bool {
+      $db = new DB();
+
+      if (!$db->isConnected()) throw new \Exception(DB::DB_CONNECTION_ERROR);
+
+      $db->addQuery("DELETE FROM passwords
+        WHERE owner_user_id = ?
+        AND id IN (
+            SELECT password_id
+            FROM shared_passwords
+        )", [$id]);
+
+      $db->addQuery("DELETE FROM folders WHERE owner_user_id = ?", [$id]);
+
+      if ($db->executeTransaction() === false) throw new \Exception(DB::DB_DELETE_ERROR);
+
+      return true;
+    }
 }

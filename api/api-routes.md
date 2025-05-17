@@ -25,10 +25,12 @@
         - [1.5.2. PATCH](#152-patch)
         - [1.5.3. POST](#153-post)
     - [1.6. /user.php](#16-userphp)
-        - [1.6.1. GET](#161-get)
+        - [1.6.1. DELETE](#161-delete)
+        - [1.6.2. GET](#162-get)
     - [1.7. /users.php](#17-usersphp)
         - [1.7.1. GET](#171-get)
-        - [1.7.2. POST](#172-post)
+        - [1.7.2. PATCH](#172-patch)
+        - [1.7.3. POST](#173-post)
 
 
 # 1. Rutas API
@@ -467,7 +469,23 @@ Si los datos son **válidos**, se crea una `Session` y se retorna la siguiente *
 Proporciona información sobre el `User` autenticado
 
 
-### 1.6.1. GET
+### 1.6.1. DELETE
+Permite **eliminar** un `User`. El cuerpo de la petición debe contener el `id` del `User` a eliminar
+
+
+> [!CAUTION]
+> Se necesita estar autenticado y ser el dueño. Si no se mostrará un error `401`
+
+Si se elimina con éxito, se retorna la siguiente **data**:
+
+```jsonc
+{
+    "deleted": true
+}
+```
+
+
+### 1.6.2. GET
 Permite **recuperar** información sobre el `User` autenticado
 
 - **Filtros** disponibles:
@@ -549,7 +567,45 @@ Permite **recuperar** uno o varios `User`
     ```
 
 
-### 1.7.2. POST
+### 1.7.2. PATCH
+Permite **actualizar** un `User`. El `body` de la petición debe contener la siguiente estructura. Todas las propiedades son opcionales (excepto `id`), si no se especifican, se mantendrán los mismos valores
+
+```jsonc
+{
+  "id": "string",
+  "name": "string",
+  "master_password": "string",
+  "recuperation_code": true
+}
+```
+
+| Propiedad | Descripción |
+| - | - |
+| `id` | ID del `User` a actualizar |
+| `name` | Nombre del `User` |
+| `master_password` | Contraseña maestra |
+| `recuperation_code` | Genera un nuevo código de recuperación |
+
+> [!CAUTION]
+>
+> - Se necesita estar autenticado y ser el dueño. Si no se mostrará un error `401`
+> - Si el contenido del cuerpo no cumple los requisitos, se mostrará un error `400`
+
+Si los **datos** son **válidos**, se actualizará el `User` y se retornará la siguiente **data**:
+
+```jsonc
+{
+    "id": "string",
+    "username": "string",
+    "name": "string",
+    "master_password_edited_at": 0, // Unix Timestamp en segundos
+    "recuperation_code": "string",
+    "recuperation_code_edited_at": 0 // Unix Timestamp en segundos
+}
+```
+
+
+### 1.7.3. POST
 Permite **crear** un `User`. El `body` de la petición debe contener la siguiente estructura
 
 ```jsonc

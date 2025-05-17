@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . "/../env.php";
 require_once __DIR__ . "/../" . USERS_MODEL_PATH;
+require_once __DIR__ . "/../" . ENCRYPT_TOOLS_PATH;
 
 
 /**
@@ -30,6 +31,37 @@ class UserSchema {
       self::validateUsername($data, $result);
       self::validateName($data, $result);
       self::validateMasterPassword($data, $result);
+
+      return $result;
+    }
+
+
+    /**
+     * Valida parcialmente la data de un `User`. Retorna un **array asociativo** con un *array* con la **data validada** y otro *array* de **errores** (si se ha encontrado alguno):
+     * `["data" => [...], "errors" => [...]]`
+     *
+     * @param array<string, mixed> $newData Data a validar
+     * @param array<string, mixed> $data Data existente
+     *
+     * @return array{data: array, errors: array}
+     */
+    public static function partialValidate(array $newData, array $data): array {
+      $result = [
+        "data" => [],
+        "errors" => []
+      ];
+
+      if (isset($newData[UsersModel::COL_NAME]) && $newData[UsersModel::COL_NAME] !== $data[UsersModel::COL_NAME]) {
+        self::validateName($newData, $result);
+      }
+
+      if (isset($newData[UsersModel::COL_REC_CODE]) && $newData[UsersModel::COL_REC_CODE] === true) {
+        $result["data"][UsersModel::COL_REC_CODE] = Encrypt::generateRecuperationCode();
+      }
+
+      if (isset($newData[UsersModel::COL_M_PASSWORD])) {
+        self::validateMasterPassword($newData, $result);
+      }
 
       return $result;
     }

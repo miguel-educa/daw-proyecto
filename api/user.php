@@ -7,7 +7,11 @@ require_once __DIR__ . "/" . USER_CONTROLLER_PATH;
 
 
 // Comprobar métodos permitidos
-$allowedMethods = [ RequestMethod::GET ];
+$allowedMethods = [
+  RequestMethod::DELETE,
+  RequestMethod::GET,
+  RequestMethod::PATCH,
+];
 
 $req = new Request($allowedMethods);
 $req->checkRequestMethodAllowed();
@@ -15,4 +19,6 @@ $req->checkRequestMethodAllowed();
 $res = new Response();
 
 // Rutas
+if ($req->getMethod() === RequestMethod::DELETE) UserController::DELETE($req, $res);
 if ($req->getMethod() === RequestMethod::GET) UserController::GET($req, $res);
+if ($req->getMethod() === RequestMethod::PATCH) UserController::PATCH($req, $res);
