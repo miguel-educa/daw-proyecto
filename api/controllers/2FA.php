@@ -64,7 +64,7 @@ class twoFAController {
       $secret = Encrypt::decrypt($user[UsersModel::COL_TOTP_2FA_SECRET]);
       if ($ga->verifyCode($secret, $code) === false) {
         $res->addError("El código de la autenticación de doble factor es incorrecto");
-        $res->showResponseAndExit(HttpCode::UNAUTHORIZED);
+        $res->showResponseAndExit(HttpCode::BAD_REQUEST);
       }
 
       // Activar 2FA
@@ -113,7 +113,7 @@ class twoFAController {
       UsersModel::delete2FA($user["id"]);
 
       $res->setData([ "two_fa_deleted" => true ]);
-      $res->showResponseAndExit(HttpCode::CREATED);
+      $res->showResponseAndExit(HttpCode::OK);
     } catch (\Exception $e) {
       $res->addError($e->getMessage());
       $res->showResponseAndExit(HttpCode::INTERNAL_SERVER_ERROR);

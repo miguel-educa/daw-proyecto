@@ -130,6 +130,34 @@ class UsersModel {
 
 
     /**
+     * Retorna un `User` mediante su `name`
+     *
+     * @param string $username `name` a buscar. Se busca que *contenga* y es *Case insensitive*
+     *
+     * @return array Si se encuentra uno o varios `User`, se retorna un array con arrys con la estructura `["name" => string, "name" => string]` por cada `User` encontrado. Si no se encuntra ningún `User`, se retorna un array vacío
+     *
+     * @throws \Exception Si se produce algún error
+     */
+    public static function getUsersByUsername(string $username): array {
+      $query = "SELECT " . self::COL_USERNAME . ", " . self::COL_NAME .
+        " FROM " . self::TABLE .
+        " WHERE " . self::COL_USERNAME . " like ?";
+
+      // Conectar DB
+      $db = new DB();
+
+      if (!$db->isConnected()) throw new \Exception(DB::DB_CONNECTION_ERROR);
+
+      // Obtener resultados
+      $data = $db->select($query, [ "%$username%" ]);
+
+      if ($data === false) throw new \Exception(DB::DB_GET_ERROR);
+
+      return $data;
+    }
+
+
+    /**
      * Crea y retorna un `User`
      *
      * @param array $data Array asociativo con los deatos del `User` a crear. Debe contener:

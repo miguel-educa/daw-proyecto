@@ -24,7 +24,8 @@ class UsersController {
       // Comprobar filtros
       $allowedFilters = [
         UsersModel::COL_USERNAME,
-        UsersModel::COL_NAME
+        UsersModel::COL_NAME,
+        "partial_username",
       ];
 
       $filters = $req::getQueryParams($allowedFilters);
@@ -40,7 +41,8 @@ class UsersController {
 
       $data = match ($filter) {
         UsersModel::COL_USERNAME => UsersModel::getUserByUsername($value),
-        UsersModel::COL_NAME => UsersModel::getUsersByName($value)
+        UsersModel::COL_NAME => UsersModel::getUsersByName($value),
+        "partial_username" => UsersModel::getUsersByUsername($value),
       };
 
       // Comprobar que se hayan encontrado resultados

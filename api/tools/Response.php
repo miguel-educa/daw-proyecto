@@ -136,14 +136,15 @@ class Response {
       header("Content-Security-Policy: default-src 'none';");
       header("X-Frame-Options: DENY");
 
+      $hasErrors = count($this->errors) > 0;
       $flags = JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES;
 
       echo json_encode(
         [
           "service_name" => SERVICE_NAME,
-          "success" => count($this->errors) === 0,
-          "data" => count($this->errors) === 0 ? $this->data : null,
-          "errors" => count($this->errors) > 0 ? $this->errors : null
+          "success" => !$hasErrors,
+          "data" => !$hasErrors ? $this->data : null,
+          "errors" => $hasErrors ? $this->errors : null
         ],
         $flags
       );
