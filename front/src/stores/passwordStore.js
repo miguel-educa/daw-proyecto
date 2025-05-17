@@ -1,53 +1,63 @@
 import { defineStore } from 'pinia'
-import { PassConfig, PassCharacters, PassHistory } from '@/tools/passGenerator.js'
+import { useUserStore } from './userStore.js'
+
+const uStore = useUserStore()
 
 export const usePasswordStore = defineStore('password', {
   state: () => ({
-    passwordLength: PassConfig.get().passwordLength,
-    lowerCharCount: PassConfig.get().lowerCharCount,
-    upperCharCount: PassConfig.get().upperCharCount,
-    numberCharCount: PassConfig.get().numberCharCount,
-    specialCharCount: PassConfig.get().specialCharCount,
-    history: PassHistory.get(),
+    passwords: [],
+    passwordSearch: null,
+    sharedPasswords: [],
+    sharedPasswordSearch: null,
+    sharedPasswordType: null,
+    folders: [],
+    foldersIdSelected: [],
   }),
-  actions: {
-    // Obtiene la cantidad total de caracteres mínimos
-    getCharsMinCount() {
-      return (
-        this.lowerCharCount + this.upperCharCount + this.numberCharCount + this.specialCharCount
-      )
-    },
-    // Valida la longitud de la contraseña
-    validatePasswordLength() {
-      const charsLength = this.getCharsMinCount()
+  getters: {
+    passwordsFiltered() {
+      let passwords = this.passwords
 
-      if (charsLength > PassCharacters.minPasswordLength && this.passwordLength < charsLength) {
-        this.passwordLength = charsLength
-      } else if (this.passwordLength < PassCharacters.minPasswordLength) {
-        this.passwordLength = PassCharacters.minPasswordLength
-      } else if (this.passwordLength > PassCharacters.maxPasswordLength) {
-        this.passwordLength = PassCharacters.maxPasswordLength
+      if (this.foldersIdSelected.length) {
+        passwords = this.filterByFolder(passwords)
       }
+
+      if (this.passwordSearch) {
+        passwords = this.filterByName(passwords, this.passwordSearch)
+      }
+
+      return passwords
     },
-    // Almacena la configuración en `localStorage`
-    saveConfig() {
-      PassConfig.save({
-        passwordLength: this.passwordLength,
-        lowerCharCount: this.lowerCharCount,
-        upperCharCount: this.upperCharCount,
-        numberCharCount: this.numberCharCount,
-        specialCharCount: this.specialCharCount,
+
+    sharedPasswordsFiltered() {
+      let passwords = this.sharedPasswords
+
+      if (this.sharedPasswordType === 'own') {
+        passwords = passwords.filter((password) => {
+          return password.owner_user_id === uStore.user.id
+        })
+      } else if (this.sharedPasswordType === 'shared') {
+        passwords = passwords.filter((password) => {
+          return password.owner_user_id !== uStore.user.id
+        })
+      }
+
+      if (this.sharedPasswordSearch) {
+        passwords = this.filterByName(passwords, this.sharedPasswordSearch)
+      }
+
+      return passwords
+    },
+  },
+  actions: {
+    filterByName(passwords, name) {
+      return passwords.filter((password) => {
+        return password.name.toLowerCase().includes(name.toLowerCase())
       })
     },
-    // Añade la contraseña al historial
-    addHistory(password) {
-      PassHistory.add(password)
-      this.history = PassHistory.get()
-    },
-    // Vacía el historial
-    clearHistory() {
-      PassHistory.clear()
-      this.history = PassHistory.get()
+    filterByFolder(passwords) {
+      return passwords.filter((password) => {
+        return this.foldersIdSelected.includes(password.folder_id)
+      })
     },
   },
 })
