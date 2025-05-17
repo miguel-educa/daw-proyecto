@@ -2,7 +2,7 @@ import { passGenerator } from '@/config.js'
 
 /**
  * Configuración
-*/
+ */
 export class PassConfig {
   /**
    * Obtiene la configuración actual
