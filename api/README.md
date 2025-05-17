@@ -37,6 +37,7 @@ Para el desarrollo en local se ha decidido utilizar [XAMPP] como entorno de desa
     📄 Folders.php
     📄 Passwords.php
     📄 Session.php
+    📄 SharedPasswords.php
     📄 User.php
     📄 Users.php
 📁 models
@@ -64,6 +65,7 @@ Para el desarrollo en local se ha decidido utilizar [XAMPP] como entorno de desa
 📄 folders.php
 📄 passwords.php
 📄 session.php
+📄 shared-passwords.php
 📄 user.php
 📄 users.php
 ```

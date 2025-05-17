@@ -24,13 +24,16 @@
         - [1.5.1. DELETE](#151-delete)
         - [1.5.2. PATCH](#152-patch)
         - [1.5.3. POST](#153-post)
-    - [1.6. /user.php](#16-userphp)
-        - [1.6.1. DELETE](#161-delete)
-        - [1.6.2. GET](#162-get)
-    - [1.7. /users.php](#17-usersphp)
-        - [1.7.1. GET](#171-get)
-        - [1.7.2. PATCH](#172-patch)
-        - [1.7.3. POST](#173-post)
+    - [1.6. /shared-passwords.php](#16-shared-passwordsphp)
+        - [1.6.1. GET](#161-get)
+        - [1.6.2. PATCH](#162-patch)
+    - [1.7. /user.php](#17-userphp)
+        - [1.7.1. DELETE](#171-delete)
+        - [1.7.2. GET](#172-get)
+    - [1.8. /users.php](#18-usersphp)
+        - [1.8.1. GET](#181-get)
+        - [1.8.2. PATCH](#182-patch)
+        - [1.8.3. POST](#183-post)
 
 
 # 1. Rutas API
@@ -465,11 +468,78 @@ Si los datos son **válidos**, se crea una `Session` y se retorna la siguiente *
 > Se crea la Cookie `session_token` con la **sesión** del `User` recién creado
 
 
-## 1.6. /user.php
+## 1.6. /shared-passwords.php
+Proporciona información sobre las `Password`
+
+
+### 1.6.1. GET
+Permite **recuperar** las `Shared Password` de un `User`, tanto las creadas como las compartidas con otros usuarios
+
+> [!CAUTION]
+> Se necesita estar autenticado. Si no se mostrará un error `401`
+
+- Data:
+
+```jsonc
+[
+    {
+        "id": "string",
+        "name": "string",
+        "password": "string", // `string` o `null`
+        "username": "string", // `string` o `null`
+        "urls": [ "string" ], // `array` o `null`
+        "notes": "string", // `string` o `null`
+        "is_owner": true,
+        "owner_name": "string",
+        "owner_username": "string",
+        "owner_user_id": "string"
+    },
+    ...
+]
+```
+
+
+### 1.6.2. PATCH
+
+Permite **actualizar** los usuarios compartidos de una `Shared Password`, añadiendo o eliminándolos. El `body` de la petición debe contener la siguiente estructura. Todas las propiedades son opcionales (excepto `id`)
+
+```jsonc
+{
+    "shared_password_id": "string",
+    "shared_users": [
+        {
+            "shared_user_name": "string",
+            "shared_user_username": "string"
+        },
+        ...
+    ]
+}
+```
+
+| Propiedad            | Descripción                                                      |
+| -------------------- | ---------------------------------------------------------------- |
+| `shared_password_id` | ID de la `Shared Password` a actualizar                          |
+| `shared_users`       | *Array* de *Strings* con los nombres de los usuarios compartidos |
+
+> [!CAUTION]
+>
+> - Se necesita estar autenticado y ser el dueño. Si no se mostrará un error `401`
+> - Si el contenido del cuerpo no cumple los requisitos, se mostrará un error `400`
+
+Si se actualiza correctamente, se devolverá la siguiente **data**:
+
+```jsonc
+{
+  "updated": true
+}
+```
+
+
+## 1.7. /user.php
 Proporciona información sobre el `User` autenticado
 
 
-### 1.6.1. DELETE
+### 1.7.1. DELETE
 Permite **eliminar** un `User`. El cuerpo de la petición debe contener el `id` del `User` a eliminar
 
 
@@ -485,7 +555,7 @@ Si se elimina con éxito, se retorna la siguiente **data**:
 ```
 
 
-### 1.6.2. GET
+### 1.7.2. GET
 Permite **recuperar** información sobre el `User` autenticado
 
 - **Filtros** disponibles:
@@ -523,11 +593,11 @@ Permite **recuperar** información sobre el `User` autenticado
 ```
 
 
-## 1.7. /users.php
+## 1.8. /users.php
 Proporciona información sobre los `Users`
 
 
-### 1.7.1. GET
+### 1.8.1. GET
 Permite **recuperar** uno o varios `User`
 
 - **Filtros** disponibles:
@@ -567,7 +637,7 @@ Permite **recuperar** uno o varios `User`
     ```
 
 
-### 1.7.2. PATCH
+### 1.8.2. PATCH
 Permite **actualizar** un `User`. El `body` de la petición debe contener la siguiente estructura. Todas las propiedades son opcionales (excepto `id`), si no se especifican, se mantendrán los mismos valores
 
 ```jsonc
@@ -579,11 +649,11 @@ Permite **actualizar** un `User`. El `body` de la petición debe contener la sig
 }
 ```
 
-| Propiedad | Descripción |
-| - | - |
-| `id` | ID del `User` a actualizar |
-| `name` | Nombre del `User` |
-| `master_password` | Contraseña maestra |
+| Propiedad           | Descripción                            |
+| ------------------- | -------------------------------------- |
+| `id`                | ID del `User` a actualizar             |
+| `name`              | Nombre del `User`                      |
+| `master_password`   | Contraseña maestra                     |
 | `recuperation_code` | Genera un nuevo código de recuperación |
 
 > [!CAUTION]
@@ -605,7 +675,7 @@ Si los **datos** son **válidos**, se actualizará el `User` y se retornará la 
 ```
 
 
-### 1.7.3. POST
+### 1.8.3. POST
 Permite **crear** un `User`. El `body` de la petición debe contener la siguiente estructura
 
 ```jsonc

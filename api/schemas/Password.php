@@ -12,7 +12,7 @@ class PasswordSchema {
   public const NAME_REGEX = "/^.{1,50}$/";
     public const USERNAME_REGEX = "/^.{1,50}$/";
     public const PASSWORD_REGEX = "/^.{1,50}$/";
-    public const NOTES_REGEX = "/^.{1,65535}$/";
+    public const NOTES_REGEX = "/^.{1,16383}/";
 
 
   /* Métodos */
@@ -222,7 +222,7 @@ class PasswordSchema {
     /**
      * Valida el campo `notes`:
      * - Es opcional (`null`)
-     * - Longitud entre `1` y `65535` caracteres
+     * - Longitud entre `1` y `16383` caracteres
      * - Se admite cualquier carácter
      *
      * En `$result` se agrega la data validada o el mensaje de error correspondiente
@@ -234,7 +234,7 @@ class PasswordSchema {
       $notes = isset($data[PasswordsModel::COL_NOTES]) ? trim($data[PasswordsModel::COL_NOTES]) : null;
 
       if ($notes !== null && !preg_match(self::NOTES_REGEX, $notes)) {
-        $result["errors"][] = "'" . PasswordsModel::COL_NOTES . "' debe tener una longitud entre 1 y 65535 caracteres (ambos incluidos). Se admite cualquier carácter. Los espacios sobrantes al principio y final del '" . PasswordsModel::COL_NOTES . "' son eliminados";
+        $result["errors"][] = "'" . PasswordsModel::COL_NOTES . "' debe tener una longitud entre 1 y 16383 caracteres (ambos incluidos). Se admite cualquier carácter. Los espacios sobrantes al principio y final del '" . PasswordsModel::COL_NOTES . "' son eliminados";
         return;
       }
 

@@ -33,6 +33,10 @@ class PasswordsModel {
       $query = "SELECT " . self::COL_ID . ", " . self::COL_FOLDER_ID . ", " . self::COL_NAME . ", " . self::COL_PASSWORD . ", " . self::COL_USERNAME . ", " . self::COL_URLS . ", " . self::COL_NOTES .
         " FROM " . self::TABLE .
         " WHERE " . self::COL_OWNER_ID . " = ?
+        AND id NOT IN (
+          SELECT password_id
+          FROM shared_passwords
+        )
         ORDER BY " . self::COL_NAME . " ASC";
 
       // Conectar DB
@@ -42,6 +46,57 @@ class PasswordsModel {
 
       // Obtener resultados
       $data = $db->select($query, [ $userId ]);
+
+      if ($data === false) throw new \Exception(DB::DB_GET_ERROR);
+
+      foreach ($data as &$item) {
+        $item["urls"] = json_decode($item["urls"], true);
+        $item["password"] = $item["password"] !== null ? Encrypt::decrypt($item["password"]) : null;
+      }
+
+      return $data;
+    }
+
+
+    /**
+     * Retorna todas las `Password` de un usuario
+     *
+     * @param string $userId `id` del `User` a buscar. *Case insensitive*
+     *
+     * @return array Array con las `Password` con la estructura `["id" => string, "folder_id" => string, "name" => string, "password" => string, "username" => string, "urls" => array, "notes" => string]`
+     *
+     * @throws \Exception Si se produce algún error
+     */
+    public static function getSharedPasswordsByUserId(string $userId): array {
+      $query = "SELECT DISTINCT
+          p.id,
+          p.name,
+          p.username,
+          p.password,
+          p.urls,
+          p.notes,
+          p.owner_user_id,
+          u.name AS owner_name,
+          u.username AS owner_username,
+          p.owner_user_id = :userId as is_owner
+        FROM
+          shared_passwords sp
+        JOIN
+          passwords p ON sp.password_id = p.id
+        JOIN
+          users u ON p.owner_user_id = u.id
+        WHERE
+          sp.shared_user_id = :userId
+          OR p.owner_user_id = :userId
+        ORDER BY " . self::COL_NAME . " ASC";
+
+      // Conectar DB
+      $db = new DB();
+
+      if (!$db->isConnected()) throw new \Exception(DB::DB_CONNECTION_ERROR);
+
+      // Obtener resultados
+      $data = $db->select($query, [ "userId" => $userId ]);
 
       if ($data === false) throw new \Exception(DB::DB_GET_ERROR);
 
@@ -85,6 +140,36 @@ class PasswordsModel {
       $data[0]["password"] = $data[0]["password"] === null ? $data[0]["password"] : Encrypt::decrypt($data[0]["password"]);
 
       return $data[0] ?? null;
+    }
+
+
+    public static function getSharedPasswordUsersByUserIdAndId(string $userId, string $id, bool $getUserId = false): ?array {
+      $query = "SELECT " .
+        ($getUserId ? "sp.shared_user_id," : "") .
+          " u.name AS shared_user_name,
+          u.username AS shared_user_username
+        FROM
+          shared_passwords sp
+        JOIN
+          passwords p ON sp.password_id = p.id
+        JOIN
+          users u ON sp.shared_user_id = u.id
+        WHERE
+          p.owner_user_id = ?
+          AND sp.password_id = ?
+        ORDER BY shared_user_name ASC";
+
+      // Conectar DB
+      $db = new DB();
+
+      if (!$db->isConnected()) throw new \Exception(DB::DB_CONNECTION_ERROR);
+
+      // Obtener resultados
+      $data = $db->select($query, [ $userId, $id ]);
+
+      if ($data === false) throw new \Exception(DB::DB_GET_ERROR);
+
+      return $data;
     }
 
 
@@ -197,5 +282,25 @@ class PasswordsModel {
       if ($db->executeTransaction() === false) throw new \Exception(DB::DB_DELETE_ERROR);
 
       return true;
+    }
+
+
+    public static function updateSharedUsers(string $passwordId, array $addUsers, array $deleteUsers): bool {
+        $db = new DB();
+
+        if (!$db->isConnected()) throw new \Exception(DB::DB_CONNECTION_ERROR);
+
+        foreach ($addUsers as $username) {
+          $id = Encrypt::generateUUIDv4();
+            $db->addQuery("INSERT INTO shared_passwords (id, shared_user_id, password_id, permission) SELECT ?, id, ?, ? FROM users WHERE username = ?", [ $id, $passwordId, "read-only", $username ]);
+        }
+
+        foreach ($deleteUsers as $userId) {
+            $db->addQuery("DELETE FROM shared_passwords WHERE shared_user_id = ? AND password_id = ?", [ $userId, $passwordId ]);
+        }
+
+        if ($db->executeTransaction() === false) throw new \Exception(DB::DB_UPDATE_ERROR);
+
+        return true;
     }
 }
