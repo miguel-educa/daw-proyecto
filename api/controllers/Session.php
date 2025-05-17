@@ -108,4 +108,37 @@ class SessionController {
       $res->showResponseAndExit(HttpCode::INTERNAL_SERVER_ERROR);
     }
   }
+
+  public static function PATCH(Request $req, Response $res) {
+    try {
+      // Obtener usuario mediante sesión
+      $session = SessionsModel::getSessionByTokenAndUserAgent($req->getCookie("session_token"), $req->getUserAgent());
+
+      if ($session === null) {
+        $res->addError(Response::ERROR_UNAUTHORIZED);
+        $res->showResponseAndExit(HttpCode::UNAUTHORIZED);
+      }
+
+      // Obtener datos
+      $data = $req->getData();
+      $result = SessionSchema::partialValidate($data);
+
+      if (count($result["errors"]) > 0) {
+        $res->setErrors($result["errors"]);
+        $res->showResponseAndExit(HttpCode::BAD_REQUEST);
+      }
+
+      // Actualizar sesión
+      $updatedSession = SessionsModel::update($result["data"], $session["id"]);
+
+      $res->setCookie("session_token", $updatedSession["token"], $updatedSession["token_expires_at"]);
+
+      unset($updatedSession[SessionsModel::COL_TOKEN]);
+      $res->setData($updatedSession);
+      $res->showResponseAndExit(HttpCode::OK);
+    } catch (\Exception $e) {
+      $res->addError($e->getMessage());
+      $res->showResponseAndExit(HttpCode::INTERNAL_SERVER_ERROR);
+    }
+  }
 }

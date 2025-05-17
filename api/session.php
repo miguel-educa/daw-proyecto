@@ -9,6 +9,7 @@ require_once __DIR__ . "/" . SESSION_CONTROLLER_PATH;
 // Comprobar métodos permitidos
 $allowedMethods = [
   RequestMethod::DELETE,
+  RequestMethod::PATCH,
   RequestMethod::POST
 ];
 
@@ -19,4 +20,5 @@ $res = new Response();
 
 // Rutas
 if ($req->getMethod() === RequestMethod::DELETE) SessionController::DELETE($req, $res);
+if ($req->getMethod() === RequestMethod::PATCH) SessionController::PATCH($req, $res);
 if ($req->getMethod() === RequestMethod::POST) SessionController::POST($req, $res);

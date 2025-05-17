@@ -33,6 +33,26 @@ class SessionSchema {
 
 
     /**
+     * Valida la data de una `Session`. Retorna un **array asociativo** con un *array* con la **data validada** y otro *array* de **errores** (si se ha encontrado alguno):
+     * `["data" => [...], "errors" => [...]]`
+     *
+     * @param array<string, mixed> $data Data a validar
+     *
+     * @return array{data: array, errors: array}
+     */
+    public static function partialValidate(array $data): array {
+      $result = [
+        "data" => [],
+        "errors" => []
+      ];
+
+      self::validateSessionDuration($data, $result);
+
+      return $result;
+    }
+
+
+    /**
      * Valida el campo `username`:
      * - Debe existir
      *

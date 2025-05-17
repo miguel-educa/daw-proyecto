@@ -156,4 +156,36 @@ class SessionsModel {
 
       return true;
     }
+
+
+    public static function update(array $data, string $id): array {
+      $token = Encrypt::generateSessionToken();
+      $tokenHash = Encrypt::sha256(string: $token);
+      $tokenExpiresAt = time() + $data["session_duration"]->value;
+
+      $query = "UPDATE " . self::TABLE . " SET " .
+        self::COL_TOKEN . " = ?, " .
+        self::COL_TOKEN_EXPIRES . " = FROM_UNIXTIME(?)" .
+        " WHERE " . self::COL_ID . " = ?";
+
+      // Conectar DB
+      $db = new DB();
+
+      if (!$db->isConnected()) throw new \Exception(DB::DB_CONNECTION_ERROR);
+
+      $db->addQuery($query, [
+        $tokenHash,
+        $tokenExpiresAt,
+        $id
+      ]);
+
+      if ($db->executeTransaction() === false) throw new \Exception(DB::DB_UPDATE_ERROR);
+
+      $updatedResource = self::getSessionById($id);
+      if ($updatedResource === null) throw new \Exception(DB::DB_GET_ERROR);
+
+      // Recuperar token original para almacenar en Cookie
+      $updatedResource["token"] = $token;
+      return $updatedResource;
+    }
 }

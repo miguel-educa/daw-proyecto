@@ -22,7 +22,8 @@
         - [1.4.4. POST](#144-post)
     - [1.5. /session.php](#15-sessionphp)
         - [1.5.1. DELETE](#151-delete)
-        - [1.5.2. POST](#152-post)
+        - [1.5.2. PATCH](#152-patch)
+        - [1.5.3. POST](#153-post)
     - [1.6. /user.php](#16-userphp)
         - [1.6.1. GET](#161-get)
     - [1.7. /users.php](#17-usersphp)
@@ -392,7 +393,36 @@ Si se elimina correctamente la `Session`, se retorna la siguiente **data**:
 ```
 
 
-### 1.5.2. POST
+### 1.5.2. PATCH
+Permite **actualizar** una `Session`. El `body` de la petición debe contener la siguiente estructura.
+
+```jsonc
+{
+  "session_duration": 0
+}
+```
+
+| Propiedad          | Descripción                                     |
+| ------------------ | ----------------------------------------------- |
+| `session_duration` | Tiempo de duración de la `Session` en segundos. |
+
+> [!CAUTION]
+>
+> - Se necesita estar autenticado y ser el dueño. Si no se mostrará un error `401`
+> - Si el contenido del cuerpo no cumple los requisitos, se mostrará un error `400`
+
+Si se actualiza correctamente la `Session`, se actualiza la Cookie de sesión y se retorna la siguiente **data**:
+
+```jsonc
+{
+    "username": "string",
+    "master_password": "string",
+    "session_duration": 0
+}
+```
+
+
+### 1.5.3. POST
 Permite **crear** una `Session` para un `User` existente
 
 - **Body** de la petición debe contener la siguiente estructura
@@ -484,10 +514,11 @@ Permite **recuperar** uno o varios `User`
 
 - **Filtros** disponibles:
 
-    | *Query param*        | Descripción                                                                                  |
-    | -------------------- | -------------------------------------------------------------------------------------------- |
-    | `?username=<string>` | Retorna un **único** `User` cuyo `username` **coincida completamente**. \**Case insensitive* |
-    | `?name=<string>`     | Retorna **varios** `User` cuyo `name` **contenga** el valor. \**Case insensitive*            |
+    | *Query param*                | Descripción                                                                                  |
+    | ---------------------------- | -------------------------------------------------------------------------------------------- |
+    | `?username=<string>`         | Retorna un **único** `User` cuyo `username` **coincida completamente**. \**Case insensitive* |
+    | `?name=<string>`             | Retorna **varios** `User` cuyo `name` **contenga** el valor. \**Case insensitive*            |
+    | `?partial_username=<string>` | Retorna **varios** `User` cuyo `username` **contenga** el valor. \**Case insensitive*        |
 
 > [!CAUTION]
 >
@@ -505,7 +536,7 @@ Permite **recuperar** uno o varios `User`
     }
     ```
 
-- Data del filtro `name`
+- Data del filtro `name` y `partial_username`
 
     ```jsonc
     [
