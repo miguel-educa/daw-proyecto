@@ -98,7 +98,7 @@ const checkErrors = () => {
 
   if (!PasswordTools.checkMasterPassword(masterPassword.value)) {
     passwordErrorMessage.value =
-      'Debe tener una longitud entre 8 y 50 caracteres. Debe contener al menos una letra minúscula y una letra mayúscula (alfabeto inglés), un número y alguno de los siguientes símbolos especiales "_-,;!.@*&#%+$/". No se admiten otros caracteres'
+      'Debe tener una longitud entre 8 y 50 caracteres. Debe contener al menos una letra minúscula y una letra mayúscula (alfabeto inglés), un número y alguno de los siguientes símbolos especiales "_-,;!.@*&#%+$/\". No se admiten otros caracteres'
     error = true
   }
 

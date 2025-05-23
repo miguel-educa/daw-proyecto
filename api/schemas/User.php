@@ -142,7 +142,7 @@ class UserSchema {
      * Valida el campo `master_password`:
      * - Longitud entre 8 y 50 caracteres
      * - No puede contener caracteres no válidos
-     *     - Se aceptan letras del alfabeto inglés (mayúsculas y minúsculas), números y los siguientes caracteres especiales `_-,;!.@*&#%+$/`
+     *     - Se aceptan letras del alfabeto inglés (mayúsculas y minúsculas), números y los siguientes caracteres especiales `_-,;!.@*&#%+$/\`
      * - Debe contener al menos:
      *     - Una letra minúscula
      *     - Una letra mayúscula
@@ -165,11 +165,11 @@ class UserSchema {
 
     // Comprobar formato y requisitos
     $length = strlen($masterPassword);
-    $hasInvalidChars = preg_match("/[^a-zA-Z0-9_\-,;!.@*&#%+$\/]/", $masterPassword);
+    $hasInvalidChars = preg_match("/[^a-zA-Z0-9_\-,;!.@*&#%+$\/\\\]/", $masterPassword);
     $hasLower = preg_match("/[a-z]/", $masterPassword);
     $hasUpper = preg_match("/[A-Z]/", $masterPassword);
     $hasNumber = preg_match("/[0-9]/", $masterPassword);
-    $hasSpecial = preg_match("/[_\-,;!.@*&#%+$\/]/", $masterPassword);
+    $hasSpecial = preg_match("/[_\-,;!.@*&#%+$\/\\\]/", $masterPassword);
 
     if (
       $length < 8 ||
@@ -180,7 +180,7 @@ class UserSchema {
       !$hasNumber ||
       !$hasSpecial
     ) {
-      $result["errors"][] = "'" . UsersModel::COL_M_PASSWORD . "' debe tener una longitud entre 8 y 50 caracteres. Debe contener al menos una letra minúscula y una letra mayúscula (alfabeto inglés), un número y alguno de los siguientes símbolos especiales '_-,;!.@*&#%+$/'. No se admiten otros caracteres";
+      $result["errors"][] = "'" . UsersModel::COL_M_PASSWORD . "' debe tener una longitud entre 8 y 50 caracteres. Debe contener al menos una letra minúscula y una letra mayúscula (alfabeto inglés), un número y alguno de los siguientes símbolos especiales '_-,;!.@*&#%+$/\'. No se admiten otros caracteres";
       return;
     }
 

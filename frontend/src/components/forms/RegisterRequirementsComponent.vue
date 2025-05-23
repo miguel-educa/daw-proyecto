@@ -51,7 +51,7 @@ const emit = defineEmits(['closeRequeriments'])
             caracteres. Debe contener al menos una letra
             <strong>minúscula</strong> y una letra <strong>mayúscula</strong> (alfabeto inglés), un
             <strong>número</strong> y alguno de los siguientes símbolos especiales
-            <strong>_-,;!.@*&\#%+$/</strong>. No se admiten otros caracteres
+            <strong>_-,;!.@*&#%+$/\</strong>. No se admiten otros caracteres
           </p>
         </div>
       </div>

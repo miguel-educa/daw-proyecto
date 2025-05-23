@@ -38,7 +38,7 @@ const USERS_MODEL_PATH = MODELS_PATH . "Users.php";
 
 
 // Schemas
-const SCHEMAS_PATH = "schemes/";
+const SCHEMAS_PATH = "schemas/";
 
 const ACCOUNT_RECOVERY_SCHEMA_PATH = SCHEMAS_PATH . "AccountRecovery.php";
 const FOLDER_SCHEMA_PATH = SCHEMAS_PATH . "Folder.php";

@@ -31,7 +31,7 @@ export const passGenerator = {
     lower: 'abcdefghijklmnopqrstuvwxyz'.split(''),
     upper: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''),
     number: '0123456789'.split(''),
-    special: '_-,;!.@*&#%+$/'.split(''),
+    special: '_-,;!.@*&#%+$/\\'.split(''),
   },
   history: {
     maxHistory: 75,

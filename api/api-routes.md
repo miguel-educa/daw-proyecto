@@ -690,7 +690,7 @@ Permite **crear** un `User`. El `body` de la petición debe contener la siguient
 | ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------- |
 | `username`        | Debe ser **único**. ***Regex*** que debe cumplir: `/^[a-zA-Z][a-zA-Z0-9_]{1,29}$/`                                                                                                                                                  | ✔️         |
 | `name`            | Puede contener **cualquier carácter**. Longitud entre `1` y `50` caracteres                                                                                                                                                         | ✔️         |
-| `master_password` | Longitud entre `8` y `50` caracteres. Debe **contener** al menos **una** letra **minúscula** y **una** letra **mayúscula** (alfabeto inglés), **un número** y **alguno** de los siguientes **símbolos especiales** `_-,;!.@*&#%+$/` | ✔️         |
+| `master_password` | Longitud entre `8` y `50` caracteres. Debe **contener** al menos **una** letra **minúscula** y **una** letra **mayúscula** (alfabeto inglés), **un número** y **alguno** de los siguientes **símbolos especiales** `_-,;!.@*&#%+$/\` | ✔️         |
 
 > [!CAUTION]
 >

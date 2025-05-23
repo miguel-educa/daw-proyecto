@@ -205,7 +205,7 @@ const updateMasterPassword = async () => {
 
   if (!PasswordTools.checkMasterPassword(masterPassword.value)) {
     masterPasswordError.value =
-      'La contraseña maestra no cumple los requisitos mínimos: Entre 8 y 50 caracteres, con al menos una letra mayúscula, una letra minúscula, un número y un carácter especial (_-,;!.@*&#%+$/)'
+      'La contraseña maestra no cumple los requisitos mínimos: Entre 8 y 50 caracteres, con al menos una letra mayúscula, una letra minúscula, un número y un carácter especial (_-,;!.@*&#%+$/\)'
     return
   }
 
