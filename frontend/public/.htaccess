@@ -1,9 +1,13 @@
-# No listar direcotrios sin index
+# No listar directorios sin index
 Options -Indexes
 
 <IfModule mod_rewrite.c>
   RewriteEngine On
   RewriteBase /
+
+  # Redirigir HTTP a HTTPS
+  RewriteCond %{HTTPS} off
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
   # No redirigir peticiones a /api/*
   RewriteCond %{REQUEST_URI} ^/api/ [NC]
